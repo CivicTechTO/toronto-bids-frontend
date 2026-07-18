@@ -237,8 +237,9 @@ Runtime: static pages; the only failure mode is JS-off, handled by degradation a
   untitled records, unparseable amounts, `hst_basis` mixes, keyspace non-joins,
   supplier slug stability and collision detection, category normalization,
   `value_confidential`, empty `buyers`.
-- **CI on every PR**: full build against the fixture; asserts page counts, golden-file
-  HTML snapshots for one record page per entity type, zero broken internal links.
+- **CI on every PR**: full build against the fixture; asserts page counts, targeted
+  HTML assertions for each entity's record page (less brittle than golden-file
+  snapshots, same coverage), zero broken internal links via a dist-wide link crawl.
 - **Nightly full-data build** is the integration test; its invariant checks are the
   assertions.
 
