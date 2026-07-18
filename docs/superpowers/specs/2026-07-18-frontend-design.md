@@ -113,6 +113,14 @@ repo), static hosting.
    `tb nightly`).
 2. `build_export_document` adds `supplier_key` to each exported supplier — the stable
    identity the frontend slugs for permalinks. One line behind the Exporter seam.
+3. `build_export_document` currently drops the 1,028 Award Summary Form bids
+   (`reference IS NULL`): bids nest only under council items by `reference`, so
+   reference-less bids attach to nothing (17,604 of 18,632 reach the export). Fix:
+   nest reference-null bids under their solicitation (a `bids` array on each
+   solicitation, keyed by `document_number`), with an `unlinked_bids` top-level
+   bucket for reference-null bids whose `document_number` matches no solicitation —
+   the same pattern as `unlinked_awards`. Without this, the post-panel bid record
+   (2025-10-01 onward) is invisible to the frontend.
 
 ### Site build (GitHub Actions in this repo)
 
