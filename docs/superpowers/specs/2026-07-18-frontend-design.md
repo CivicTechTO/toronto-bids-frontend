@@ -107,13 +107,19 @@ repo), static hosting.
 - The `gh` token lives beside the existing Slack webhook in
   `~/.config/toronto-bids/tb.env` (mode 0600, never in git).
 
-### Backend changes required (small, both in scope for this project)
+### Backend changes required (filed as high-priority backend issues, fixed there first)
 
-1. The nightly publish step above (a script in the backend's `deploy/`, called after
-   `tb nightly`).
-2. `build_export_document` adds `supplier_key` to each exported supplier — the stable
+Per project decision (2026-07-18): backend changes are filed as issues on
+`CivicTechTO/toronto-bids` and fixed in that repo before frontend implementation
+proceeds; the frontend plan treats them as verified prerequisites.
+
+1. **[#146](https://github.com/CivicTechTO/toronto-bids/issues/146)** — the nightly
+   publish step above (a script in the backend's `deploy/`, called after `tb nightly`).
+2. **[#144](https://github.com/CivicTechTO/toronto-bids/issues/144)** —
+   `build_export_document` adds `supplier_key` to each exported supplier — the stable
    identity the frontend slugs for permalinks. One line behind the Exporter seam.
-3. `build_export_document` currently drops the 1,028 Award Summary Form bids
+3. **[#145](https://github.com/CivicTechTO/toronto-bids/issues/145)** —
+   `build_export_document` currently drops the 1,028 Award Summary Form bids
    (`reference IS NULL`): bids nest only under council items by `reference`, so
    reference-less bids attach to nothing (17,604 of 18,632 reach the export). Fix:
    nest reference-null bids under their solicitation (a `bids` array on each
