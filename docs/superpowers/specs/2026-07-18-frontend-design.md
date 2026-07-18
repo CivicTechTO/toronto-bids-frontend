@@ -77,8 +77,11 @@ the current shape. The frontend targets the **current** shape only.
    implausible (~$15B combined, e.g. $9.05B to an individual); headline sums carry a
    caveat. Future-dated rows exist (`contract_date` max 2026-12-18); time charts clamp.
 8. **`supplier_id` is not stable across syncs** (the dimension is rebuilt nightly).
-   Supplier permalinks use a slug of the stable normalized `supplier_key`;
-   the numeric id is a build-internal join key only.
+   Supplier permalinks use a slug of the stable normalized `supplier_key`; the
+   numeric id is a build-internal join key only. The export does not carry
+   `supplier_key` today (only `supplier_id`, `display_name`, `variants`) — adding it
+   is a required backend change (see Backend changes below). Slugging `display_name`
+   instead would break permalinks whenever a display name shifts as variants accrue.
 9. **Headline numbers are City-only** — agency (`buyers`) data is presented in its own
    per-buyer section with `partnered`/`funding_share` badges, mirroring the export's
    own contract. `value_confidential=1` renders as "value withheld (confidential
@@ -104,6 +107,13 @@ repo), static hosting.
 - The `gh` token lives beside the existing Slack webhook in
   `~/.config/toronto-bids/tb.env` (mode 0600, never in git).
 
+### Backend changes required (small, both in scope for this project)
+
+1. The nightly publish step above (a script in the backend's `deploy/`, called after
+   `tb nightly`).
+2. `build_export_document` adds `supplier_key` to each exported supplier — the stable
+   identity the frontend slugs for permalinks. One line behind the Exporter seam.
+
 ### Site build (GitHub Actions in this repo)
 
 Triggered by the nightly dispatch, a daily scheduled fallback, and manual dispatch.
@@ -121,8 +131,9 @@ Triggered by the nightly dispatch, a daily scheduled fallback, and manual dispat
 - Every page footer: "Data as of `<meta.generated_at>`".
 - The build **fails instead of deploying** when: the export is malformed (missing
   top-level keys / required fields), any major entity count drops >20% vs. the
-  previous successful build, an internal link target is missing, or supplier slugs
-  collide. A failed build leaves the last good site up; the archive never silently
+  previous successful build (each deploy publishes its entity counts as a small
+  `counts.json`; the next build fetches it from the live site), an internal link
+  target is missing, or supplier slugs collide. A failed build leaves the last good site up; the archive never silently
   shrinks. Failures surface in GitHub Actions (maintainer email; optionally the
   existing Slack webhook as a repo secret later).
 
