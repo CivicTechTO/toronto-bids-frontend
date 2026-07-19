@@ -1,0 +1,1404 @@
+{
+  "meta": {
+    "generated_at": "2026-07-19T03:20:42.435784+00:00",
+    "counts": {
+      "solicitation": 7,
+      "award": 12,
+      "noncompetitive": 1,
+      "ariba_posting": 3,
+      "suspended_firm": 3,
+      "supplier": 23,
+      "capital_project": 3,
+      "bid": 12,
+      "council_item": 2,
+      "background_pdf": 2,
+      "composite_award": 5,
+      "sync_run": 3,
+      "buyer": 2,
+      "agency_solicitation": 1,
+      "agency_award": 1,
+      "agency_bid": 0
+    },
+    "sources": [
+      {
+        "source": "odata_solicitations",
+        "status": "ok",
+        "finished_at": "2026-07-16 02:08:32",
+        "rows_fetched": 7655,
+        "rows_upserted": 15132
+      },
+      {
+        "source": "odata_noncompetitive",
+        "status": "ok",
+        "finished_at": "2026-07-16 02:08:34",
+        "rows_fetched": 2955,
+        "rows_upserted": 2955
+      },
+      {
+        "source": "ckan_awarded",
+        "status": "ok",
+        "finished_at": "2026-07-16 02:08:36",
+        "rows_fetched": 7574,
+        "rows_upserted": 15059
+      }
+    ]
+  },
+  "solicitations": [
+    {
+      "document_number": "0101110129",
+      "status": "Awarded",
+      "rfx_type": "RFQ",
+      "noip_type": null,
+      "form_type": "Awarded Contracts",
+      "title": "Request for Quotation 0101-11-0129 - Quotations are invited for the supply and delivery of Work Pants and Shirts with reflective striping and logos to various Purchasing and Materials Management Stores locations, as and when required from date of award to October 31, 2012 with the option to renew the contract for an additional two (2) separate one (1) year periods, subject to City of Toronto budget availability/approval. Should the option(s) be exercised, then the Manager of Materials Management and Stores will request for Director of The Purchasing and Materials Management Divsision to process the renewals under the same terms and conditions.",
+      "description": null,
+      "issue_date": "2011-11-18",
+      "submission_deadline": "2011-12-07",
+      "category": "Goods and Services",
+      "division": "Purchasing and Materials Management",
+      "buyer_name": "Justin Diptee",
+      "buyer_email": "supplychain@toronto.ca",
+      "buyer_phone": "416-397-4141",
+      "wards": null,
+      "ariba_posting_link": null,
+      "source": "odata",
+      "first_seen": "2026-07-16 02:08:20",
+      "last_seen": "2026-07-17 00:33:08",
+      "title_source": "council_composite",
+      "awards": [
+        {
+          "supplier_name_raw": "UBA UNIFORMS INC.",
+          "supplier_id": 1,
+          "award_amount": "199994.13",
+          "award_amount_numeric": 199994.13,
+          "award_date": "2012-04-02",
+          "source": "odata",
+          "first_seen": "2026-07-16 02:08:20",
+          "last_seen": "2026-07-17 00:33:08",
+          "award_amount_labelled": null,
+          "award_amount_verdict": null
+        },
+        {
+          "supplier_name_raw": "UBA UNIFORMS INC.",
+          "supplier_id": 1,
+          "award_amount": "199994.13",
+          "award_amount_numeric": 199994.13,
+          "award_date": "2012-04-02",
+          "source": "ckan_awarded",
+          "first_seen": "2026-07-16 02:08:35",
+          "last_seen": "2026-07-16 17:09:43",
+          "award_amount_labelled": null,
+          "award_amount_verdict": null
+        }
+      ],
+      "ariba_postings": [],
+      "documents": [],
+      "bids": []
+    },
+    {
+      "document_number": "0101110148",
+      "status": "Awarded",
+      "rfx_type": "RFQ",
+      "noip_type": null,
+      "form_type": "Awarded Contracts",
+      "title": null,
+      "description": null,
+      "issue_date": "2011-11-18",
+      "submission_deadline": "2011-12-05",
+      "category": "Goods and Services",
+      "division": "Purchasing and Materials Management",
+      "buyer_name": "Justin Diptee",
+      "buyer_email": "supplychain@toronto.ca",
+      "buyer_phone": "416-397-4141",
+      "wards": null,
+      "ariba_posting_link": null,
+      "source": "odata",
+      "first_seen": "2026-07-16 02:08:20",
+      "last_seen": "2026-07-17 00:33:08",
+      "title_source": null,
+      "awards": [
+        {
+          "supplier_name_raw": "UBA UNIFORMS INC.",
+          "supplier_id": 1,
+          "award_amount": "37940.62",
+          "award_amount_numeric": 37940.62,
+          "award_date": "2012-03-22",
+          "source": "odata",
+          "first_seen": "2026-07-16 02:08:20",
+          "last_seen": "2026-07-17 00:33:08",
+          "award_amount_labelled": null,
+          "award_amount_verdict": null
+        },
+        {
+          "supplier_name_raw": "UBA UNIFORMS INC.",
+          "supplier_id": 1,
+          "award_amount": "37940.62",
+          "award_amount_numeric": 37940.62,
+          "award_date": "2012-03-22",
+          "source": "ckan_awarded",
+          "first_seen": "2026-07-16 02:08:35",
+          "last_seen": "2026-07-16 17:09:43",
+          "award_amount_labelled": null,
+          "award_amount_verdict": null
+        }
+      ],
+      "ariba_postings": [],
+      "documents": [],
+      "bids": []
+    },
+    {
+      "document_number": "0113130187",
+      "status": "Awarded",
+      "rfx_type": "RFQ",
+      "noip_type": null,
+      "form_type": "Awarded Contracts",
+      "title": null,
+      "description": null,
+      "issue_date": "2013-12-11",
+      "submission_deadline": "2014-01-13",
+      "category": "Goods and Services",
+      "division": "Fire Services",
+      "buyer_name": "Justin Diptee",
+      "buyer_email": "supplychain@toronto.ca",
+      "buyer_phone": "416-397-4141",
+      "wards": null,
+      "ariba_posting_link": null,
+      "source": "odata",
+      "first_seen": "2026-07-16 02:08:21",
+      "last_seen": "2026-07-17 00:33:09",
+      "title_source": null,
+      "awards": [
+        {
+          "supplier_name_raw": "Flying Colours International Division Of Scythes Inc",
+          "supplier_id": 42,
+          "award_amount": "18322.19253664.44",
+          "award_amount_numeric": null,
+          "award_date": "2014-05-29",
+          "source": "odata",
+          "first_seen": "2026-07-16 02:08:21",
+          "last_seen": "2026-07-17 00:33:09",
+          "award_amount_labelled": null,
+          "award_amount_verdict": "corrupt"
+        },
+        {
+          "supplier_name_raw": "Flying Colours International Division Of Scythes Inc",
+          "supplier_id": 42,
+          "award_amount": "18322.19253664.44",
+          "award_amount_numeric": null,
+          "award_date": "2014-05-29",
+          "source": "ckan_awarded",
+          "first_seen": "2026-07-16 02:08:35",
+          "last_seen": "2026-07-16 17:09:43",
+          "award_amount_labelled": null,
+          "award_amount_verdict": "corrupt"
+        }
+      ],
+      "ariba_postings": [],
+      "documents": [],
+      "bids": []
+    },
+    {
+      "document_number": "1669551201",
+      "status": "Awarded",
+      "rfx_type": "RFQ",
+      "noip_type": null,
+      "form_type": "Awarded Contracts",
+      "title": "Award of Request for Quotation 1669551201 to Supply Line for the Supply and Delivery of Poly/Wool Socks",
+      "description": null,
+      "issue_date": "2019-03-04",
+      "submission_deadline": "2019-04-04",
+      "category": "Goods and Services",
+      "division": null,
+      "buyer_name": "Tony Kladianos",
+      "buyer_email": "Tony.Kladianos@toronto.ca",
+      "buyer_phone": "4163385578",
+      "wards": null,
+      "ariba_posting_link": null,
+      "source": "odata",
+      "first_seen": "2026-07-16 02:08:24",
+      "last_seen": "2026-07-17 00:33:13",
+      "title_source": "bid_award_panel",
+      "awards": [
+        {
+          "supplier_name_raw": "Supply Line",
+          "supplier_id": 28,
+          "award_amount": "130815.00",
+          "award_amount_numeric": 130815,
+          "award_date": "2019-08-01",
+          "source": "odata",
+          "first_seen": "2026-07-16 02:08:24",
+          "last_seen": "2026-07-17 00:33:13",
+          "award_amount_labelled": null,
+          "award_amount_verdict": null
+        },
+        {
+          "supplier_name_raw": "Supply Line",
+          "supplier_id": 28,
+          "award_amount": "130815.00",
+          "award_amount_numeric": 130815,
+          "award_date": "2019-08-01",
+          "source": "ckan_awarded",
+          "first_seen": "2026-07-16 02:08:35",
+          "last_seen": "2026-07-16 17:09:43",
+          "award_amount_labelled": null,
+          "award_amount_verdict": null
+        }
+      ],
+      "ariba_postings": [],
+      "documents": [
+        {
+          "source": "staff_report",
+          "name": "backgroundfile-136288.pdf",
+          "path": "backgroundfile-136288.pdf",
+          "type": "pdf",
+          "size_bytes": null,
+          "url": "https://www.toronto.ca/legdocs/mmis/2019/ba/bgrd/backgroundfile-136288.pdf"
+        }
+      ],
+      "bids": []
+    },
+    {
+      "document_number": "1808735584",
+      "status": "Awarded",
+      "rfx_type": "RFQ",
+      "noip_type": null,
+      "form_type": "Awarded Contracts",
+      "title": "Award of Request for Quotation Doc1808735584 to Dependable Truck and Tank, Ltd. for the Supply and Delivery of Spartan Original Equipment Manufacturer Parts for Fire Trucks",
+      "description": null,
+      "issue_date": "2019-06-07",
+      "submission_deadline": "2019-07-17",
+      "category": "Goods and Services",
+      "division": "Fire Services",
+      "buyer_name": "Justin Diptee",
+      "buyer_email": "supplychain@toronto.ca",
+      "buyer_phone": "416-397-4141",
+      "wards": null,
+      "ariba_posting_link": null,
+      "source": "odata",
+      "first_seen": "2026-07-16 02:08:26",
+      "last_seen": "2026-07-17 00:33:14",
+      "title_source": "bid_award_panel",
+      "awards": [
+        {
+          "supplier_name_raw": "Dependable Emergency Vehicles",
+          "supplier_id": 636,
+          "award_amount": "330988.00",
+          "award_amount_numeric": 330988,
+          "award_date": "2019-09-19",
+          "source": "odata",
+          "first_seen": "2026-07-16 02:08:26",
+          "last_seen": "2026-07-17 00:33:14",
+          "award_amount_labelled": null,
+          "award_amount_verdict": null
+        },
+        {
+          "supplier_name_raw": "Dependable Emergency Vehicles",
+          "supplier_id": 636,
+          "award_amount": "330988.00",
+          "award_amount_numeric": 330988,
+          "award_date": "2019-09-19",
+          "source": "ckan_awarded",
+          "first_seen": "2026-07-16 02:08:35",
+          "last_seen": "2026-07-16 17:09:43",
+          "award_amount_labelled": null,
+          "award_amount_verdict": null
+        }
+      ],
+      "ariba_postings": [],
+      "documents": [
+        {
+          "source": "staff_report",
+          "name": "backgroundfile-137025.pdf",
+          "path": "backgroundfile-137025.pdf",
+          "type": "pdf",
+          "size_bytes": null,
+          "url": "https://www.toronto.ca/legdocs/mmis/2019/ba/bgrd/backgroundfile-137025.pdf"
+        }
+      ],
+      "bids": []
+    },
+    {
+      "document_number": "4462198346",
+      "status": "Awarded",
+      "rfx_type": "RFQ",
+      "noip_type": null,
+      "form_type": "Awarded Contracts",
+      "title": "Request for Quotation for Inspections, Testing, Certifications, Repairs, Parts and Service to Bergkamp Asphalt Patcher Body and Trecan Snowmelter",
+      "description": "This Request for Quotation (the “RFQ”) is an invitation by the City of Toronto (the “City”) to prospective Suppliers to submit bids for the non-exclusive supply and delivery of all labour, materials, tools, equipment, travel time, mileage, fuel and incidentals necessary to perform inspections, testing, certifications, repairs, parts and service to:\n\na) Bergkamp Asphalt Patcher Body\nb) Trecan Snowmelter\n\nas further described in Part 3 and the Contract (the “Deliverables”).",
+      "issue_date": "2025-07-24",
+      "submission_deadline": "2025-09-03",
+      "category": "Goods and Services",
+      "division": "Fleet Services",
+      "buyer_name": "Fei He",
+      "buyer_email": "Fei.He@toronto.ca",
+      "buyer_phone": "4163974808",
+      "wards": "Ward 1 Etobicoke North",
+      "ariba_posting_link": "https://discovery.ariba.com/rfx/23245377",
+      "source": "odata",
+      "first_seen": "2026-07-16 02:08:29",
+      "last_seen": "2026-07-17 00:33:18",
+      "title_source": null,
+      "awards": [
+        {
+          "supplier_name_raw": "EQUIPMENT SPECIALIST INC, THE",
+          "supplier_id": 1857,
+          "award_amount": null,
+          "award_amount_numeric": null,
+          "award_date": "2025-12-05",
+          "source": "odata",
+          "first_seen": "2026-07-16 02:08:29",
+          "last_seen": "2026-07-17 00:33:18",
+          "award_amount_labelled": null,
+          "award_amount_verdict": null
+        },
+        {
+          "supplier_name_raw": "EQUIPMENT SPECIALIST INC, THE",
+          "supplier_id": 1857,
+          "award_amount": null,
+          "award_amount_numeric": null,
+          "award_date": "2025-12-05",
+          "source": "ckan_awarded",
+          "first_seen": "2026-07-16 02:08:35",
+          "last_seen": "2026-07-16 17:09:43",
+          "award_amount_labelled": null,
+          "award_amount_verdict": null
+        }
+      ],
+      "ariba_postings": [],
+      "documents": [
+        {
+          "source": "award_summary",
+          "name": "Award Summary Form.pdf",
+          "path": "Award Summary Form.pdf",
+          "type": "pdf",
+          "size_bytes": null,
+          "url": "https://secure.toronto.ca/c3api_upload/retrieve/pmmd_solicitations/CPWyjD9oZnX60EQwOE21MQ"
+        }
+      ],
+      "bids": [
+        {
+          "reference": null,
+          "bidder_name_raw": "Report/ Agenda Item Number (i.e. 2025.GG##.##)",
+          "supplier_id": null,
+          "bid_price": null,
+          "bid_price_numeric": null,
+          "hst_basis": "excluding",
+          "price_header": "Bid Price (Excluding HST)",
+          "source": "award_summary",
+          "first_seen": "2026-07-17 11:43:01",
+          "last_seen": "2026-07-17 17:46:20"
+        },
+        {
+          "reference": null,
+          "bidder_name_raw": "The Equipment Specialist Inc. (Lot A)",
+          "supplier_id": null,
+          "bid_price": "$ 57,140.00",
+          "bid_price_numeric": 57140,
+          "hst_basis": "excluding",
+          "price_header": "Bid Price (Excluding HST)",
+          "source": "award_summary",
+          "first_seen": "2026-07-17 11:43:01",
+          "last_seen": "2026-07-17 17:46:20"
+        },
+        {
+          "reference": null,
+          "bidder_name_raw": "Trecan Combustion Limited* (Lot B)",
+          "supplier_id": null,
+          "bid_price": "$ 233,425.00",
+          "bid_price_numeric": 233425,
+          "hst_basis": "excluding",
+          "price_header": "Bid Price (Excluding HST)",
+          "source": "award_summary",
+          "first_seen": "2026-07-17 11:43:01",
+          "last_seen": "2026-07-17 17:46:20"
+        }
+      ]
+    },
+    {
+      "document_number": "5274436439",
+      "status": "Open",
+      "rfx_type": "NRFP",
+      "noip_type": "Notice of Intended Procurement",
+      "form_type": "Notice of Intended Procurement",
+      "title": "Doc5274436439 - Request for Proposal for Road Allowance and Control System (RACS) Modernization",
+      "description": "The City of Toronto (the “City”) is issuing this Negotiated Request for Proposal (RFP) to select a qualified Supplier to bid for a Road Allowance and Control System (RACS) Modernization. The City is looking for a supportable, extendable, accessible, scalable, and cost-effective COTS Proposed Solution that would address the current challenges and business objectives of the City.\n\n\n \n\n\nRFX closing on August 24th @  12noon local Toronto time.\n\n\nThe City of Toronto does not post budget information. The opportunity amount does not reflect the City’s actual project estimate.",
+      "issue_date": "2026-07-13",
+      "submission_deadline": "2026-08-24",
+      "category": "Professional Services",
+      "division": "Transportation Services",
+      "buyer_name": "Luckshmi Pathansaly",
+      "buyer_email": "Luckshmi.Pathansaly@toronto.ca",
+      "buyer_phone": "4163381266",
+      "wards": "Ward 1 Etobicoke North",
+      "ariba_posting_link": "https://portal.us.bn.cloud.ariba.com/dashboard/public/appext/comsapsbncdiscoveryui#/RfxEvent/preview/1110018439?anId=ANONYMOUS",
+      "source": "odata",
+      "first_seen": "2026-07-16 02:08:31",
+      "last_seen": "2026-07-17 00:33:20",
+      "title_source": null,
+      "awards": [],
+      "ariba_postings": [
+        {
+          "rfx_id": "1110018439",
+          "title": "Request for Proposal for Road Allowance and Control System (RACS) Modernization",
+          "posting_type": "RFI",
+          "status": "PUBLISHED",
+          "customer_name": "City of Toronto",
+          "posted_date": "2026-07-13T11:07:05-07:00",
+          "close_date": "2026-08-24T11:15:00-07:00",
+          "categories": [
+            "Platform software as a service",
+            "Accounting software maintenance",
+            "Operating system software maintenance",
+            "Permanent information technology software developers",
+            "Platform software components as a service",
+            "Enterprise resource planning software maintenance",
+            "Database management system software maintenance",
+            "Customer relationship management software maintenance",
+            "Cloud-based data access and sharing software",
+            "Development software maintenance",
+            "Backup or archival software",
+            "Security and protection software maintenance",
+            "System management software maintenance"
+          ],
+          "amount_min": "0",
+          "amount_max": "0",
+          "currency": "CAD",
+          "public_posting_url": "https://discovery.ariba.com/rfx/1110018439",
+          "sourcing_url": "https://s1.ariba.com/Sourcing/Main/ad/gotoEvent/NetworkRFQDirectAction?rfxId=Doc5274436439&passwordadapter=SourcingSupplierUser&realm=toronto&awcharset=UTF-8&AOD_AUTH_CHECKED_PARAM=true&PropertyName=Discovery&refreshEvent=true",
+          "external_rfx_id": "Doc5274436439",
+          "source": "ariba_discovery",
+          "first_seen": "2026-07-16 02:11:09",
+          "last_seen": "2026-07-16 14:16:26"
+        }
+      ],
+      "documents": [
+        {
+          "source": "ariba_attachment",
+          "name": "Appendix A01 - Mandatory Solution Functional Requirements.xlsx",
+          "path": "Appendix A01 - Mandatory Solution Functional Requirements.xlsx",
+          "type": "xlsx",
+          "size_bytes": 28358,
+          "url": null
+        },
+        {
+          "source": "ariba_attachment",
+          "name": "Appendix A02 - Cloud - Mandatory Solution Technical Requirements.xlsx",
+          "path": "Appendix A02 - Cloud - Mandatory Solution Technical Requirements.xlsx",
+          "type": "xlsx",
+          "size_bytes": 29247,
+          "url": null
+        },
+        {
+          "source": "ariba_attachment",
+          "name": "Appendix A02 - OnPrem - Mandatory Solution Technical Requirements.xlsx",
+          "path": "Appendix A02 - OnPrem - Mandatory Solution Technical Requirements.xlsx",
+          "type": "xlsx",
+          "size_bytes": 29142,
+          "url": null
+        },
+        {
+          "source": "ariba_attachment",
+          "name": "Appendix A03 - Detailed Solution Functional Requirements (Permitting) .xlsx",
+          "path": "Appendix A03 - Detailed Solution Functional Requirements (Permitting) .xlsx",
+          "type": "xlsx",
+          "size_bytes": 35784,
+          "url": null
+        },
+        {
+          "source": "ariba_attachment",
+          "name": "Appendix A04 - Detailed Solution Technical Requirements (Permitting).xlsx",
+          "path": "Appendix A04 - Detailed Solution Technical Requirements (Permitting).xlsx",
+          "type": "xlsx",
+          "size_bytes": 30434,
+          "url": null
+        },
+        {
+          "source": "ariba_attachment",
+          "name": "Appendix A-X1 - COTS - Escrow.pdf",
+          "path": "Appendix A05-A10 & X1-2.zip/PDF/Appendix A-X1 - COTS - Escrow.pdf",
+          "type": "pdf",
+          "size_bytes": 132834,
+          "url": null
+        },
+        {
+          "source": "ariba_attachment",
+          "name": "Appendix A-X2 - Warranty and Software Maintenance .pdf",
+          "path": "Appendix A05-A10 & X1-2.zip/PDF/Appendix A-X2 - Warranty and Software Maintenance .pdf",
+          "type": "pdf",
+          "size_bytes": 185263,
+          "url": null
+        },
+        {
+          "source": "ariba_attachment",
+          "name": "Appendix A05 - Work Packages Requirements v3.0.pdf",
+          "path": "Appendix A05-A10 & X1-2.zip/PDF/Appendix A05 - Work Packages Requirements v3.0.pdf",
+          "type": "pdf",
+          "size_bytes": 93863,
+          "url": null
+        },
+        {
+          "source": "ariba_attachment",
+          "name": "Appendix A07 (REF) - City of Toronto API Guidelines.pdf",
+          "path": "Appendix A05-A10 & X1-2.zip/PDF/Appendix A07 (REF) - City of Toronto API Guidelines.pdf",
+          "type": "pdf",
+          "size_bytes": 983701,
+          "url": null
+        },
+        {
+          "source": "ariba_attachment",
+          "name": "Appendix A08 (REF) - City of Toronto Quality Assurance Software Testing.pdf",
+          "path": "Appendix A05-A10 & X1-2.zip/PDF/Appendix A08 (REF) - City of Toronto Quality Assurance Software Testing.pdf",
+          "type": "pdf",
+          "size_bytes": 396317,
+          "url": null
+        },
+        {
+          "source": "ariba_attachment",
+          "name": "Appendix A09 (REF) - Technology-infrastructure-environment-services.pdf",
+          "path": "Appendix A05-A10 & X1-2.zip/PDF/Appendix A09 (REF) - Technology-infrastructure-environment-services.pdf",
+          "type": "pdf",
+          "size_bytes": 1665522,
+          "url": null
+        },
+        {
+          "source": "ariba_attachment",
+          "name": "Appendix A10 (REF) - Functional-Design-Specification.pdf",
+          "path": "Appendix A05-A10 & X1-2.zip/PDF/Appendix A10 (REF) - Functional-Design-Specification.pdf",
+          "type": "pdf",
+          "size_bytes": 496716,
+          "url": null
+        },
+        {
+          "source": "ariba_attachment",
+          "name": "Appendix B03 - Detailed Solution Functional Requirements.xlsx",
+          "path": "Appendix B03 - Detailed Solution Functional Requirements.xlsx",
+          "type": "xlsx",
+          "size_bytes": 64210,
+          "url": null
+        },
+        {
+          "source": "ariba_attachment",
+          "name": "FORM C - Cyber Requirements Screening Questionnaire_Professional Service.xlsx",
+          "path": "FORM C - Cyber Requirements Screening Questionnaire_Professional Service.xlsx",
+          "type": "xlsx",
+          "size_bytes": 31734,
+          "url": null
+        },
+        {
+          "source": "ariba_attachment",
+          "name": "Form of Attestation - Canadian Supplier.pdf",
+          "path": "Form of Attestation - Canadian Supplier.pdf",
+          "type": "pdf",
+          "size_bytes": 87888,
+          "url": null
+        },
+        {
+          "source": "ariba_attachment",
+          "name": "Form of Attestation - Non American and Trade Partner Supplier.pdf",
+          "path": "Form of Attestation - Non American and Trade Partner Supplier.pdf",
+          "type": "pdf",
+          "size_bytes": 101916,
+          "url": null
+        },
+        {
+          "source": "ariba_attachment",
+          "name": "Form of Attestation - Non USA Based.pdf",
+          "path": "Form of Attestation - Non USA Based.pdf",
+          "type": "pdf",
+          "size_bytes": 99489,
+          "url": null
+        },
+        {
+          "source": "ariba_attachment",
+          "name": "On-Cloud Appendix - Security Screening Questionnaire - On Cloud.xlsx",
+          "path": "On-Cloud Appendix - Security Screening Questionnaire - On Cloud.xlsx",
+          "type": "xlsx",
+          "size_bytes": 33064,
+          "url": null
+        },
+        {
+          "source": "ariba_attachment",
+          "name": "On-Prem Appendix - Security Screening Questionnaire - On Prem.xlsx",
+          "path": "On-Prem Appendix - Security Screening Questionnaire - On Prem.xlsx",
+          "type": "xlsx",
+          "size_bytes": 33367,
+          "url": null
+        },
+        {
+          "source": "ariba_attachment",
+          "name": "PART 1- nRFP Process.pdf",
+          "path": "PART 1- nRFP Process.pdf",
+          "type": "pdf",
+          "size_bytes": 397764,
+          "url": null
+        },
+        {
+          "source": "ariba_attachment",
+          "name": "PART 2 - nRFP MCSA.pdf",
+          "path": "PART 2 - nRFP MCSA.pdf",
+          "type": "pdf",
+          "size_bytes": 770865,
+          "url": null
+        },
+        {
+          "source": "ariba_attachment",
+          "name": "PART 3 - Requirements for Deliverables.pdf",
+          "path": "PART 3 - Requirements for Deliverables.pdf",
+          "type": "pdf",
+          "size_bytes": 879656,
+          "url": null
+        },
+        {
+          "source": "ariba_attachment",
+          "name": "PART 4 - Form B Technical Proposal and Qualifications.pdf",
+          "path": "PART 4 - Form B Technical Proposal and Qualifications.pdf",
+          "type": "pdf",
+          "size_bytes": 448199,
+          "url": null
+        },
+        {
+          "source": "ariba_attachment",
+          "name": "PART 5 - Instructions to Pricing RACS.pdf",
+          "path": "PART 5 - Instructions to Pricing RACS.pdf",
+          "type": "pdf",
+          "size_bytes": 93983,
+          "url": null
+        },
+        {
+          "source": "ariba_attachment",
+          "name": "Part 5 - RACS nRFP Pricing Form.xlsx",
+          "path": "Part 5 - RACS nRFP Pricing Form.xlsx",
+          "type": "xlsx",
+          "size_bytes": 38883,
+          "url": null
+        }
+      ],
+      "bids": []
+    }
+  ],
+  "noncompetitive": [
+    {
+      "workspace_number": "10000",
+      "supplier_name_raw": "JENSEN HUGHES CONSULTING CANADA LTD",
+      "supplier_id": 2842,
+      "reason": "Work Already Completed",
+      "contract_amount": "100000",
+      "contract_date": "2019-11-07",
+      "division": "Real Estate Services",
+      "council_authority_link": null,
+      "source": "odata",
+      "first_seen": "2026-07-16 02:08:33",
+      "last_seen": "2026-07-16 14:13:49",
+      "contract_amount_numeric": 100000,
+      "contract_amount_labelled": null,
+      "contract_amount_verdict": null
+    }
+  ],
+  "suspended_firms": [
+    {
+      "supplier_name_raw": "Capital Sewers Services Inc. and Affiliated Persons (Capital Infrastructure Group Inc., Utility Force Construction Inc., Capital Utility Services Inc., CEC Mechanical Ltd., MarkerVac Inc. and Clean Water Works Inc.)",
+      "status": "Suspended",
+      "start_date": "December 16, 2025",
+      "end_date": "December 16, 2030",
+      "suspension_type": "Supplier Code of Conduct",
+      "council_authority": "2025.GG26.3",
+      "source": "suspended_firms",
+      "first_seen": "2026-07-16 02:11:18",
+      "last_seen": "2026-07-16 14:16:35",
+      "supplier_id": 4188
+    },
+    {
+      "supplier_name_raw": "Duron Ontario Ltd.",
+      "status": "Suspended",
+      "start_date": "March 27, 2025",
+      "end_date": "March 27, 2030",
+      "suspension_type": "Supplier Code of Conduct",
+      "council_authority": "2025.GG19.17",
+      "source": "suspended_firms",
+      "first_seen": "2026-07-16 02:11:18",
+      "last_seen": "2026-07-16 14:16:35",
+      "supplier_id": 407
+    },
+    {
+      "supplier_name_raw": "Entities Owned, Directed or Controlled by Sebastian Corbo (including Road Mill Construction Inc.)",
+      "status": "Permanent Suspension",
+      "start_date": "November 27, 28, and 29, 2012",
+      "end_date": "N/A",
+      "suspension_type": "N/A",
+      "council_authority": "GM18.4",
+      "source": "suspended_firms",
+      "first_seen": "2026-07-16 02:11:18",
+      "last_seen": "2026-07-16 14:16:35",
+      "supplier_id": 4189
+    }
+  ],
+  "suppliers": [
+    {
+      "supplier_id": 636,
+      "supplier_key": "dependable emergency vehicles",
+      "display_name": "*Dependable Emergency Vehicles",
+      "variants": [
+        "*Dependable Emergency Vehicles",
+        "Dependable Emergency Vehicles"
+      ],
+      "first_seen": "2026-07-16 02:20:49",
+      "last_seen": "2026-07-17 01:41:06"
+    },
+    {
+      "supplier_id": 526,
+      "supplier_key": "614128 ontario ltd o a trisan construction",
+      "display_name": "614128 ONTARIO LTD, O/A TRISAN CONSTRUCTION",
+      "variants": [
+        "614128 ONTARIO LTD, O/A TRISAN CONSTRUCTION",
+        "614128 ONTARIO LTD. O/A TRISAN CONSTRUCTION",
+        "614128 Ontario Ltd . O/A Trisan Construction",
+        "614128 Ontario Ltd O/A Trisan Construction",
+        "614128 Ontario Ltd o/a Trisan Construction",
+        "614128 Ontario Ltd, O/A Trisan Construction",
+        "614128 Ontario Ltd, o/a Trisan Construction",
+        "614128 Ontario Ltd. O/A Trisan Construction",
+        "614128 Ontario Ltd. O/A Trisan Construction*",
+        "614128 Ontario Ltd. o/a Trisan Construction",
+        "614128 Ontario Ltd., O/A Trisan Construction",
+        "614128 Ontario Ltd., o/a Trisan Construction",
+        "614128 Ontario Ltd.,O/A Trisan Construction"
+      ],
+      "first_seen": "2026-07-16 02:20:49",
+      "last_seen": "2026-07-17 01:41:06"
+    },
+    {
+      "supplier_id": 57675,
+      "supplier_key": "avertex utility solutions inc informal",
+      "display_name": "Avertex Utility Solutions Inc. - Informal",
+      "variants": [
+        "Avertex Utility Solutions Inc. - Informal"
+      ],
+      "first_seen": "2026-07-17 01:39:18",
+      "last_seen": "2026-07-17 01:41:06"
+    },
+    {
+      "supplier_id": 597,
+      "supplier_key": "clearway construction inc",
+      "display_name": "CLEARWAY CONSTRUCTION INC",
+      "variants": [
+        "CLEARWAY CONSTRUCTION INC",
+        "Clearway Construction Inc",
+        "Clearway Construction Inc.",
+        "Clearway construction Inc."
+      ],
+      "first_seen": "2026-07-16 02:20:49",
+      "last_seen": "2026-07-17 01:41:06"
+    },
+    {
+      "supplier_id": 16830,
+      "supplier_key": "co x co construction limited",
+      "display_name": "CO-X-CO Construction Limited",
+      "variants": [
+        "CO-X-CO Construction Limited",
+        "Co-X-Co Construction Limited"
+      ],
+      "first_seen": "2026-07-17 00:07:51",
+      "last_seen": "2026-07-17 01:41:06"
+    },
+    {
+      "supplier_id": 4188,
+      "supplier_key": "capital sewers services inc and affiliated persons capital infrastructure group inc utility force construction inc capital utility services inc cec mechanical ltd markervac inc and clean water works inc",
+      "display_name": "Capital Sewers Services Inc. and Affiliated Persons (Capital Infrastructure Group Inc., Utility Force Construction Inc., Capital Utility Services Inc., CEC Mechanical Ltd., MarkerVac Inc. and Clean Water Works Inc.)",
+      "variants": [
+        "Capital Sewers Services Inc. and Affiliated Persons (Capital Infrastructure Group Inc., Utility Force Construction Inc., Capital Utility Services Inc., CEC Mechanical Ltd., MarkerVac Inc. and Clean Water Works Inc.)"
+      ],
+      "first_seen": "2026-07-16 02:20:49",
+      "last_seen": "2026-07-17 01:41:06"
+    },
+    {
+      "supplier_id": 471,
+      "supplier_key": "comer group limited",
+      "display_name": "Comer Group Limited",
+      "variants": [
+        "Comer Group Limited",
+        "Comer Group Limited."
+      ],
+      "first_seen": "2026-07-16 02:20:49",
+      "last_seen": "2026-07-17 01:41:06"
+    },
+    {
+      "supplier_id": 488,
+      "supplier_key": "direct underground inc",
+      "display_name": "DIRECT UNDERGROUND INC",
+      "variants": [
+        "DIRECT UNDERGROUND INC",
+        "Direct Underground Inc",
+        "Direct Underground Inc.",
+        "Direct Underground Inc.*",
+        "Direct Underground Inc..",
+        "Direct underground Inc."
+      ],
+      "first_seen": "2026-07-16 02:20:49",
+      "last_seen": "2026-07-17 01:41:06"
+    },
+    {
+      "supplier_id": 407,
+      "supplier_key": "duron ontario ltd",
+      "display_name": "DURON ONTARIO LTD",
+      "variants": [
+        "DURON ONTARIO LTD",
+        "DURON ONTARIO LTD.",
+        "Duron Ontario LTD",
+        "Duron Ontario LTD.",
+        "Duron Ontario Ltd",
+        "Duron Ontario Ltd."
+      ],
+      "first_seen": "2026-07-16 02:20:49",
+      "last_seen": "2026-07-17 01:41:06"
+    },
+    {
+      "supplier_id": 870,
+      "supplier_key": "dependable truck and tank ltd",
+      "display_name": "Dependable Truck and Tank LTD",
+      "variants": [
+        "Dependable Truck and Tank LTD",
+        "Dependable Truck and Tank Ltd",
+        "Dependable Truck and Tank Ltd.",
+        "Dependable Truck and Tank, Ltd."
+      ],
+      "first_seen": "2026-07-16 02:20:49",
+      "last_seen": "2026-07-17 01:41:06"
+    },
+    {
+      "supplier_id": 1857,
+      "supplier_key": "equipment specialist inc the",
+      "display_name": "EQUIPMENT SPECIALIST INC, THE",
+      "variants": [
+        "EQUIPMENT SPECIALIST INC, THE"
+      ],
+      "first_seen": "2026-07-16 02:20:49",
+      "last_seen": "2026-07-17 01:41:06"
+    },
+    {
+      "supplier_id": 4189,
+      "supplier_key": "entities owned directed or controlled by sebastian corbo including road mill construction inc",
+      "display_name": "Entities Owned, Directed or Controlled by Sebastian Corbo (including Road Mill Construction Inc.)",
+      "variants": [
+        "Entities Owned, Directed or Controlled by Sebastian Corbo (including Road Mill Construction Inc.)"
+      ],
+      "first_seen": "2026-07-16 02:20:49",
+      "last_seen": "2026-07-17 01:41:06"
+    },
+    {
+      "supplier_id": 42,
+      "supplier_key": "flying colours international division of scythes inc",
+      "display_name": "Flying Colours International Division Of Scythes Inc",
+      "variants": [
+        "Flying Colours International Division Of Scythes Inc"
+      ],
+      "first_seen": "2026-07-16 02:20:49",
+      "last_seen": "2026-07-17 01:41:06"
+    },
+    {
+      "supplier_id": 338,
+      "supplier_key": "gio contracting inc",
+      "display_name": "GIO CONTRACTING INC",
+      "variants": [
+        "GIO CONTRACTING INC",
+        "GIO Contracting Inc",
+        "GIO Contracting Inc.",
+        "Gio Contracting Inc",
+        "Gio Contracting Inc."
+      ],
+      "first_seen": "2026-07-16 02:20:49",
+      "last_seen": "2026-07-17 01:41:06"
+    },
+    {
+      "supplier_id": 2842,
+      "supplier_key": "jensen hughes consulting canada ltd",
+      "display_name": "JENSEN HUGHES CONSULTING CANADA LTD",
+      "variants": [
+        "JENSEN HUGHES CONSULTING CANADA LTD",
+        "Jensen Hughes Consulting Canada Ltd."
+      ],
+      "first_seen": "2026-07-16 02:20:49",
+      "last_seen": "2026-07-17 01:41:06"
+    },
+    {
+      "supplier_id": 768,
+      "supplier_key": "kenco construction ltd",
+      "display_name": "KENCO CONSTRUCTION LTD.",
+      "variants": [
+        "KENCO CONSTRUCTION LTD.",
+        "Kenco Construction Ltd."
+      ],
+      "first_seen": "2026-07-16 02:20:49",
+      "last_seen": "2026-07-17 01:41:06"
+    },
+    {
+      "supplier_id": 410,
+      "supplier_key": "midome construction services ltd",
+      "display_name": "MIDOME CONSTRUCTION SERVICES LTD",
+      "variants": [
+        "MIDOME CONSTRUCTION SERVICES LTD",
+        "Midome Construction Services   Ltd.",
+        "Midome Construction Services Ltd",
+        "Midome Construction Services Ltd.",
+        "Midome Construction services Ltd"
+      ],
+      "first_seen": "2026-07-16 02:20:49",
+      "last_seen": "2026-07-17 01:41:06"
+    },
+    {
+      "supplier_id": 2009,
+      "supplier_key": "profire emergency equipment inc",
+      "display_name": "Profire Emergency Equipment Inc",
+      "variants": [
+        "Profire Emergency Equipment Inc",
+        "Profire Emergency Equipment Inc."
+      ],
+      "first_seen": "2026-07-16 02:20:49",
+      "last_seen": "2026-07-17 01:41:06"
+    },
+    {
+      "supplier_id": 345,
+      "supplier_key": "rabcon contractors ltd",
+      "display_name": "RABCON CONTRACTORS LTD",
+      "variants": [
+        "RABCON CONTRACTORS LTD",
+        "Rabcon  Contractors Ltd.",
+        "Rabcon Contractors Ltd",
+        "Rabcon Contractors Ltd.",
+        "Rabcon Contractors Ltd. *"
+      ],
+      "first_seen": "2026-07-16 02:20:49",
+      "last_seen": "2026-07-17 01:41:06"
+    },
+    {
+      "supplier_id": 28,
+      "supplier_key": "supply line",
+      "display_name": "SUPPLY LINE",
+      "variants": [
+        "SUPPLY LINE",
+        "Supply Line"
+      ],
+      "first_seen": "2026-07-16 02:20:49",
+      "last_seen": "2026-07-17 01:41:06"
+    },
+    {
+      "supplier_id": 525,
+      "supplier_key": "sam rabito construction ltd",
+      "display_name": "Sam Rabito Construction Ltd",
+      "variants": [
+        "Sam Rabito Construction Ltd",
+        "Sam Rabito Construction Ltd.",
+        "Sam Rabito construction Ltd."
+      ],
+      "first_seen": "2026-07-16 02:20:49",
+      "last_seen": "2026-07-17 01:41:06"
+    },
+    {
+      "supplier_id": 555,
+      "supplier_key": "trisan construction",
+      "display_name": "TRISAN CONSTRUCTION",
+      "variants": [
+        "TRISAN CONSTRUCTION",
+        "Trisan Construction",
+        "Trisan Construction."
+      ],
+      "first_seen": "2026-07-16 02:20:49",
+      "last_seen": "2026-07-17 01:41:06"
+    },
+    {
+      "supplier_id": 1,
+      "supplier_key": "uba uniforms inc",
+      "display_name": "UBA UNIFORMS INC.",
+      "variants": [
+        "UBA UNIFORMS INC.",
+        "UBA Uniforms Inc."
+      ],
+      "first_seen": "2026-07-16 02:20:49",
+      "last_seen": "2026-07-17 01:41:06"
+    }
+  ],
+  "capital_projects": [
+    {
+      "name": "Appraisal Reports",
+      "contract_number": null,
+      "type_of_work": "Engineering",
+      "scope": "To complete new appraisal reports for Waste Water Treatment plants, pumping stations and trunk sewers across the City of Toronto",
+      "delivery_division": "Toronto Water",
+      "owner_division": "Toronto Water",
+      "target_sourcing_year": "2026",
+      "target_award_year": "2026",
+      "sourcing_type": "RFP",
+      "estimated_range": "Up to $5M",
+      "estimated_term_months": "12",
+      "source": "ckan_pipeline",
+      "first_seen": "2026-07-16 18:11:10",
+      "last_seen": "2026-07-16 18:11:10"
+    },
+    {
+      "name": "Ashbridges Bay Treatment Plant Elevator Refurbishment Works",
+      "contract_number": null,
+      "type_of_work": "Construction",
+      "scope": "Construction services for the refurbishment of nine (9) Elevators at various locations across Ashbridges Bay Treatment Plant",
+      "delivery_division": "Toronto Water",
+      "owner_division": "Toronto Water",
+      "target_sourcing_year": "2026",
+      "target_award_year": "2026",
+      "sourcing_type": "RFT",
+      "estimated_range": "$5M to $50M",
+      "estimated_term_months": "24",
+      "source": "ckan_pipeline",
+      "first_seen": "2026-07-16 18:11:10",
+      "last_seen": "2026-07-16 18:11:10"
+    },
+    {
+      "name": "Basement Flooding Protection Program - 23ECS-LU-02FP",
+      "contract_number": "23ECS-LU-02FP",
+      "type_of_work": "Construction",
+      "scope": "Basement Flooding Protection Program, Phase 4, Assignment 39-03, 39-04, 39-07 and 39-08: Storm and sanitary sewer upgrades, watermain replacement and other related improvements on Martin Grove Road, Jeffcoat Drive, Bairstow Crescent, Rosefair Crescent, Kearney Drive, Mercury Road, Braddock Road, Porterfield Road, Clearbrooke Circle, Coppermill Drive, Barrhead Crescent, Redcliff Boulevard, Frost Street, Redwater Drive, Circklewood Road, Hardisty Drive and Stavely Crescent (WIM-BFPP4-Area 39-03/04/07/08)",
+      "delivery_division": "Engineering & Construction Services",
+      "owner_division": "Toronto Water",
+      "target_sourcing_year": "2026",
+      "target_award_year": "2026",
+      "sourcing_type": "RFSQ Work Assignment/RFT",
+      "estimated_range": "$5M to $50M",
+      "estimated_term_months": "36",
+      "source": "ckan_pipeline",
+      "first_seen": "2026-07-16 18:11:10",
+      "last_seen": "2026-07-16 18:11:10"
+    }
+  ],
+  "composite_awards": [
+    {
+      "id": 7468,
+      "call_number": "005-2010",
+      "call_number_raw": "Tender Call 005-2010, Contract 10FS-52WS",
+      "reference": "2010.BD165.1",
+      "title": "General Services Contracts for the replacement of watermains, water service connections, sanitary sewers and storm sewers related to the Stand Alone Watermain Replacement Program in accordance with specifications as required by Technical Services. The Tender Call allowed the City to select up to six bidding contractors to perform work over a 24-month term. The determination with the respect to the number of contractors selected took into consideration the lowest overall prices that represented the best value to the City. An engineering estimate was established prior to the closing of the Tender Call, which was also a determining factor in the selection process. Each contractor selected by the City will be required to execute a General Services Contract. Task Orders will then be issued by the City to the contractors for all or part of any work listed in the Tender Call. The selected Contractors will each be awarded at least one Task Order with a minimum value of $500,000.00. The City reserves the right to cancel the contract with a contractor at any time after the minimum contract value has been achieved. The maximum value of each General Services Contract will be determined by the number of Task Orders completed by each contractor. A maximum cumulative amount per contractor will not exceed $20 million, net of GST and HST Recoveries.",
+      "supplier_name_raw": "614128 Ontario Ltd. o/a Trisan Construction",
+      "supplier_id": 526,
+      "award_value": "$20,000,000.00",
+      "award_value_numeric": 20000000,
+      "source": "bid_committee_composite",
+      "first_seen": "2026-07-17 01:24:32",
+      "last_seen": "2026-07-17 01:55:08"
+    },
+    {
+      "id": 7470,
+      "call_number": "005-2010",
+      "call_number_raw": "Tender Call 005-2010, Contract 10FS-52WS",
+      "reference": "2010.BD165.1",
+      "title": "General Services Contracts for the replacement of watermains, water service connections, sanitary sewers and storm sewers related to the Stand Alone Watermain Replacement Program in accordance with specifications as required by Technical Services. The Tender Call allowed the City to select up to six bidding contractors to perform work over a 24-month term. The determination with the respect to the number of contractors selected took into consideration the lowest overall prices that represented the best value to the City. An engineering estimate was established prior to the closing of the Tender Call, which was also a determining factor in the selection process. Each contractor selected by the City will be required to execute a General Services Contract. Task Orders will then be issued by the City to the contractors for all or part of any work listed in the Tender Call. The selected Contractors will each be awarded at least one Task Order with a minimum value of $500,000.00. The City reserves the right to cancel the contract with a contractor at any time after the minimum contract value has been achieved. The maximum value of each General Services Contract will be determined by the number of Task Orders completed by each contractor. A maximum cumulative amount per contractor will not exceed $20 million, net of GST and HST Recoveries.",
+      "supplier_name_raw": "Clearway Construction Inc.",
+      "supplier_id": 597,
+      "award_value": "$20,000,000.00",
+      "award_value_numeric": 20000000,
+      "source": "bid_committee_composite",
+      "first_seen": "2026-07-17 01:24:32",
+      "last_seen": "2026-07-17 01:55:08"
+    },
+    {
+      "id": 7472,
+      "call_number": "005-2010",
+      "call_number_raw": "Tender Call 005-2010, Contract 10FS-52WS",
+      "reference": "2010.BD165.1",
+      "title": "General Services Contracts for the replacement of watermains, water service connections, sanitary sewers and storm sewers related to the Stand Alone Watermain Replacement Program in accordance with specifications as required by Technical Services. The Tender Call allowed the City to select up to six bidding contractors to perform work over a 24-month term. The determination with the respect to the number of contractors selected took into consideration the lowest overall prices that represented the best value to the City. An engineering estimate was established prior to the closing of the Tender Call, which was also a determining factor in the selection process. Each contractor selected by the City will be required to execute a General Services Contract. Task Orders will then be issued by the City to the contractors for all or part of any work listed in the Tender Call. The selected Contractors will each be awarded at least one Task Order with a minimum value of $500,000.00. The City reserves the right to cancel the contract with a contractor at any time after the minimum contract value has been achieved. The maximum value of each General Services Contract will be determined by the number of Task Orders completed by each contractor. A maximum cumulative amount per contractor will not exceed $20 million, net of GST and HST Recoveries.",
+      "supplier_name_raw": "Comer Group Limited",
+      "supplier_id": 471,
+      "award_value": "$20,000,000.00",
+      "award_value_numeric": 20000000,
+      "source": "bid_committee_composite",
+      "first_seen": "2026-07-17 01:24:32",
+      "last_seen": "2026-07-17 01:55:08"
+    },
+    {
+      "id": 7471,
+      "call_number": "005-2010",
+      "call_number_raw": "Tender Call 005-2010, Contract 10FS-52WS",
+      "reference": "2010.BD165.1",
+      "title": "General Services Contracts for the replacement of watermains, water service connections, sanitary sewers and storm sewers related to the Stand Alone Watermain Replacement Program in accordance with specifications as required by Technical Services. The Tender Call allowed the City to select up to six bidding contractors to perform work over a 24-month term. The determination with the respect to the number of contractors selected took into consideration the lowest overall prices that represented the best value to the City. An engineering estimate was established prior to the closing of the Tender Call, which was also a determining factor in the selection process. Each contractor selected by the City will be required to execute a General Services Contract. Task Orders will then be issued by the City to the contractors for all or part of any work listed in the Tender Call. The selected Contractors will each be awarded at least one Task Order with a minimum value of $500,000.00. The City reserves the right to cancel the contract with a contractor at any time after the minimum contract value has been achieved. The maximum value of each General Services Contract will be determined by the number of Task Orders completed by each contractor. A maximum cumulative amount per contractor will not exceed $20 million, net of GST and HST Recoveries.",
+      "supplier_name_raw": "Kenco Construction Ltd.",
+      "supplier_id": 768,
+      "award_value": "$20,000,000.00",
+      "award_value_numeric": 20000000,
+      "source": "bid_committee_composite",
+      "first_seen": "2026-07-17 01:24:32",
+      "last_seen": "2026-07-17 01:55:08"
+    },
+    {
+      "id": 7469,
+      "call_number": "005-2010",
+      "call_number_raw": "Tender Call 005-2010, Contract 10FS-52WS",
+      "reference": "2010.BD165.1",
+      "title": "General Services Contracts for the replacement of watermains, water service connections, sanitary sewers and storm sewers related to the Stand Alone Watermain Replacement Program in accordance with specifications as required by Technical Services. The Tender Call allowed the City to select up to six bidding contractors to perform work over a 24-month term. The determination with the respect to the number of contractors selected took into consideration the lowest overall prices that represented the best value to the City. An engineering estimate was established prior to the closing of the Tender Call, which was also a determining factor in the selection process. Each contractor selected by the City will be required to execute a General Services Contract. Task Orders will then be issued by the City to the contractors for all or part of any work listed in the Tender Call. The selected Contractors will each be awarded at least one Task Order with a minimum value of $500,000.00. The City reserves the right to cancel the contract with a contractor at any time after the minimum contract value has been achieved. The maximum value of each General Services Contract will be determined by the number of Task Orders completed by each contractor. A maximum cumulative amount per contractor will not exceed $20 million, net of GST and HST Recoveries.",
+      "supplier_name_raw": "Rabcon Contractors Ltd.",
+      "supplier_id": 345,
+      "award_value": "$20,000,000.00",
+      "award_value_numeric": 20000000,
+      "source": "bid_committee_composite",
+      "first_seen": "2026-07-17 01:24:32",
+      "last_seen": "2026-07-17 01:55:08"
+    }
+  ],
+  "council_items": [
+    {
+      "reference": "2013.BD109.1",
+      "title": "Award of Tender Call No. 272-2012 to Rabcon Contractors Ltd. for Watermain Replacement",
+      "decision_text": null,
+      "first_seen": "2026-07-17 00:22:52",
+      "last_seen": "2026-07-17 01:55:02",
+      "background_pdfs": [
+        {
+          "url": "https://www.toronto.ca/legdocs/mmis/2013/bd/bgrd/backgroundfile-55485.pdf",
+          "reference": "2013.BD109.1",
+          "kind": "bgrd",
+          "sha256": null,
+          "first_seen": "2026-07-17 00:22:53",
+          "last_seen": "2026-07-17 01:55:03",
+          "document_number": null
+        }
+      ],
+      "bids": [
+        {
+          "reference": "2013.BD109.1",
+          "document_number": null,
+          "bidder_name_raw": "Avertex Utility Solutions Inc. - Informal",
+          "supplier_id": 57675,
+          "bid_price": "$2,512,494.09",
+          "bid_price_numeric": 2512494.09,
+          "hst_basis": null,
+          "price_header": "Bid Price",
+          "source": "bid_award_panel",
+          "first_seen": "2026-07-17 01:41:02",
+          "last_seen": "2026-07-17 01:55:04"
+        },
+        {
+          "reference": "2013.BD109.1",
+          "document_number": null,
+          "bidder_name_raw": "Co-X-Co Construction Limited",
+          "supplier_id": 16830,
+          "bid_price": "$1,897,376.26",
+          "bid_price_numeric": 1897376.26,
+          "hst_basis": null,
+          "price_header": "Bid Price",
+          "source": "bid_award_panel",
+          "first_seen": "2026-07-17 01:41:02",
+          "last_seen": "2026-07-17 01:55:04"
+        },
+        {
+          "reference": "2013.BD109.1",
+          "document_number": null,
+          "bidder_name_raw": "Direct Underground Inc..",
+          "supplier_id": 488,
+          "bid_price": "$1,880,897.24*",
+          "bid_price_numeric": 1880897.24,
+          "hst_basis": null,
+          "price_header": "Bid Price",
+          "source": "bid_award_panel",
+          "first_seen": "2026-07-17 01:41:02",
+          "last_seen": "2026-07-17 01:55:04"
+        },
+        {
+          "reference": "2013.BD109.1",
+          "document_number": null,
+          "bidder_name_raw": "Gio Contracting Inc.",
+          "supplier_id": 338,
+          "bid_price": "$1,843,267.41*",
+          "bid_price_numeric": 1843267.41,
+          "hst_basis": null,
+          "price_header": "Bid Price",
+          "source": "bid_award_panel",
+          "first_seen": "2026-07-17 01:41:02",
+          "last_seen": "2026-07-17 01:55:04"
+        },
+        {
+          "reference": "2013.BD109.1",
+          "document_number": null,
+          "bidder_name_raw": "Midome Construction Services Ltd.",
+          "supplier_id": 410,
+          "bid_price": "$2,076,455.54",
+          "bid_price_numeric": 2076455.54,
+          "hst_basis": null,
+          "price_header": "Bid Price",
+          "source": "bid_award_panel",
+          "first_seen": "2026-07-17 01:41:02",
+          "last_seen": "2026-07-17 01:55:04"
+        },
+        {
+          "reference": "2013.BD109.1",
+          "document_number": null,
+          "bidder_name_raw": "Sam Rabito Construction Ltd.",
+          "supplier_id": 525,
+          "bid_price": "$2,084,553.60",
+          "bid_price_numeric": 2084553.6,
+          "hst_basis": null,
+          "price_header": "Bid Price",
+          "source": "bid_award_panel",
+          "first_seen": "2026-07-17 01:41:02",
+          "last_seen": "2026-07-17 01:55:04"
+        },
+        {
+          "reference": "2013.BD109.1",
+          "document_number": null,
+          "bidder_name_raw": "Trisan Construction",
+          "supplier_id": 555,
+          "bid_price": "$2,325,596.58",
+          "bid_price_numeric": 2325596.58,
+          "hst_basis": null,
+          "price_header": "Bid Price",
+          "source": "bid_award_panel",
+          "first_seen": "2026-07-17 01:41:02",
+          "last_seen": "2026-07-17 01:55:04"
+        }
+      ]
+    },
+    {
+      "reference": "2019.BA42.10",
+      "title": "Award of Request for Quotation Doc1808735584 to Dependable Truck and Tank, Ltd. for the Supply and Delivery of Spartan Original Equipment Manufacturer Parts for Fire Trucks",
+      "decision_text": null,
+      "first_seen": "2026-07-16 17:48:10",
+      "last_seen": "2026-07-17 01:55:03",
+      "background_pdfs": [
+        {
+          "url": "https://www.toronto.ca/legdocs/mmis/2019/ba/bgrd/backgroundfile-137025.pdf",
+          "reference": "2019.BA42.10",
+          "kind": "bgrd",
+          "sha256": null,
+          "first_seen": "2026-07-16 18:02:10",
+          "last_seen": "2026-07-17 01:55:04",
+          "document_number": null
+        }
+      ],
+      "bids": [
+        {
+          "reference": "2019.BA42.10",
+          "document_number": "1808735584",
+          "bidder_name_raw": "Dependable Truck and Tank, Ltd.",
+          "supplier_id": 870,
+          "bid_price": "$264,790",
+          "bid_price_numeric": 264790,
+          "hst_basis": "excluding",
+          "price_header": "Bid Price (excluding H.S.T.) excluding the 25% miscellaneous cost",
+          "source": "bid_award_panel",
+          "first_seen": "2026-07-17 01:41:04",
+          "last_seen": "2026-07-17 01:55:07"
+        },
+        {
+          "reference": "2019.BA42.10",
+          "document_number": "1808735584",
+          "bidder_name_raw": "Profire Emergency Equipment Inc.",
+          "supplier_id": 2009,
+          "bid_price": "$351,369 (includes 1% prompt payment discount)",
+          "bid_price_numeric": null,
+          "hst_basis": "excluding",
+          "price_header": "Bid Price (excluding H.S.T.) excluding the 25% miscellaneous cost",
+          "source": "bid_award_panel",
+          "first_seen": "2026-07-17 01:41:04",
+          "last_seen": "2026-07-17 01:55:07"
+        }
+      ]
+    }
+  ],
+  "unlinked_ariba_postings": [
+    {
+      "rfx_id": "15889504",
+      "document_number": "3949149442",
+      "title": "CoT - Mock Request for Proposal (RFP) for Training and Practice for Supplier",
+      "posting_type": "RFI",
+      "status": "PUBLISHED",
+      "customer_name": "City of Toronto",
+      "posted_date": "2023-04-03T10:39:51-07:00",
+      "close_date": "2099-12-31T10:00:00-07:00",
+      "categories": [
+        "Cleaning machines for seed or grain or dried leguminous vegetables"
+      ],
+      "amount_min": "0",
+      "amount_max": "0",
+      "currency": "USD",
+      "public_posting_url": "https://discovery.ariba.com/rfx/15889504",
+      "sourcing_url": "https://s1.ariba.com/Sourcing/Main/ad/gotoEvent/NetworkRFQDirectAction?rfxId=Doc3949149442&passwordadapter=SourcingSupplierUser&realm=toronto&awcharset=UTF-8&AOD_AUTH_CHECKED_PARAM=true&PropertyName=Discovery&refreshEvent=true",
+      "external_rfx_id": "Doc3949149442",
+      "source": "ariba_discovery",
+      "first_seen": "2026-07-16 02:11:18",
+      "last_seen": "2026-07-16 14:16:34"
+    },
+    {
+      "rfx_id": "16516115",
+      "document_number": "4044346425",
+      "title": "Mock Request for Tender (RFT) for Training and Practice for Suppliers",
+      "posting_type": "RFI",
+      "status": "PUBLISHED",
+      "customer_name": "City of Toronto",
+      "posted_date": "2023-06-07T08:15:29-07:00",
+      "close_date": "2099-12-31T09:15:00-07:00",
+      "categories": [
+        "Highway or road paving or surfacing (Inactive)"
+      ],
+      "amount_min": "0",
+      "amount_max": "0",
+      "currency": "USD",
+      "public_posting_url": "https://discovery.ariba.com/rfx/16516115",
+      "sourcing_url": "https://s1.ariba.com/Sourcing/Main/ad/gotoEvent/NetworkRFQDirectAction?rfxId=Doc4044346425&passwordadapter=SourcingSupplierUser&realm=toronto&awcharset=UTF-8&AOD_AUTH_CHECKED_PARAM=true&PropertyName=Discovery&refreshEvent=true",
+      "external_rfx_id": "Doc4044346425",
+      "source": "ariba_discovery",
+      "first_seen": "2026-07-16 02:11:18",
+      "last_seen": "2026-07-16 14:16:34"
+    }
+  ],
+  "unlinked_awards": [],
+  "unlinked_bids": [],
+  "buyers": [
+    {
+      "slug": "toronto-zoo-test",
+      "name": "Toronto Zoo (synthetic test buyer)",
+      "kind": "agency",
+      "partnered": 0,
+      "funding_share": null,
+      "platform": "bidsandtenders",
+      "notes": "Synthetic fixture row for empty-state buyer pages. Not real data.",
+      "first_seen": "2026-07-18T00:00:00",
+      "last_seen": "2026-07-18T00:00:00",
+      "solicitations": [],
+      "awards": [],
+      "bids": []
+    },
+    {
+      "slug": "trca-test",
+      "name": "Toronto and Region Conservation Authority (synthetic test buyer)",
+      "kind": "agency",
+      "partnered": 1,
+      "funding_share": 0.626,
+      "platform": "city_partnered",
+      "notes": "Synthetic fixture row: partnered buyer with a confidential-value award. Not real data.",
+      "first_seen": "2026-07-18T00:00:00",
+      "last_seen": "2026-07-18T00:00:00",
+      "solicitations": [
+        {
+          "native_ref": "TRCA-2026-001",
+          "title": "Erosion control works (synthetic)",
+          "status": "Closed",
+          "posted_date": "2026-06-01",
+          "closing_date": "2026-06-20",
+          "portal_url": null,
+          "source": "synthetic",
+          "first_seen": "2026-07-18T00:00:00",
+          "last_seen": "2026-07-18T00:00:00"
+        }
+      ],
+      "awards": [
+        {
+          "native_ref": "TRCA-2026-001",
+          "supplier_name_raw": "Synthetic Shoreline Contracting Inc.",
+          "supplier_id": null,
+          "award_amount": null,
+          "award_amount_numeric": null,
+          "value_confidential": 1,
+          "award_date": "2026-07-02",
+          "report_url": null,
+          "source": "synthetic",
+          "first_seen": "2026-07-18T00:00:00",
+          "last_seen": "2026-07-18T00:00:00"
+        }
+      ],
+      "bids": []
+    }
+  ]
+}
