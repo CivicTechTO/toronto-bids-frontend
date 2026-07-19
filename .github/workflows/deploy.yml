@@ -1,0 +1,51 @@
+name: Deploy to GitHub Pages
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '30 10 * * *'
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+env:
+  SITE_URL: https://civictechto.github.io
+  BASE_PATH: /toronto-bids-frontend
+  TB_DATA_URL: https://github.com/CivicTechTO/toronto-bids-data/releases/download/latest/bids.json
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Fetch latest export
+        run: node scripts/fetch-data.ts
+      - name: Fetch previous deploy's entity counts
+        run: |
+          curl -fsSL "$SITE_URL$BASE_PATH/counts.json" -o .data/previous-counts.json \
+            || echo "no previous counts (first deploy?)"
+      - name: Guard against archive shrink
+        run: node scripts/check-shrink.ts
+      - name: Build site (Astro + Pagefind)
+        run: npm run build
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
