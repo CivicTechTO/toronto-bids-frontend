@@ -66,7 +66,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     id: 'suspended-firm',
     term: 'Suspended firm',
     short:
-      'A supplier the City has barred from bidding for a period, by council or administrative decision.',
+      'A supplier the City has barred from being awarded work for a period, by council or administrative decision.',
     full: 'A supplier the City has barred from being awarded work for a period, by council or administrative decision. The archive lists the suspension type and dates where published.',
   },
   {
