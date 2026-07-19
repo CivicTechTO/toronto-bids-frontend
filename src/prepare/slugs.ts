@@ -26,7 +26,7 @@ export function buildSupplierSlugs(suppliers: SupplierRec[]): Map<number, string
   for (const s of suppliers) {
     const slug = supplierSlug(s.supplier_key);
     const existing = keyBySlug.get(slug);
-    if (existing !== undefined) {
+    if (existing !== undefined && existing !== s.supplier_key) {
       throw new Error(
         `Supplier slug collision: "${slug}" from supplier_key "${existing}" and supplier_key "${s.supplier_key}"`,
       );

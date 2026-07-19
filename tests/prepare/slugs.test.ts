@@ -52,6 +52,17 @@ describe('buildSupplierSlugs', () => {
       'Supplier slug collision: "acme-ltd" from supplier_key "acme ltd" and supplier_key "acme. ltd"',
     );
   });
+
+  it('allows same supplier_key appearing twice with different supplier_id, mapping both to the same slug', () => {
+    const suppliers = [
+      supplier({ supplier_id: 41, supplier_key: 'acme paving ltd' }),
+      supplier({ supplier_id: 99, supplier_key: 'acme paving ltd' }),
+    ];
+    const slugs = buildSupplierSlugs(suppliers);
+    expect(slugs.size).toBe(2);
+    expect(slugs.get(41)).toBe('acme-paving-ltd');
+    expect(slugs.get(99)).toBe('acme-paving-ltd');
+  });
 });
 
 describe('wsSlug', () => {
