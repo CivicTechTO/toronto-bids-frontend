@@ -1,0 +1,68 @@
+---
+// src/pages/noncompetitive/[ws].astro
+import Base from '../../layouts/Base.astro';
+import AmountCell from '../../components/AmountCell.astro';
+import { getPrepared } from '../../prepare/prepare';
+import type { NonCompetitive } from '../../prepare/types';
+import { href } from '../../lib/url';
+
+export async function getStaticPaths() {
+  const p = await getPrepared();
+  // Route by the URL-safe slug (p.wsSlugByNumber, Task 10) — raw workspace_number
+  // values can contain spaces, parens, commas, ampersands, and slashes, which are not
+  // routable as a single [ws] segment. The raw value is displayed verbatim below.
+  return p.doc.noncompetitive.map((nc) => ({
+    params: { ws: p.wsSlugByNumber.get(nc.workspace_number)! },
+    props: { nc },
+  }));
+}
+
+interface Props { nc: NonCompetitive }
+const { nc } = Astro.props;
+const p = await getPrepared();
+
+const year = nc.contract_date ? nc.contract_date.slice(0, 4) : null;
+const slug = nc.supplier_id !== null ? p.supplierSlugById.get(nc.supplier_id) : undefined;
+const title = `Non-competitive ${nc.workspace_number}${nc.supplier_name_raw ? ` — ${nc.supplier_name_raw}` : ''}`;
+const filters: Record<string, string> = { type: 'Non-competitive contract', buyer: 'City of Toronto' };
+if (year) filters.year = year;
+---
+<Base title={title} pagefind={true} filters={filters}>
+  <dl class="spine">
+    <div><dt>Workspace number</dt><dd>{nc.workspace_number}</dd></div>
+    <div>
+      <dt>Supplier</dt>
+      <dd>
+        {nc.supplier_name_raw ?? '—'}
+        {slug && <a href={href(`/suppliers/${slug}/`)}> (profile)</a>}
+      </dd>
+    </div>
+    <div>
+      <dt>Contract amount (raw / parsed)</dt>
+      <dd><AmountCell raw={nc.contract_amount} numeric={nc.contract_amount_numeric} /></dd>
+    </div>
+    {nc.contract_date && <div><dt>Contract date</dt><dd>{nc.contract_date}</dd></div>}
+    {nc.division && <div><dt>Division</dt><dd>{nc.division}</dd></div>}
+  </dl>
+
+  <section>
+    <h2>Stated reason</h2>
+    {nc.reason ? (
+      <p class="nc-reason">{nc.reason}</p>
+    ) : (
+      <p class="nc-reason nc-reason-missing">No reason recorded in the City's published data.</p>
+    )}
+  </section>
+
+  {nc.council_authority_link && (
+    <section>
+      <h2>Council authority</h2>
+      <p><a href={nc.council_authority_link}>{nc.council_authority_link}</a></p>
+    </section>
+  )}
+
+  <p class="keyspace-note">
+    Workspace numbers identify non-competitive contracts only; they never join to
+    competitive document numbers or any other identifier keyspace.
+  </p>
+</Base>
