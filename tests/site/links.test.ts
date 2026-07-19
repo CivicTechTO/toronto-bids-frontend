@@ -53,7 +53,10 @@ describe('internal links', () => {
       });
     }
     expect(broken, `broken internal links:\n${broken.join('\n')}`).toEqual([]);
-  });
+    // Full-data dist is ~24k HTML files; parsing every one exceeds vitest's 5s
+    // default. Generous ceiling so the deploy gate is robust on slow CI runners
+    // and as the archive grows (runs once per deploy, not a hot path).
+  }, 120_000);
 });
 
 describe('page counts', () => {
