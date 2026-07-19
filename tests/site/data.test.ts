@@ -38,28 +38,37 @@ describe('/data/ page', () => {
     const $ = loadPage('data');
     const fx = loadFixture();
     expect($('h2:contains("Data dictionary")').length).toBe(1);
-    const text = $('body').text();
 
-    // Record counts — every count key from countsOf appears.
-    for (const key of Object.keys(countsOf(fx))) {
-      expect(text, `missing record count for ${key}`).toContain(key);
+    // Record counts — scoped to its own table, asserting the actual numbers render
+    // (not just the key words, which occur elsewhere on the page).
+    const rc = $('h3:contains("Record counts")').nextAll('table').first();
+    expect(rc.length).toBe(1);
+    for (const [key, n] of Object.entries(countsOf(fx))) {
+      const row = rc.find(`tr:contains("${key}")`);
+      expect(row.length, `missing record-count row ${key}`).toBeGreaterThanOrEqual(1);
+      expect(row.text(), `missing count ${n} for ${key}`).toContain(n.toLocaleString('en-CA'));
     }
 
-    // Coded-value domains — each documented column and its observed values render.
+    // Coded-value domains — each column has its own <details> listing its values + counts.
     const domains = codedDomains(fx);
+    expect($('details.coded-column').length).toBe(domains.length);
     for (const c of domains) {
-      expect(text, `missing coded column ${c.table}.${c.column}`).toContain(`${c.table}.${c.column}`);
-    }
-    const status = domains.find((c) => c.column === 'status')!;
-    for (const v of status.values) {
-      expect(text, `missing status value ${v.value}`).toContain(v.value);
+      const box = $(`details.coded-column:contains("${c.table}.${c.column}")`);
+      expect(box.length, `missing coded column ${c.table}.${c.column}`).toBe(1);
+      for (const v of c.values) {
+        expect(box.text(), `missing ${c.table}.${c.column} value ${v.value}`).toContain(v.value);
+        expect(box.text(), `missing count for ${c.table}.${c.column}=${v.value}`).toContain(
+          v.count.toLocaleString('en-CA'),
+        );
+      }
     }
 
-    // Index-key legend — every index file and each of its keys is documented on the page.
+    // Index-key legend — every index file gets its own documented table.
     for (const legend of INDEX_LEGENDS) {
-      expect(text, `missing legend for ${legend.file}`).toContain(legend.file);
+      expect($(`h4:contains("${legend.file}")`).length, `missing legend for ${legend.file}`).toBe(1);
     }
     // The confusing keys that tripped reviewers (#7) are explained.
+    const text = $('body').text();
     expect(text).toContain('number of bids on record'); // nb
     expect(text).toContain('number of documents'); // nd
 
