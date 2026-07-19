@@ -123,11 +123,24 @@ const category = normalizeCategory(sol.category);
   </section>
 
   <section>
-    <h2>Bids</h2>
+    <h2>Bids ({allBids.length})</h2>
     {allBids.length === 0 ? (
-      <p>No bids on record for this solicitation.</p>
+      <p>
+        No bid record is captured for this solicitation. The City doesn't publish a bidder
+        list for most awards, so this is <strong>not</strong> evidence the award was
+        uncompetitive — the archive holds bid tables only where the City published them: from
+        council Bid Award Panel agendas, and (for awards over $500K) the Award Summary Forms
+        that replaced them in October 2025. See <a href={href('/about/')}>coverage and gaps</a>.
+      </p>
     ) : (
-      <BidsTable bids={allBids} winners={winners} supplierSlugById={p.supplierSlugById} />
+      <>
+        {allBids.length === 1 && (
+          <p class="single-bidder-note">
+            <strong>Single bidder</strong> — only one bid is on record for this solicitation.
+          </p>
+        )}
+        <BidsTable bids={allBids} winners={winners} supplierSlugById={p.supplierSlugById} />
+      </>
     )}
   </section>
 

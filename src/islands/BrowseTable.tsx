@@ -58,10 +58,13 @@ interface CheckFilter {
 }
 
 const CHECKS: Record<BrowseEntity, CheckFilter[]> = {
-  solicitations: [{ id: 'nd', param: 'docs', label: 'Has documents' }],
+  solicitations: [
+    { id: 'nd', param: 'docs', label: 'Has documents' },
+    { id: 'nb', param: 'sole', label: 'Single bidder' },
+  ],
   suppliers: [],
   noncompetitive: [],
-  council: [],
+  council: [{ id: 'nb', param: 'sole', label: 'Single bidder' }],
 };
 
 const exactText: FilterFn<Row> = (row, columnId, filterValue) =>
@@ -69,6 +72,9 @@ const exactText: FilterFn<Row> = (row, columnId, filterValue) =>
 
 // Checkbox facet: keep only rows with a positive count (nd > 0 = has documents).
 const positiveCount: FilterFn<Row> = (row, columnId) => Number(row.getValue(columnId)) > 0;
+
+// Checkbox facet: keep only single-bidder competitions (exactly one bid on record).
+const isOne: FilterFn<Row> = (row, columnId) => Number(row.getValue(columnId)) === 1;
 
 function money(v: unknown): string {
   return typeof v === 'number' ? formatCAD(v) : '—';
@@ -98,7 +104,7 @@ function buildColumns(entity: BrowseEntity, link: (path: string) => string): Col
         { accessorKey: 'y', header: 'Year', filterFn: exactText },
         { accessorKey: 'dl', header: 'Deadline' },
         { accessorKey: 'a', header: 'Awarded (parsed)', cell: (c) => money(c.getValue()) },
-        { accessorKey: 'nb', header: 'Bids' },
+        { accessorKey: 'nb', header: 'Bids', filterFn: isOne },
         { accessorKey: 'nd', header: 'Docs', filterFn: positiveCount },
       ];
     case 'suppliers':
@@ -149,7 +155,7 @@ function buildColumns(entity: BrowseEntity, link: (path: string) => string): Col
           cell: (c) => <span className="line-clamp-3">{c.getValue<string>()}</span>,
         },
         { accessorKey: 'y', header: 'Year', filterFn: exactText },
-        { accessorKey: 'nb', header: 'Bids' },
+        { accessorKey: 'nb', header: 'Bids', filterFn: isOne },
       ];
     default:
       return [];

@@ -3,8 +3,11 @@ import { loadFixture, loadPage } from './helpers';
 import { dedupeAwards } from '../../src/prepare/awards';
 import { formatCAD } from '../../src/prepare/amounts';
 import { TITLE_SOURCE_LABELS } from '../../src/prepare/titles';
+import { prepare } from '../../src/prepare/prepare';
+import { validateExport } from '../../src/prepare/validate';
 
 const fixture = loadFixture();
+const p = prepare(validateExport(fixture));
 
 describe('untitled solicitation', () => {
   const sol = fixture.solicitations.find((s) => s.title === null)!;
@@ -77,6 +80,37 @@ describe('bids table', () => {
     const sol = fixture.solicitations.find((s) => s.bids.length > 0)!;
     const $ = loadPage(`solicitations/${sol.document_number}`);
     expect($('.bids-table tbody').text()).toContain(sol.bids[0].bidder_name_raw);
+  });
+  it('the Bids heading counts direct AND bridged bids (not just direct)', () => {
+    // Pick a solicitation reached ONLY via the council bridge (0 direct bids), so the
+    // heading count must reflect bridged bids. Mirror the page's own allBids computation.
+    const doc = fixture.solicitations.find((s) => {
+      const refs = p.bridge.docToRefs.get(s.document_number) ?? [];
+      const bridged = refs.flatMap((ref) =>
+        (p.councilByRef.get(ref)?.bids ?? []).filter((b) => b.document_number === s.document_number),
+      );
+      return s.bids.length === 0 && bridged.length > 0;
+    });
+    expect(doc, 'fixture needs a bridged-only solicitation').toBeDefined();
+    const refs = p.bridge.docToRefs.get(doc!.document_number) ?? [];
+    const total = refs.flatMap((ref) =>
+      (p.councilByRef.get(ref)?.bids ?? []).filter((b) => b.document_number === doc!.document_number),
+    ).length; // = direct (0) + bridged
+    const $ = loadPage(`solicitations/${doc!.document_number}`);
+    // If the heading wrongly used sol.bids.length it would show (0) and fail.
+    expect($('h2:contains("Bids")').first().text()).toContain(`(${total})`);
+  });
+  it('reworded empty state does not read as "uncompetitive"', () => {
+    // An awarded record with no captured bids (direct or bridged).
+    const empty = fixture.solicitations.find(
+      (s) => s.status === 'Awarded' && s.bids.length === 0 && s.document_number === '1669551201',
+    )!;
+    const $ = loadPage(`solicitations/${empty.document_number}`);
+    const bids = $('h2:contains("Bids")').first().parent().text();
+    expect(bids).toContain('No bid record is captured');
+    expect(bids).toContain('not'); // "...not evidence the award was uncompetitive"
+    expect(bids).toContain('uncompetitive');
+    expect(bids).not.toContain('No bids on record'); // the old, misleading wording
   });
   it('renders a Result column only when the record has named award winners', () => {
     // Fixture-safe: each branch runs only if the fixture has a matching record.
