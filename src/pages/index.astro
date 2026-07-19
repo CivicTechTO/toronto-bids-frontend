@@ -40,4 +40,19 @@ const p = await getPrepared();
       <li><a href={href('/data/')}>Downloads &amp; in-browser SQL</a></li>
     </ul>
   </nav>
+
+  <section>
+    <h2>New here? Start with</h2>
+    <ul>
+      <li><a href={href('/suppliers/?sort=a.desc')}>Top suppliers by City dollars won</a></li>
+      <li>
+        <a href={href('/solicitations/?sole=yes')}>Single-bidder solicitations</a> — where only
+        one bid was on record, whatever the outcome
+      </li>
+      <li>
+        <a href={href('/noncompetitive/?sort=a.desc')}>Largest sole-source contracts</a> and
+        the City's stated reasons for skipping competition
+      </li>
+    </ul>
+  </section>
 </Base>

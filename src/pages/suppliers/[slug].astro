@@ -4,7 +4,7 @@ import AmountCell from '../../components/AmountCell.astro';
 import { getPrepared } from '../../prepare/prepare';
 import { href } from '../../lib/url';
 import { formatCAD } from '../../prepare/amounts';
-import { displayTitle } from '../../prepare/titles';
+import { displayTitle, operatingName } from '../../prepare/titles';
 import type { SupplierRollup, SumResult } from '../../prepare/types';
 
 export async function getStaticPaths() {
@@ -18,6 +18,12 @@ export async function getStaticPaths() {
 const { rollup } = Astro.props as { rollup: SupplierRollup };
 const p = await getPrepared();
 const s = rollup.supplier;
+// A numbered company's legal display name buries the human-readable trade name
+// (e.g. "2489960 ONTARIO INC., O/A Kore Infrastructure Group"). Surface the clean
+// trade name as a prominent callout so a reader can see who received the money
+// (#13). Shown even when the legal h1 already contains it — the point is to pull the
+// clean name out of the messy legal string, not to hide it.
+const tradeName = operatingName(s.variants);
 
 function totalLine(t: SumResult): string {
   return `${formatCAD(t.total)} from ${t.counted} machine-parseable rows (${t.skipped} rows unparseable or excluded — an undercount)`;
@@ -64,6 +70,7 @@ function isSoleBidder(entry: RollupBid): boolean {
 const soleBids = rollup.bids.filter(isSoleBidder);
 ---
 <Base title={s.display_name} pagefind={true} filters={{ type: 'Supplier' }}>
+  {tradeName && <p class="trade-name">Trading as <strong>{tradeName}</strong></p>}
   {rollup.suspended.length > 0 && (
     <aside role="alert">
       <strong>Suspended firm.</strong>
