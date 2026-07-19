@@ -1,0 +1,14 @@
+---
+// src/components/ProvenanceBadge.astro — shown when a title was recovered (title_source non-null).
+import { TITLE_SOURCE_LABELS } from '../prepare/titles';
+
+interface Props { titleSource: string | null }
+const { titleSource } = Astro.props;
+const label = titleSource ? (TITLE_SOURCE_LABELS[titleSource] ?? titleSource) : null;
+---
+{label && (
+  <span
+    class="provenance-badge"
+    title="The City published no title on this record; this title was recovered from another source."
+  >Title recovered from: {label}</span>
+)}
