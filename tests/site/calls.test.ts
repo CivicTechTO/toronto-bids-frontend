@@ -40,4 +40,13 @@ describe('/calls/{call}/ record page', () => {
     const $ = loadPage(`calls/${call}`);
     expect($('.initial-term-caveat').text()).toContain('initial contract term only');
   });
+
+  it('links an archive-absent council reference out to TMMIS (#8)', () => {
+    // Find a call whose reference is NOT a fixture council item → links to the City instead.
+    const inRefs = new Set(fixture.council_items.map((c) => c.reference));
+    const absent = fixture.composite_awards.find((c) => c.reference && !inRefs.has(c.reference))!;
+    expect(absent, 'fixture needs a call with an archive-absent reference').toBeDefined();
+    const $ = loadPage(`calls/${absent.call_number}`);
+    expect($(`a[href*="item=${absent.reference}"]`).length).toBeGreaterThan(0);
+  });
 });

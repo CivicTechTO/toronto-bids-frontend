@@ -2,6 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import { getPrepared } from '../../prepare/prepare';
 import { href } from '../../lib/url';
+import { tmmisUrl } from '../../lib/sources';
 
 const p = await getPrepared();
 const firms = p.doc.suspended_firms;
@@ -48,7 +49,7 @@ const firms = p.doc.suspended_firms;
                     {f.council_authority}
                   </a>
                 ) : (
-                  f.council_authority
+                  <a href={tmmisUrl(f.council_authority)}>{f.council_authority} (TMMIS ↗)</a>
                 )
               ) : (
                 '—'

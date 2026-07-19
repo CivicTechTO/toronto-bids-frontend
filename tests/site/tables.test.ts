@@ -37,12 +37,16 @@ describe('/suspended-firms/', () => {
       ).toBeGreaterThan(0);
     }
     for (const f of fx.suspended_firms) {
-      if (
-        f.council_authority &&
-        fx.council_items.some((ci) => ci.reference === f.council_authority)
-      ) {
+      if (!f.council_authority) continue;
+      if (fx.council_items.some((ci) => ci.reference === f.council_authority)) {
         expect(
           $(`a[href$="/council/${f.council_authority}/"]`).length,
+        ).toBeGreaterThan(0);
+      } else {
+        // Archive-absent authority → link out to the City's TMMIS record (#8).
+        expect(
+          $(`a[href*="item=${f.council_authority}"]`).length,
+          f.council_authority,
         ).toBeGreaterThan(0);
       }
     }

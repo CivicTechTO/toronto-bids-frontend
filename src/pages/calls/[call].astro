@@ -6,6 +6,7 @@ import { formatCAD } from '../../prepare/amounts';
 import { getPrepared } from '../../prepare/prepare';
 import type { CompositeCall } from '../../prepare/types';
 import { href } from '../../lib/url';
+import { tmmisUrl } from '../../lib/sources';
 
 export async function getStaticPaths() {
   const p = await getPrepared();
@@ -27,7 +28,7 @@ const title = `Call ${call.call_number}${call.title ? ` — ${call.title}` : ''}
       {p.councilByRef.has(call.reference) ? (
         <a href={href(`/council/${call.reference}/`)}>{call.reference}</a>
       ) : (
-        call.reference
+        <a href={tmmisUrl(call.reference)}>{call.reference} (on TMMIS ↗)</a>
       )}
     </p>
   )}
