@@ -3,7 +3,7 @@
 import { readFile } from 'node:fs/promises';
 import type { AwardRow, CompositeCall, DedupedAward, ExportDoc, Headline, Prepared } from './types';
 import { validateExport } from './validate';
-import { sumAwardNumeric } from './amounts';
+import { sumAwardNumeric, sumAwardNumericExcludingOutliers } from './amounts';
 import { dedupeAwards } from './awards';
 import { buildSupplierSlugs, wsSlug } from './slugs';
 import { buildBridge, buildSupplierRollups } from './links';
@@ -72,10 +72,18 @@ export function prepare(doc: ExportDoc): Prepared {
   const solByDoc = new Map(doc.solicitations.map((s) => [s.document_number, s] as const));
   const allDeduped = [...dedupedAwardsByDoc.values()].flat();
   const counts = countsOf(doc);
+  const awardNums = allDeduped.map((a) => ({
+    numeric: a.award_amount_numeric,
+    verdict: a.award_amount_verdict,
+  }));
+  const awardedTrimmed = sumAwardNumericExcludingOutliers(awardNums);
   const headline: Headline = {
     solicitations: doc.solicitations.length,
     // City-only, deduped, *_numeric only, not_an_award excluded — a machine-parseable undercount.
-    awardedTotal: sumAwardNumeric(allDeduped.map((a) => ({ numeric: a.award_amount_numeric, verdict: a.award_amount_verdict }))),
+    awardedTotal: sumAwardNumeric(awardNums),
+    // The same, minus the handful of implausibly-large City-published awards (#73).
+    awardedTotalTrimmed: awardedTrimmed,
+    outlierAwardCount: awardedTrimmed.outliers,
     noncompetitiveTotal: sumAwardNumeric(doc.noncompetitive.map((n) => ({ numeric: n.contract_amount_numeric, verdict: n.contract_amount_verdict }))),
     openCount: doc.solicitations.filter((s) => s.status === 'Open').length,
     bidCount: counts.bids,

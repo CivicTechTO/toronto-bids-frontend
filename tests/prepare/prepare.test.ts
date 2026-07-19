@@ -65,6 +65,10 @@ describe('prepare() over the committed fixture', () => {
     expect(dedupedRows.length).toBeGreaterThan(0);
     expect(p.headline.awardedTotal.counted + p.headline.awardedTotal.skipped).toBe(dedupedRows.length);
     expect(p.headline.awardedTotal.total).toBeGreaterThanOrEqual(0);
+    // Trimmed total drops implausibly-large awards; never exceeds the raw total, and equals
+    // it when there are no outliers (the fixture's largest award is well under $1B).
+    expect(p.headline.outlierAwardCount).toBe(0);
+    expect(p.headline.awardedTotalTrimmed.total).toBe(p.headline.awardedTotal.total);
     expect(p.headline.noncompetitiveTotal.counted + p.headline.noncompetitiveTotal.skipped)
       .toBe(doc.noncompetitive.length);
   });

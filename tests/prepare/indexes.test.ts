@@ -83,7 +83,8 @@ function prepared(over: Partial<Prepared>): Prepared {
     rollupsBySlug: new Map(), compositeCalls: [],
     councilByRef: new Map(), solByDoc: new Map(),
     headline: {
-      solicitations: 0, awardedTotal: zero(), noncompetitiveTotal: zero(),
+      solicitations: 0, awardedTotal: zero(), awardedTotalTrimmed: zero(), outlierAwardCount: 0,
+      noncompetitiveTotal: zero(),
       openCount: 0, bidCount: 0, supplierCount: 0,
     },
     counts: {}, ...over,

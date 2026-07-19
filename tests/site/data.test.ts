@@ -66,4 +66,11 @@ describe('/data/ page', () => {
     expect($('body').text()).toContain('snapshot-YYYY-MM-DD');
     expect($('[data-pagefind-body]').length).toBe(0);
   });
+
+  it('states the license and reuse terms (OGL-Toronto source + CC BY 4.0 compilation)', () => {
+    const $ = loadPage('data');
+    expect($('h2:contains("License")').length).toBe(1);
+    expect($('a[href="https://open.toronto.ca/open-data-license/"]').length).toBeGreaterThan(0);
+    expect($('a[href="https://creativecommons.org/licenses/by/4.0/"]').length).toBeGreaterThan(0);
+  });
 });
