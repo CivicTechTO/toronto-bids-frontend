@@ -48,12 +48,21 @@ describe('browse pages', () => {
 });
 
 describe('solicitations facets', () => {
-  it('/solicitations/ prerenders all six facet controls in the island', () => {
+  it('/solicitations/ prerenders all facet controls in the island', () => {
     const $ = loadPage('solicitations');
     const labels = $('astro-island label').text();
-    for (const facet of ['Status', 'Type', 'Category', 'Division', 'Year', 'Has documents']) {
+    for (const facet of [
+      'Status', 'Type', 'Category', 'Division', 'Year', 'Has documents', 'Single bidder',
+    ]) {
       expect(labels, `missing facet control "${facet}"`).toContain(facet);
     }
+    // Two checkbox facets now: "Has documents" and "Single bidder".
+    expect($('astro-island input[type="checkbox"]').length).toBe(2);
+  });
+
+  it('/council/ prerenders a "Single bidder" facet', () => {
+    const $ = loadPage('council');
+    expect($('astro-island label').text()).toContain('Single bidder');
     expect($('astro-island input[type="checkbox"]').length).toBe(1);
   });
 });

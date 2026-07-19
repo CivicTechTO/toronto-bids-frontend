@@ -73,6 +73,11 @@ const decisionParas = (item.decision_text ?? '')
     <h2>Bids ({item.bids.length})</h2>
     {item.bids.length > 0 ? (
       <>
+        {item.bids.length === 1 && (
+          <p class="single-bidder-note">
+            <strong>Single bidder</strong> — only one bid was received for this item.
+          </p>
+        )}
         {awardNames.length > 0 ? (
           <p>
             Winners are marked from the linked solicitation's deduped award

@@ -78,6 +78,23 @@ describe('bids table', () => {
     const $ = loadPage(`solicitations/${sol.document_number}`);
     expect($('.bids-table tbody').text()).toContain(sol.bids[0].bidder_name_raw);
   });
+  it('shows the bid count in the Bids heading', () => {
+    const sol = fixture.solicitations.find((s) => s.bids.length > 0)!;
+    const $ = loadPage(`solicitations/${sol.document_number}`);
+    expect($('h2:contains("Bids")').first().text()).toContain(`(${sol.bids.length})`);
+  });
+  it('reworded empty state does not read as "uncompetitive"', () => {
+    // An awarded record with no captured bids (direct or bridged).
+    const empty = fixture.solicitations.find(
+      (s) => s.status === 'Awarded' && s.bids.length === 0 && s.document_number === '1669551201',
+    )!;
+    const $ = loadPage(`solicitations/${empty.document_number}`);
+    const bids = $('h2:contains("Bids")').first().parent().text();
+    expect(bids).toContain('No bid record is captured');
+    expect(bids).toContain('not'); // "...not evidence the award was uncompetitive"
+    expect(bids).toContain('uncompetitive');
+    expect(bids).not.toContain('No bids on record'); // the old, misleading wording
+  });
   it('renders a Result column only when the record has named award winners', () => {
     // Fixture-safe: each branch runs only if the fixture has a matching record.
     const withWinners = fixture.solicitations.find(
