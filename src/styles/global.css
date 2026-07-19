@@ -1,5 +1,19 @@
 @import "tailwindcss";
 
+/* Link affordance. Tailwind's Preflight resets anchors to `color: inherit` with no
+   underline, so links across the site rendered as plain text — it was not obvious what
+   was clickable. Restore a clear, accessible clickable style site-wide. */
+a { color: #0b5cab; text-decoration: underline; text-underline-offset: 0.15em; }
+a:hover { color: #08417a; }
+a:focus-visible { outline: 2px solid #0b5cab; outline-offset: 2px; border-radius: 2px; }
+/* Chrome navigation (header + footer): the link colour carries the affordance; reserve
+   the underline for hover so the grouped nav stays clean. */
+header nav a, footer a { text-decoration: none; }
+header nav a:hover, footer a:hover { text-decoration: underline; }
+/* The wordmark is a title, not a body link. */
+header > a { color: inherit; text-decoration: none; }
+header > a:hover { text-decoration: underline; }
+
 .spine div { display: flex; gap: 0.5rem; }
 .spine dt { font-weight: 600; min-width: 11rem; }
 table { border-collapse: collapse; width: 100%; margin: 0.5rem 0; }
