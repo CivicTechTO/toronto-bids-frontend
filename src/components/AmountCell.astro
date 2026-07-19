@@ -1,0 +1,15 @@
+---
+// src/components/AmountCell.astro — raw TEXT verbatim + machine-parsed numeric side by side.
+import { formatCAD } from '../prepare/amounts';
+
+interface Props { raw: string | null; numeric: number | null }
+const { raw, numeric } = Astro.props;
+---
+<span class="amount-cell">
+  <span class="amount-raw">{raw ?? '—'}</span>
+  {numeric !== null ? (
+    <span class="amount-numeric">{formatCAD(numeric)}</span>
+  ) : (
+    <span class="amount-numeric amount-unparsed">not machine-parseable</span>
+  )}
+</span>

@@ -1,0 +1,55 @@
+---
+import Base from '../../layouts/Base.astro';
+import BrowseTable from '../../islands/BrowseTable';
+import { getPrepared } from '../../prepare/prepare';
+import { buildNoncompetitiveIndex } from '../../prepare/indexes';
+import { formatCAD } from '../../prepare/amounts';
+import { href } from '../../lib/url';
+
+const p = await getPrepared();
+const rows = buildNoncompetitiveIndex(p);
+const first = rows.slice(0, 50);
+---
+
+<Base
+  title="Non-competitive contracts"
+  description="Browse sole-source City of Toronto contracts with the City's stated reason."
+>
+  <p>
+    {rows.length.toLocaleString('en-CA')} sole-source contracts with the City's stated
+    reason (the <code>workspace_number</code> keyspace — never joined with document
+    numbers). Amounts shown are the machine-parseable tier only. Filters and sorting
+    are reflected in the URL.
+  </p>
+  <BrowseTable
+    client:load
+    entity="noncompetitive"
+    indexUrl={href('/indexes/noncompetitive.json')}
+    base={import.meta.env.BASE_URL}
+  />
+  <noscript>
+    <p>
+      JavaScript is off — showing the first 50 of {rows.length.toLocaleString('en-CA')}
+      rows. Sorting and filtering need JavaScript.
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>Workspace #</th><th>Supplier</th><th>Division</th><th>Year</th>
+          <th>Amount (parsed)</th>
+        </tr>
+      </thead>
+      <tbody>
+        {first.map((r) => (
+          <tr>
+            <td><a href={href(`/noncompetitive/${r.wl}/`)}>{r.w}</a></td>
+            <td>{r.n ?? '—'}</td>
+            <td>{r.v ?? '—'}</td>
+            <td>{r.y ?? '—'}</td>
+            <td>{r.a === null ? '—' : formatCAD(r.a)}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </noscript>
+</Base>

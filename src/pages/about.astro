@@ -1,0 +1,48 @@
+---
+// src/pages/about.astro
+import Base from '../layouts/Base.astro';
+import { href } from '../lib/url';
+---
+<Base title="About & methodology">
+  <section>
+    <h2>What this is</h2>
+    <p>
+      The Toronto Bids Archive surfaces everything the archive knows is genuinely public
+      about City of Toronto procurement, for journalists and data scientists. Data is
+      collected nightly from City sources by the
+      <a href="https://github.com/CivicTechTO/toronto-bids">CivicTechTO toronto-bids</a>
+      backend and republished here as static, citable pages.
+    </p>
+  </section>
+  <section>
+    <h2>Coverage and known gaps</h2>
+    <ul>
+      <li>2009–2012 exists only as composite award lines grouped per call — for 2009–2011 those lines ARE the award record.</li>
+      <li>Exhibition Place's published record stops dead at 2019-08-27.</li>
+      <li>Toronto Hydro — the City's largest procuring body — publishes no procurement record at all.</li>
+      <li>The Bid Award Panel corpus ended 2025-10-01; Award Summary Forms (awards over $500K only) took over, so the bid record thins for small awards after that date.</li>
+      <li>46.5% of solicitations were published by the City with no title; we construct a heading from record fields and mark it explicitly. Recovered titles carry a provenance badge.</li>
+    </ul>
+  </section>
+  <section>
+    <h2>How to read amounts</h2>
+    <p>
+      Every amount has up to three tiers: the raw text exactly as the City published it
+      (which can be things like "31.65/MT" or "Non-Compliant"), a machine-parsed numeric
+      value, and a human-labelled value. Only the numeric tier is ever aggregated, so all
+      totals on this site are machine-parseable undercounts. Award rows arrive from two
+      City feeds and are deduplicated before display. Bid prices always show their HST
+      basis and are never compared across bases.
+    </p>
+  </section>
+  <section>
+    <h2>Identifiers</h2>
+    <p>
+      Five identifier keyspaces never join: 10-digit document numbers (competitive
+      solicitations), workspace numbers (non-competitive), call numbers (2009–2012
+      composite awards), council references (YYYY.CCNN.N), and per-agency references.
+      Cross-keyspace totals are never presented as one number. See
+      <a href={href('/data/')}>the data page</a> for the full schema and gotchas.
+    </p>
+  </section>
+</Base>

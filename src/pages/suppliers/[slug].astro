@@ -1,0 +1,302 @@
+---
+import Base from '../../layouts/Base.astro';
+import AmountCell from '../../components/AmountCell.astro';
+import { getPrepared } from '../../prepare/prepare';
+import { href } from '../../lib/url';
+import { formatCAD } from '../../prepare/amounts';
+import { displayTitle } from '../../prepare/titles';
+import type { SupplierRollup, SumResult } from '../../prepare/types';
+
+export async function getStaticPaths() {
+  const p = await getPrepared();
+  return [...p.rollupsBySlug.values()].map((rollup) => ({
+    params: { slug: rollup.slug },
+    props: { rollup },
+  }));
+}
+
+const { rollup } = Astro.props as { rollup: SupplierRollup };
+const p = await getPrepared();
+const s = rollup.supplier;
+
+function totalLine(t: SumResult): string {
+  return `${formatCAD(t.total)} from ${t.counted} machine-parseable rows (${t.skipped} rows unparseable or excluded — an undercount)`;
+}
+
+/** Noncompetitive links use the routable slug; displayed text stays raw. */
+function ncHref(workspaceNumber: string): string {
+  return href(`/noncompetitive/${p.wsSlugByNumber.get(workspaceNumber)!}/`);
+}
+
+// Won/Lost and single-bidder appearances are computed here from Prepared
+// data — no contract change.
+type RollupBid = SupplierRollup['bids'][number];
+
+const awardDocs = new Set(rollup.awards.map((a) => a.document_number));
+
+function bidDoc(entry: RollupBid): string | null {
+  if (entry.document_number !== null) return entry.document_number;
+  if (entry.reference !== null) {
+    return p.bridge.refToDoc.get(entry.reference) ?? null;
+  }
+  return null;
+}
+
+/** Won/Lost is claimed only when the resolved document has a deduped award record. */
+function bidResult(entry: RollupBid): 'Won' | 'Lost' | '—' {
+  const doc = bidDoc(entry);
+  if (doc === null) return '—';
+  if (awardDocs.has(doc)) return 'Won';
+  return (p.dedupedAwardsByDoc.get(doc) ?? []).length > 0 ? 'Lost' : '—';
+}
+
+/** A single-bidder appearance: the containing bid table has exactly one bid. */
+function isSoleBidder(entry: RollupBid): boolean {
+  if (entry.reference !== null) {
+    return p.councilByRef.get(entry.reference)?.bids.length === 1;
+  }
+  if (entry.document_number !== null) {
+    return p.solByDoc.get(entry.document_number)?.bids.length === 1;
+  }
+  return false;
+}
+
+const soleBids = rollup.bids.filter(isSoleBidder);
+---
+<Base title={s.display_name} pagefind={true} filters={{ type: 'Supplier' }}>
+  {rollup.suspended.length > 0 && (
+    <aside role="alert">
+      <strong>Suspended firm.</strong>
+      <ul>
+        {rollup.suspended.map((f) => (
+          <li>
+            {f.suspension_type ?? 'Suspension'} — status {f.status ?? 'unknown'}
+            {f.start_date && ` from ${f.start_date}`}
+            {f.end_date && ` to ${f.end_date}`}
+            {f.council_authority && (
+              <>
+                {' (authority: '}
+                {p.councilByRef.has(f.council_authority) ? (
+                  <a href={href(`/council/${f.council_authority}/`)}>
+                    {f.council_authority}
+                  </a>
+                ) : (
+                  f.council_authority
+                )}
+                {')'}
+              </>
+            )}
+          </li>
+        ))}
+      </ul>
+    </aside>
+  )}
+
+  <section>
+    <h2>Name variants ({s.variants.length})</h2>
+    {s.variants.length > 0 ? (
+      <ul>{s.variants.map((v) => <li>{v}</li>)}</ul>
+    ) : (
+      <p>No raw name variants recorded beyond the display name.</p>
+    )}
+  </section>
+
+  <section>
+    <h2>Awards won</h2>
+    <p>
+      Totals are per keyspace and never merged; each sums only
+      machine-parseable amounts.
+    </p>
+
+    <h3>City awards ({rollup.awards.length})</h3>
+    {rollup.awards.length > 0 ? (
+      <>
+        <p>Total: {totalLine(rollup.totals.cityAwards)}</p>
+        <table>
+          <thead>
+            <tr><th>Solicitation</th><th>Amount</th><th>Date</th></tr>
+          </thead>
+          <tbody>
+            {rollup.awards.map(({ document_number, sol, award }) => (
+              <tr>
+                <td>
+                  {sol ? (
+                    <a href={href(`/solicitations/${document_number}/`)}>
+                      {displayTitle(sol).text}
+                    </a>
+                  ) : (
+                    // Kept on one line: site tests assert this exact phrase.
+                    <span>Doc {document_number} (not linked — no matching solicitation record)</span>
+                  )}
+                </td>
+                <td>
+                  <AmountCell
+                    raw={award.award_amount}
+                    numeric={award.award_amount_numeric}
+                  />
+                </td>
+                <td>{award.award_date ?? '—'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </>
+    ) : (
+      <p>No City award lines recorded.</p>
+    )}
+
+    <h3>Composite awards 2009–2012 ({rollup.compositeAwards.length})</h3>
+    {rollup.compositeAwards.length > 0 ? (
+      <>
+        <p>Total: {totalLine(rollup.totals.composite)}</p>
+        <table>
+          <thead>
+            <tr><th>Call</th><th>Title</th><th>Amount</th></tr>
+          </thead>
+          <tbody>
+            {rollup.compositeAwards.map((ca) => (
+              <tr>
+                <td>
+                  <a href={href(`/calls/${ca.call_number}/`)}>
+                    Call {ca.call_number}
+                  </a>
+                </td>
+                <td>{ca.title ?? '—'}</td>
+                <td>
+                  <AmountCell
+                    raw={ca.award_value}
+                    numeric={ca.award_value_numeric}
+                  />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </>
+    ) : (
+      <p>No composite award lines (the 2009–2012 keyspace).</p>
+    )}
+
+    <h3>Non-competitive contracts ({rollup.noncompetitive.length})</h3>
+    {rollup.noncompetitive.length > 0 ? (
+      <>
+        <p>Total: {totalLine(rollup.totals.noncompetitive)}</p>
+        <table>
+          <thead>
+            <tr><th>Workspace</th><th>Reason</th><th>Amount</th><th>Date</th></tr>
+          </thead>
+          <tbody>
+            {rollup.noncompetitive.map((nc) => (
+              <tr>
+                <td>
+                  <a href={ncHref(nc.workspace_number)}>
+                    {nc.workspace_number}
+                  </a>
+                </td>
+                <td>{nc.reason ?? '—'}</td>
+                <td>
+                  <AmountCell
+                    raw={nc.contract_amount}
+                    numeric={nc.contract_amount_numeric}
+                  />
+                </td>
+                <td>{nc.contract_date ?? '—'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </>
+    ) : (
+      <p>No non-competitive contracts recorded.</p>
+    )}
+  </section>
+
+  <section>
+    <h2>Bids ({rollup.bids.length})</h2>
+    {rollup.bids.length > 0 ? (
+      <>
+        <table class="supplier-bids">
+          <thead>
+            <tr>
+              <th>Record</th>
+              <th>Bid price</th>
+              <th>HST basis</th>
+              <th>Result</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rollup.bids.map((entry) => (
+              <tr>
+                <td>
+                  {entry.reference && p.councilByRef.has(entry.reference) ? (
+                    <a href={href(`/council/${entry.reference}/`)}>
+                      Council {entry.reference}
+                    </a>
+                  ) : entry.document_number &&
+                    p.solByDoc.has(entry.document_number) ? (
+                    <a href={href(`/solicitations/${entry.document_number}/`)}>
+                      Doc {entry.document_number}
+                    </a>
+                  ) : entry.document_number ? (
+                    // Kept on one line: site tests assert this exact phrase.
+                    <span>Doc {entry.document_number} (not linked — no matching solicitation record)</span>
+                  ) : entry.reference ? (
+                    <span>Council {entry.reference} (not linked — no matching council item)</span>
+                  ) : (
+                    'not linked'
+                  )}
+                </td>
+                <td>
+                  <AmountCell
+                    raw={entry.bid.bid_price}
+                    numeric={entry.bid.bid_price_numeric}
+                  />
+                </td>
+                <td>
+                  {entry.bid.hst_basis === 'including'
+                    ? 'incl. HST'
+                    : entry.bid.hst_basis === 'excluding'
+                      ? 'excl. HST'
+                      : 'basis unknown'}
+                </td>
+                <td class="bid-result">{bidResult(entry)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <p>
+          Won/Lost is determined from the linked record's deduped awards; "—"
+          means no award record exists to determine an outcome.
+        </p>
+      </>
+    ) : (
+      <p>No bids recorded for this supplier.</p>
+    )}
+  </section>
+
+  <section>
+    <h2>Single-bidder appearances ({soleBids.length})</h2>
+    {soleBids.length > 0 ? (
+      <>
+        <p>Records where this supplier's bid was the only bid received.</p>
+        <ul>
+          {soleBids.map((entry) => (
+            <li>
+              {entry.reference ? (
+                <a href={href(`/council/${entry.reference}/`)}>
+                  Council {entry.reference}
+                </a>
+              ) : (
+                <a href={href(`/solicitations/${entry.document_number}/`)}>
+                  Doc {entry.document_number}
+                </a>
+              )}
+            </li>
+          ))}
+        </ul>
+      </>
+    ) : (
+      <p>No single-bidder appearances in the captured bid record.</p>
+    )}
+  </section>
+</Base>

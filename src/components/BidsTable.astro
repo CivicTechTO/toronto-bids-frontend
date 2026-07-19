@@ -1,0 +1,53 @@
+---
+// src/components/BidsTable.astro — bids with hst_basis ALWAYS displayed. The Result
+// column exists ONLY when the caller passes a non-empty winners list (i.e. an award
+// record exists); with no winners prop (or an empty one) the table makes NO
+// winner/loser claim at all. Bidder names link to supplier profiles when
+// supplierSlugById is provided and resolves the bid's supplier_id.
+import type { BidRow } from '../prepare/types';
+import AmountCell from './AmountCell.astro';
+import { href } from '../lib/url';
+
+interface Props {
+  bids: BidRow[];
+  winners?: string[];
+  supplierSlugById?: Map<number, string>;
+}
+const { bids, winners, supplierSlugById } = Astro.props;
+const winnerSet = new Set((winners ?? []).map((w) => w.trim().toLowerCase()));
+const showResult = winners !== undefined && winners.length > 0;
+const isWinner = (b: BidRow) => winnerSet.has(b.bidder_name_raw.trim().toLowerCase());
+const slugFor = (b: BidRow) =>
+  supplierSlugById !== undefined && b.supplier_id != null
+    ? supplierSlugById.get(b.supplier_id)
+    : undefined;
+const basisLabel = (b: BidRow['hst_basis']) =>
+  b === 'including' ? 'incl. HST' : b === 'excluding' ? 'excl. HST' : 'basis unknown';
+---
+<table class="bids-table">
+  <thead>
+    <tr>
+      <th>Bidder</th>
+      <th>Bid price (raw / parsed)</th>
+      <th>HST basis</th>
+      {showResult && <th>Result</th>}
+    </tr>
+  </thead>
+  <tbody>
+    {bids.map((b) => (
+      <tr class={showResult ? (isWinner(b) ? 'bid-winner' : 'bid-loser') : undefined}>
+        <td>
+          {slugFor(b) !== undefined ? (
+            <a href={href(`/suppliers/${slugFor(b)}/`)}>{b.bidder_name_raw}</a>
+          ) : (
+            b.bidder_name_raw
+          )}
+        </td>
+        <td><AmountCell raw={b.bid_price} numeric={b.bid_price_numeric} /></td>
+        <td>{basisLabel(b.hst_basis)}</td>
+        {showResult && <td>{isWinner(b) ? 'Winner' : ''}</td>}
+      </tr>
+    ))}
+  </tbody>
+</table>
+<p class="bids-note">Bid prices are shown with their HST basis and are never compared across bases.</p>

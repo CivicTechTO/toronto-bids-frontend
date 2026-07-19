@@ -1,0 +1,30 @@
+---
+// src/components/DocumentsList.astro — documents index. City-hosted PDFs link out;
+// ariba_attachment entries NEVER get an anchor (indexed, not downloadable).
+import type { DocumentEntry } from '../prepare/types';
+
+interface Props { documents: DocumentEntry[] }
+const { documents } = Astro.props;
+const sizeLabel = (n: number) => (n >= 1048576 ? `${(n / 1048576).toFixed(1)} MB` : `${(n / 1024).toFixed(1)} KB`);
+---
+{documents.length === 0 ? (
+  <p>No documents indexed for this record.</p>
+) : (
+  <ul class="documents-list">
+    {documents.map((d) => (
+      <li class={`doc doc-${d.source}`}>
+        {d.url && d.source !== 'ariba_attachment' ? (
+          <a href={d.url}>{d.name}</a>
+        ) : (
+          <span class="doc-name">{d.name}</span>
+        )}
+        <span class="doc-path">{d.path}</span>
+        {d.type && <span class="doc-type">{d.type}</span>}
+        {d.size_bytes !== null && <span class="doc-size">{sizeLabel(d.size_bytes)}</span>}
+        {d.source === 'ariba_attachment' && (
+          <span class="doc-note">indexed, not downloadable — the file bytes are archived but not served here</span>
+        )}
+      </li>
+    ))}
+  </ul>
+)}

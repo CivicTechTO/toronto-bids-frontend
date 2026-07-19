@@ -1,0 +1,50 @@
+---
+import Base from '../../layouts/Base.astro';
+import BrowseTable from '../../islands/BrowseTable';
+import { getPrepared } from '../../prepare/prepare';
+import { buildCouncilIndex } from '../../prepare/indexes';
+import { href } from '../../lib/url';
+
+const p = await getPrepared();
+const rows = buildCouncilIndex(p);
+const first = rows.slice(0, 50);
+---
+
+<Base
+  title="Council items"
+  description="Browse council items with procurement decisions: decision text, bid tables, staff reports."
+>
+  <p>
+    {rows.length.toLocaleString('en-CA')} council items (the <code>reference</code>
+    keyspace, <code>YYYY.CCNN.N</code>), including bid tables with winning and losing
+    bidders. Filters and sorting are reflected in the URL, so filtered views are
+    citable.
+  </p>
+  <BrowseTable
+    client:load
+    entity="council"
+    indexUrl={href('/indexes/council.json')}
+    base={import.meta.env.BASE_URL}
+  />
+  <noscript>
+    <p>
+      JavaScript is off — showing the first 50 of {rows.length.toLocaleString('en-CA')}
+      rows. Sorting and filtering need JavaScript.
+    </p>
+    <table>
+      <thead>
+        <tr><th>Reference</th><th>Title</th><th>Year</th><th>Bids</th></tr>
+      </thead>
+      <tbody>
+        {first.map((r) => (
+          <tr>
+            <td><a href={href(`/council/${r.f}/`)}>{r.f}</a></td>
+            <td>{r.t ?? '—'}</td>
+            <td>{r.y}</td>
+            <td>{r.nb}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </noscript>
+</Base>

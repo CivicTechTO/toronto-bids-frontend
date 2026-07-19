@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Unit tests
+        run: npx vitest run
+      - name: Build against the committed fixture
+        run: npm run build
+        env:
+          TB_DATA_FILE: tests/fixtures/bids.fixture.json
+          BASE_PATH: /
+      - name: Site tests over dist/
+        run: npx vitest run -c vitest.site.config.ts

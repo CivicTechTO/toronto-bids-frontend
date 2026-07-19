@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+.spine div { display: flex; gap: 0.5rem; }
+.spine dt { font-weight: 600; min-width: 11rem; }
+table { border-collapse: collapse; width: 100%; margin: 0.5rem 0; }
+th, td { text-align: left; padding: 0.35rem 0.6rem; border-bottom: 1px solid #ddd; vertical-align: top; }
+.amount-raw { font-family: monospace; }
+.amount-numeric { margin-left: 0.5rem; color: #555; }
+.amount-unparsed { font-style: italic; }
+.provenance-badge, .sources-badge { display: inline-block; font-size: 0.8rem; background: #eef; border: 1px solid #99c; border-radius: 4px; padding: 0 0.4rem; }
+.untitled-marker, .stats-caveat, .doc-note, .bids-note, .dedupe-note, .initial-term-caveat, .keyspace-note { font-size: 0.9rem; color: #664; background: #fdf6e3; padding: 0.4rem 0.6rem; border-left: 3px solid #cb0; margin: 0.5rem 0; }
+.bid-winner td:first-child { font-weight: 700; }
+.documents-list li { margin-bottom: 0.4rem; }
+.doc-path { font-family: monospace; font-size: 0.85rem; color: #555; margin-left: 0.5rem; }
+.stats-strip { display: flex; flex-wrap: wrap; gap: 1.5rem; margin: 1rem 0; }
+.stats-strip dt { font-size: 0.85rem; color: #555; }
+.stats-strip dd { font-size: 1.4rem; font-weight: 700; margin: 0; }

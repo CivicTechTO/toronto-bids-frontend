@@ -1,0 +1,51 @@
+---
+// src/layouts/Base.astro
+import { href } from '../lib/url';
+import { getPrepared } from '../prepare/prepare';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  pagefind?: boolean;
+  filters?: Record<string, string>;
+}
+const { title, description, pagefind = false, filters = {} } = Astro.props;
+const p = await getPrepared();
+const fullTitle = title === 'Toronto Bids Archive' ? title : `${title} — Toronto Bids Archive`;
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    {description && <meta name="description" content={description} />}
+  </head>
+  <body class="max-w-4xl mx-auto px-4">
+    <header class="py-3 border-b mb-4">
+      <a href={href('/')} class="font-bold">Toronto Bids Archive</a>
+      <nav class="inline-block ml-4 text-sm">
+        <a href={href('/search/')}>Search</a>
+        · <a href={href('/solicitations/')}>Solicitations</a>
+        · <a href={href('/noncompetitive/')}>Non-competitive</a>
+        · <a href={href('/calls/')}>Calls 2009–2012</a>
+        · <a href={href('/council/')}>Council</a>
+        · <a href={href('/suppliers/')}>Suppliers</a>
+        · <a href={href('/buyers/')}>Buyers</a>
+        · <a href={href('/data/')}>Data</a>
+        · <a href={href('/about/')}>About</a>
+      </nav>
+    </header>
+    <main data-pagefind-body={pagefind ? '' : undefined}>
+      <h1 class="text-2xl font-bold mb-2" data-pagefind-meta={pagefind ? 'title' : undefined}>{title}</h1>
+      {pagefind &&
+        Object.entries(filters).map(([key, value]) => (
+          <span hidden data-pagefind-filter={key}>{value}</span>
+        ))}
+      <slot />
+    </main>
+    <footer class="mt-8 py-3 border-t text-sm text-gray-600">
+      Data as of {p.generatedAt} · <a href={href('/data/')}>Data &amp; downloads</a>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,152 @@
+---
+import Base from '../../layouts/Base.astro';
+import AmountCell from '../../components/AmountCell.astro';
+import { getPrepared } from '../../prepare/prepare';
+import type { Buyer } from '../../prepare/types';
+
+export async function getStaticPaths() {
+  const p = await getPrepared();
+  return p.doc.buyers.map((buyer) => ({
+    params: { slug: buyer.slug },
+    props: { buyer },
+  }));
+}
+
+const { buyer } = Astro.props as { buyer: Buyer };
+const capturedSince = buyer.first_seen.slice(0, 10);
+---
+<Base
+  title={buyer.name}
+  pagefind={true}
+  filters={{ type: 'Buyer', buyer: buyer.name }}
+>
+  <p>
+    {buyer.kind}
+    {buyer.partnered === 1 && <strong> · Partnered</strong>}
+    {buyer.funding_share !== null && (
+      <span> · City funding share: {(buyer.funding_share * 100).toFixed(1)}%</span>
+    )}
+    {buyer.platform && <span> · Platform: {buyer.platform}</span>}
+  </p>
+  {buyer.notes && <p>{buyer.notes}</p>}
+  <p>Portal captured since {capturedSince}.</p>
+
+  <section>
+    <h2>Solicitations ({buyer.solicitations.length})</h2>
+    {buyer.solicitations.length === 0 ? (
+      <p>Portal captured since {capturedSince}; no solicitations posted yet.</p>
+    ) : (
+      <table>
+        <thead>
+          <tr>
+            <th>Ref</th>
+            <th>Title</th>
+            <th>Status</th>
+            <th>Posted</th>
+            <th>Closing</th>
+            <th>Portal</th>
+          </tr>
+        </thead>
+        <tbody>
+          {buyer.solicitations.map((s) => (
+            <tr>
+              <td>{s.native_ref}</td>
+              <td>{s.title ?? '(no title published)'}</td>
+              <td>{s.status ?? '—'}</td>
+              <td>{s.posted_date ?? '—'}</td>
+              <td>{s.closing_date ?? '—'}</td>
+              <td>
+                {s.portal_url ? (
+                  <a href={s.portal_url} rel="noopener">portal</a>
+                ) : (
+                  '—'
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    )}
+  </section>
+
+  <section>
+    <h2>Awards ({buyer.awards.length})</h2>
+    {buyer.awards.length === 0 ? (
+      <p>Portal captured since {capturedSince}; no awards published yet.</p>
+    ) : (
+      <table>
+        <thead>
+          <tr>
+            <th>Ref</th>
+            <th>Supplier</th>
+            <th>Amount</th>
+            <th>Date</th>
+            <th>Report</th>
+          </tr>
+        </thead>
+        <tbody>
+          {buyer.awards.map((a) => (
+            <tr>
+              <td>{a.native_ref}</td>
+              <td>{a.supplier_name_raw ?? '—'}</td>
+              <td>
+                {a.value_confidential === 1 ? (
+                  'value withheld (confidential attachment)'
+                ) : (
+                  <AmountCell
+                    raw={a.award_amount}
+                    numeric={a.award_amount_numeric}
+                  />
+                )}
+              </td>
+              <td>{a.award_date ?? '—'}</td>
+              <td>
+                {a.report_url ? (
+                  <a href={a.report_url} rel="noopener">report</a>
+                ) : (
+                  '—'
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    )}
+  </section>
+
+  <section>
+    <h2>Bids ({buyer.bids.length})</h2>
+    {buyer.bids.length === 0 ? (
+      <p>Portal captured since {capturedSince}; no bids posted yet.</p>
+    ) : (
+      <table>
+        <thead>
+          <tr>
+            <th>Ref</th>
+            <th>Bidder</th>
+            <th>Bid price</th>
+            <th>Report</th>
+          </tr>
+        </thead>
+        <tbody>
+          {buyer.bids.map((b) => (
+            <tr>
+              <td>{b.native_ref}</td>
+              <td>{b.bidder_name_raw}</td>
+              <td>
+                <AmountCell raw={b.bid_price} numeric={b.bid_price_numeric} />
+              </td>
+              <td>
+                {b.report_url ? (
+                  <a href={b.report_url} rel="noopener">report</a>
+                ) : (
+                  '—'
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    )}
+  </section>
+</Base>

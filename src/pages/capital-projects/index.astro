@@ -1,0 +1,51 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getPrepared } from '../../prepare/prepare';
+
+const p = await getPrepared();
+const projects = [...p.doc.capital_projects].sort((a, b) =>
+  a.name.localeCompare(b.name),
+);
+---
+<Base
+  title="Capital project pipeline"
+  description="City-published pipeline of upcoming capital procurements."
+>
+  <p>
+    {projects.length} upcoming capital procurements as published by the City.
+    Estimated ranges are the City's published text and are shown verbatim —
+    they are never parsed into numbers or summed.
+  </p>
+  <div style="overflow-x:auto">
+    <table>
+      <thead>
+        <tr>
+          <th>Project</th>
+          <th>Contract #</th>
+          <th>Type of work</th>
+          <th>Delivery division</th>
+          <th>Sourcing year</th>
+          <th>Award year</th>
+          <th>Sourcing type</th>
+          <th>Estimated range</th>
+          <th>Term (months)</th>
+        </tr>
+      </thead>
+      <tbody>
+        {projects.map((cp) => (
+          <tr>
+            <td>{cp.name}</td>
+            <td>{cp.contract_number ?? '—'}</td>
+            <td>{cp.type_of_work ?? '—'}</td>
+            <td>{cp.delivery_division ?? '—'}</td>
+            <td>{cp.target_sourcing_year ?? '—'}</td>
+            <td>{cp.target_award_year ?? '—'}</td>
+            <td>{cp.sourcing_type ?? '—'}</td>
+            <td>{cp.estimated_range ?? '—'}</td>
+            <td>{cp.estimated_term_months ?? '—'}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</Base>

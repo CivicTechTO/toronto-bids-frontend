@@ -1,0 +1,226 @@
+---
+import Base from '../layouts/Base.astro';
+import { getPrepared } from '../prepare/prepare';
+
+const p = await getPrepared();
+const RELEASES = 'https://github.com/CivicTechTO/toronto-bids-data/releases';
+const LATEST = `${RELEASES}/download/latest`;
+const DATASETTE =
+  'https://lite.datasette.io/?url=https://github.com/CivicTechTO/toronto-bids-data/releases/download/latest/bids.sqlite';
+---
+
+<Base
+  title="Data"
+  description="Download the Toronto Bids Archive dataset, query it in the browser, and read the schema rules before aggregating."
+>
+  <p>
+    Everything on this site is built from one nightly export of the
+    <a href="https://github.com/CivicTechTO/toronto-bids">Toronto Bids Archive</a>.
+    Data as of {p.generatedAt}.
+  </p>
+
+  <h2>Downloads</h2>
+  <ul>
+    <li>
+      <a href={`${LATEST}/bids.json`}>bids.json</a> — the full export, compact JSON
+      (~24&nbsp;MB; exact sizes on the release page)
+    </li>
+    <li><a href={`${LATEST}/bids.json.gz`}>bids.json.gz</a> — the same, gzipped</li>
+    <li><a href={`${LATEST}/bids.sqlite`}>bids.sqlite</a> — SQLite database</li>
+  </ul>
+  <p>
+    The <code>latest</code> release is replaced nightly (generated at ~05:30
+    America/Toronto). On the 1st of each month a dated
+    <code>snapshot-YYYY-MM-DD</code> release is kept for point-in-time citation — see
+    <a href={RELEASES}>all releases</a>.
+  </p>
+
+  <h2>Query in your browser</h2>
+  <p>
+    <a href={DATASETTE}>Open bids.sqlite in Datasette-Lite</a> — full SQL against the
+    latest database with nothing to install (your browser downloads the whole
+    database).
+  </p>
+
+  <h2>Reading the data honestly</h2>
+  <p>
+    The export is faithful to what the City published — including its errors. Before
+    aggregating anything, read these rules.
+  </p>
+
+  <h3>Five disjoint keyspaces</h3>
+  <p>
+    Records live in five identifier spaces that never join: 10-digit
+    <code>document_number</code> (competitive solicitations),
+    <code>workspace_number</code> (non-competitive contracts),
+    <code>call_number</code> (2009–2012 composite awards), council
+    <code>reference</code> (<code>YYYY.CCNN.N</code>), and
+    <code>(buyer, native_ref)</code> (agency records). Never present a cross-keyspace
+    total as one number. The only bridges that exist: bid <code>reference</code> ↔
+    council item, bid <code>document_number</code> ↔ solicitation,
+    <code>supplier_id</code> across award/bid tables, and suspended-firm
+    <code>council_authority</code> ↔ council item.
+  </p>
+
+  <h3>Three amount tiers</h3>
+  <p>
+    Every money field comes in tiers: the raw TEXT verbatim
+    (<code>award_amount</code>, <code>bid_price</code>, <code>contract_amount</code>,
+    <code>award_value</code> — may contain <code>"kj"</code>,
+    <code>"31.65/MT"</code> or <code>"Non-Compliant"</code>); the machine-parsed
+    <code>*_numeric</code> column, the only tier safe to sum; and human-labelled
+    <code>*_labelled</code>/<code>*_verdict</code>. All totals on this site sum
+    <code>*_numeric</code> only, exclude rows with verdict
+    <code>not_an_award</code>, and are therefore machine-parseable undercounts.
+  </p>
+
+  <h3>One award, two sources (the dedupe rule)</h3>
+  <p>
+    Award rows are dual-provenance: the same award appears once per source
+    (<code>odata</code>: 7,519 rows; <code>ckan_awarded</code>: 7,512). Display and
+    aggregate the <code>odata</code> rows and treat CKAN presence as a cross-check.
+    Never dedupe by (document, supplier): one row is one award <em>line</em>, and
+    standing-offer call-ups legitimately repeat suppliers.
+  </p>
+
+  <h3>Bid prices carry an HST basis</h3>
+  <p>
+    <code>hst_basis</code> is load-bearing: roughly 10,000 bid prices include HST and
+    5,400 exclude it. Never compare or sum prices across bases; every price on this
+    site is displayed with its basis.
+  </p>
+
+  <h3>A null title means the City published no title</h3>
+  <p>
+    3,464 of 7,444 solicitations (46.5%) have <code>title IS NULL</code>. This site
+    renders them as "Doc 3524228095 — RFQ, Transportation Services" with an explicit
+    "no title published" marker. Where a title was recovered from another source
+    (<code>title_source</code> non-null: council agendas, legacy Ariba HTML) a
+    provenance badge says so.
+  </p>
+
+  <h3>Three implausible awards (~$15B)</h3>
+  <p>
+    Totals are faithful, not trustworthy: three City-published award amounts are
+    implausible (about $15&nbsp;billion combined, including a $9.05&nbsp;billion award
+    to an individual). Headline sums on this site carry this caveat; do your own
+    outlier handling before publishing aggregates. Future-dated rows also exist
+    (<code>contract_date</code> up to 2026-12-18).
+  </p>
+
+  <h3>supplier_id is not stable</h3>
+  <p>
+    The supplier dimension is rebuilt nightly, so <code>supplier_id</code> changes
+    across exports — it is a within-export join key only. For stable identity use
+    <code>supplier_key</code> (this site's supplier URLs slug it). Never store
+    <code>supplier_id</code> across snapshots.
+  </p>
+
+  <h2>Sync status</h2>
+  <p>Per-source status from the most recent nightly sync (<code>meta.sources</code>).</p>
+  <table>
+    <thead>
+      <tr>
+        <th>Source</th><th>Status</th><th>Finished</th><th>Rows fetched</th>
+        <th>Rows upserted</th>
+      </tr>
+    </thead>
+    <tbody>
+      {p.doc.meta.sources.map((s) => (
+        <tr>
+          <td>{s.source}</td>
+          <td>{s.status}</td>
+          <td>{s.finished_at ?? '—'}</td>
+          <td>{s.rows_fetched.toLocaleString('en-CA')}</td>
+          <td>{s.rows_upserted.toLocaleString('en-CA')}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+
+  <h2>Unlinked records</h2>
+  <p>
+    The export's <code>unlinked_*</code> buckets hold rows that are
+    <strong>not linked to any solicitation</strong> record. Nothing is silently
+    dropped — they are listed here in full.
+  </p>
+
+  <h3>Unlinked Ariba postings ({p.doc.unlinked_ariba_postings.length})</h3>
+  {p.doc.unlinked_ariba_postings.length > 0 ? (
+    <table>
+      <thead>
+        <tr><th>RFx ID</th><th>Title</th><th>Posted</th><th>Closes</th><th>Link</th></tr>
+      </thead>
+      <tbody>
+        {p.doc.unlinked_ariba_postings.map((a) => (
+          <tr>
+            <td>{a.rfx_id}</td>
+            <td>{a.title ?? '—'}</td>
+            <td>{a.posted_date ?? '—'}</td>
+            <td>{a.close_date ?? '—'}</td>
+            <td>
+              {a.public_posting_url ? (
+                <a href={a.public_posting_url} rel="noopener">Ariba posting</a>
+              ) : (
+                '—'
+              )}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  ) : (
+    <p>None in this export.</p>
+  )}
+
+  <h3>Unlinked award lines ({p.doc.unlinked_awards.length})</h3>
+  {p.doc.unlinked_awards.length > 0 ? (
+    <table>
+      <thead>
+        <tr><th>Document #</th><th>Supplier</th><th>Amount (raw)</th><th>Date</th></tr>
+      </thead>
+      <tbody>
+        {p.doc.unlinked_awards.map((a) => (
+          <tr>
+            <td>{a.document_number}</td>
+            <td>{a.supplier_name_raw ?? '—'}</td>
+            <td>{a.award_amount ?? '—'}</td>
+            <td>{a.award_date ?? '—'}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  ) : (
+    <p>None in this export.</p>
+  )}
+
+  <h3>Unlinked bids ({p.doc.unlinked_bids.length})</h3>
+  {p.doc.unlinked_bids.length > 0 ? (
+    <table>
+      <thead>
+        <tr><th>Document #</th><th>Bidder</th><th>Bid price (raw)</th><th>HST basis</th></tr>
+      </thead>
+      <tbody>
+        {p.doc.unlinked_bids.map((b) => (
+          <tr>
+            <td>{b.document_number ?? '—'}</td>
+            <td>{b.bidder_name_raw}</td>
+            <td>{b.bid_price ?? '—'}</td>
+            <td>{b.hst_basis ?? 'unknown'}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  ) : (
+    <p>None in this export.</p>
+  )}
+
+  <h2>Citing this archive</h2>
+  <p>
+    For reproducible citations, cite a dated monthly snapshot
+    (<code>snapshot-YYYY-MM-DD</code>) rather than <code>latest</code> — the
+    <code>latest</code> assets change nightly — and include the permanent record URL
+    from this site plus the <code>generated_at</code> timestamp shown in every page
+    footer.
+  </p>
+</Base>

@@ -1,0 +1,43 @@
+---
+// src/pages/index.astro
+import Base from '../layouts/Base.astro';
+import StatsStrip from '../components/StatsStrip.astro';
+import { getPrepared } from '../prepare/prepare';
+import { href } from '../lib/url';
+
+const p = await getPrepared();
+---
+<Base
+  title="Toronto Bids Archive"
+  description="A citable public archive of City of Toronto procurement: solicitations, awards, bids, non-competitive contracts, council decisions, and suppliers."
+>
+  <p class="lede">
+    A research archive of City of Toronto procurement — solicitations, awards, bids
+    (including losing bidders), non-competitive contracts, council decisions, and
+    suppliers — with stable citable URLs and honest presentation of the data's limits.
+    Documents are indexed thoroughly; where the City hosts a file publicly, we link out to it.
+  </p>
+  <form action={href('/search/')} method="get" role="search" class="my-4">
+    <input
+      type="search"
+      name="q"
+      placeholder="Search titles, suppliers, document numbers, filenames…"
+      class="border px-2 py-1 w-96 max-w-full"
+    />
+    <button type="submit" class="border px-3 py-1">Search</button>
+  </form>
+  <StatsStrip headline={p.headline} />
+  <nav class="my-4">
+    <ul>
+      <li><a href={href('/solicitations/')}>Browse solicitations</a></li>
+      <li><a href={href('/noncompetitive/')}>Non-competitive contracts</a></li>
+      <li><a href={href('/calls/')}>Composite award calls (2009–2012)</a></li>
+      <li><a href={href('/council/')}>Council items</a></li>
+      <li><a href={href('/suppliers/')}>Suppliers</a></li>
+      <li><a href={href('/buyers/')}>Buyers (agencies &amp; corporations)</a></li>
+      <li><a href={href('/capital-projects/')}>Upcoming capital projects</a></li>
+      <li><a href={href('/suspended-firms/')}>Suspended firms</a></li>
+      <li><a href={href('/data/')}>Downloads &amp; in-browser SQL</a></li>
+    </ul>
+  </nav>
+</Base>

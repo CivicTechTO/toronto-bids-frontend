@@ -1,0 +1,167 @@
+---
+// src/pages/solicitations/[doc].astro
+import Base from '../../layouts/Base.astro';
+import AmountCell from '../../components/AmountCell.astro';
+import BidsTable from '../../components/BidsTable.astro';
+import DocumentsList from '../../components/DocumentsList.astro';
+import ProvenanceBadge from '../../components/ProvenanceBadge.astro';
+import { formatCAD, sumAwardNumeric } from '../../prepare/amounts';
+import { getPrepared } from '../../prepare/prepare';
+import { displayTitle, normalizeCategory } from '../../prepare/titles';
+import type { Solicitation } from '../../prepare/types';
+import { href } from '../../lib/url';
+
+export async function getStaticPaths() {
+  const p = await getPrepared();
+  return p.doc.solicitations.map((sol) => ({
+    params: { doc: sol.document_number },
+    props: { sol },
+  }));
+}
+
+interface Props { sol: Solicitation }
+const { sol } = Astro.props;
+const p = await getPrepared();
+
+const title = displayTitle(sol);
+const awards = p.dedupedAwardsByDoc.get(sol.document_number) ?? [];
+const refs = p.bridge.docToRefs.get(sol.document_number) ?? [];
+const bridgedBids = refs.flatMap((ref) =>
+  (p.councilByRef.get(ref)?.bids ?? []).filter((b) => b.document_number === sol.document_number),
+);
+// Direct bids are reference-null award_summary rows (backend issue #145); bridged bids
+// carry a council reference — the two sets are disjoint by construction.
+const allBids = [...sol.bids, ...bridgedBids];
+const awardNames = awards.map((a) => a.supplier_name_raw).filter((n): n is string => n !== null);
+// BidsTable renders its Result column only when winners is a non-empty array —
+// pass undefined when there is no named award record so no winner claim is made.
+const winners = awardNames.length > 0 ? awardNames : undefined;
+const awardTotal = sumAwardNumeric(
+  awards.map((a) => ({ numeric: a.award_amount_numeric, verdict: a.award_amount_verdict })),
+);
+const year = sol.issue_date.slice(0, 4);
+const category = normalizeCategory(sol.category);
+---
+<Base
+  title={title.text}
+  description={sol.description ?? undefined}
+  pagefind={true}
+  filters={{ type: 'Solicitation', status: sol.status, year, buyer: 'City of Toronto' }}
+>
+  {title.untitled && (
+    <p class="untitled-marker">
+      No title published — the City released this record without a title; the heading above
+      is constructed from its document number, type, and division.
+    </p>
+  )}
+  <ProvenanceBadge titleSource={sol.title_source} />
+
+  <dl class="spine">
+    <div><dt>Document number</dt><dd>{sol.document_number}</dd></div>
+    <div><dt>Status</dt><dd>{sol.status}</dd></div>
+    {sol.rfx_type && <div><dt>Type</dt><dd>{sol.rfx_type}</dd></div>}
+    <div><dt>Issued</dt><dd>{sol.issue_date}</dd></div>
+    {sol.submission_deadline && <div><dt>Submission deadline</dt><dd>{sol.submission_deadline}</dd></div>}
+    {category && (
+      <div>
+        <dt>Category</dt>
+        <dd>
+          {category}
+          {category !== sol.category && <span class="raw-note"> (published as “{sol.category}”)</span>}
+        </dd>
+      </div>
+    )}
+    {sol.division && <div><dt>Division</dt><dd>{sol.division}</dd></div>}
+    {sol.buyer_name && <div><dt>Buyer</dt><dd>{sol.buyer_name}</dd></div>}
+    {sol.wards && <div><dt>Wards</dt><dd>{sol.wards}</dd></div>}
+  </dl>
+
+  {sol.description && (
+    <section>
+      <h2>Description</h2>
+      <p>{sol.description}</p>
+    </section>
+  )}
+
+  <section>
+    <h2>Awards</h2>
+    {awards.length === 0 ? (
+      <p>No awards on record.</p>
+    ) : (
+      <>
+        <table class="awards-table">
+          <thead>
+            <tr><th>Supplier</th><th>Amount (raw / parsed)</th><th>Award date</th><th>Sources</th></tr>
+          </thead>
+          <tbody>
+            {awards.map((a) => (
+              <tr>
+                <td>
+                  {a.supplier_name_raw ?? '—'}
+                  {a.supplier_id !== null && p.supplierSlugById.has(a.supplier_id) && (
+                    <a href={href(`/suppliers/${p.supplierSlugById.get(a.supplier_id)}/`)}> (profile)</a>
+                  )}
+                </td>
+                <td><AmountCell raw={a.award_amount} numeric={a.award_amount_numeric} /></td>
+                <td>{a.award_date ?? '—'}</td>
+                <td><span class="sources-badge">{a.sources.join(' + ')}</span></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <p>
+          Machine-parseable award total: {formatCAD(awardTotal.total)}
+          ({awardTotal.counted} of {awards.length} lines parseable — an undercount).
+        </p>
+        <p class="dedupe-note">
+          Award lines are deduplicated across the City's two feeds (odata and CKAN); the
+          Sources column shows which feeds carried each line. One row is one award line —
+          repeated suppliers can be legitimate standing-offer call-ups.
+        </p>
+      </>
+    )}
+  </section>
+
+  <section>
+    <h2>Bids</h2>
+    {allBids.length === 0 ? (
+      <p>No bids on record for this solicitation.</p>
+    ) : (
+      <BidsTable bids={allBids} winners={winners} supplierSlugById={p.supplierSlugById} />
+    )}
+  </section>
+
+  <section>
+    <h2>Documents</h2>
+    <DocumentsList documents={sol.documents} />
+  </section>
+
+  {sol.ariba_postings.length > 0 && (
+    <section>
+      <h2>Ariba postings</h2>
+      <ul>
+        {sol.ariba_postings.map((ap) => (
+          <li>
+            {ap.rfx_id}
+            {ap.title && ` — ${ap.title}`}
+            {ap.status && ` (${ap.status})`}
+            {ap.posted_date && ` posted ${ap.posted_date}`}
+            {ap.close_date && `, closes ${ap.close_date}`}
+            {ap.public_posting_url && <a href={ap.public_posting_url}> posting</a>}
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  {refs.length > 0 && (
+    <section>
+      <h2>Related council decisions</h2>
+      <ul>
+        {refs.map((ref) => (
+          <li><a href={href(`/council/${ref}/`)}>{ref}</a></li>
+        ))}
+      </ul>
+    </section>
+  )}
+</Base>

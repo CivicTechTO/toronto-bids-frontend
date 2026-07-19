@@ -1,0 +1,23 @@
+---
+// src/pages/404.astro
+import Base from '../layouts/Base.astro';
+import { href } from '../lib/url';
+---
+<Base title="Page not found">
+  <p>That page does not exist. Try searching — every identifier is searchable verbatim.</p>
+  <form action={href('/search/')} method="get" role="search" class="my-4">
+    <input type="search" name="q" placeholder="Paste any identifier or search term…" class="border px-2 py-1 w-96 max-w-full" />
+    <button type="submit" class="border px-3 py-1">Search</button>
+  </form>
+  <section>
+    <h2>Which kind of identifier do you have?</h2>
+    <ul>
+      <li>A 10-digit <strong>document number</strong> (e.g. 3524228095) → <a href={href('/solicitations/')}>solicitations</a></li>
+      <li>A <strong>workspace number</strong> → <a href={href('/noncompetitive/')}>non-competitive contracts</a></li>
+      <li>A <strong>call number</strong> (2009–2012) → <a href={href('/calls/')}>composite award calls</a></li>
+      <li>A <strong>council reference</strong> like 2019.GL6.24 → <a href={href('/council/')}>council items</a></li>
+      <li>A <strong>supplier name</strong> → <a href={href('/suppliers/')}>suppliers</a></li>
+    </ul>
+    <p>These five keyspaces are separate on purpose — they never join.</p>
+  </section>
+</Base>
