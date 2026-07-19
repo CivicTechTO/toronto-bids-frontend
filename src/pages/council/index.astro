@@ -1,0 +1,53 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getPrepared } from '../../prepare/prepare';
+import { href } from '../../lib/url';
+import type { CouncilItem } from '../../prepare/types';
+
+const p = await getPrepared();
+
+const byYear = new Map<string, CouncilItem[]>();
+for (const item of p.doc.council_items) {
+  const m = item.reference.match(/^(\d{4})\./);
+  const year = m ? m[1] : 'Unknown';
+  if (!byYear.has(year)) byYear.set(year, []);
+  byYear.get(year)!.push(item);
+}
+const years = [...byYear.keys()].sort((a, b) => b.localeCompare(a));
+for (const y of years) {
+  byYear.get(y)!.sort((a, b) => a.reference.localeCompare(b.reference));
+}
+---
+<Base
+  title="Council items"
+  description="City of Toronto council decisions on procurement, with bid tables including losing bidders."
+>
+  <p>
+    {p.doc.council_items.length} council items with procurement decisions,
+    grouped by year. Bid tables (including losing bidders) live on each item
+    page.
+  </p>
+  {years.map((year) => (
+    <section>
+      <h2>{year}</h2>
+      <table>
+        <thead>
+          <tr><th>Reference</th><th>Title</th><th>Bids</th></tr>
+        </thead>
+        <tbody>
+          {byYear.get(year)!.map((item) => (
+            <tr>
+              <td>
+                <a href={href(`/council/${item.reference}/`)}>
+                  {item.reference}
+                </a>
+              </td>
+              <td>{item.title ?? '(no title)'}</td>
+              <td>{item.bids.length}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </section>
+  ))}
+</Base>

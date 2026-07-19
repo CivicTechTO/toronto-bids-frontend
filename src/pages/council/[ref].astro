@@ -1,0 +1,122 @@
+---
+import Base from '../../layouts/Base.astro';
+import BidsTable from '../../components/BidsTable.astro';
+import { getPrepared } from '../../prepare/prepare';
+import { href } from '../../lib/url';
+import { displayTitle } from '../../prepare/titles';
+import type { CouncilItem } from '../../prepare/types';
+
+export async function getStaticPaths() {
+  const p = await getPrepared();
+  return p.doc.council_items.map((item) => ({
+    params: { ref: item.reference },
+    props: { item },
+  }));
+}
+
+const { item } = Astro.props as { item: CouncilItem };
+const p = await getPrepared();
+
+const yearMatch = item.reference.match(/^(\d{4})\./);
+const year = yearMatch ? yearMatch[1] : null;
+
+// Bridge: council reference -> solicitation document_number (from bids
+// carrying both identifiers).
+const linkedDoc = p.bridge.refToDoc.get(item.reference) ?? null;
+const linkedSol = linkedDoc ? (p.solByDoc.get(linkedDoc) ?? null) : null;
+
+// Winner marking is only determinable when the linked document has deduped
+// award suppliers. BidsTable renders a Result column ONLY when winners is a
+// non-empty string[]; passing undefined makes no winner claim at all.
+const awardNames = linkedDoc
+  ? (p.dedupedAwardsByDoc.get(linkedDoc) ?? [])
+      .map((a) => a.supplier_name_raw)
+      .filter((n): n is string => n !== null)
+  : [];
+
+const heading = item.title ?? `Council item ${item.reference}`;
+const decisionParas = (item.decision_text ?? '')
+  .split(/\n+/)
+  .map((s) => s.trim())
+  .filter(Boolean);
+---
+<Base
+  title={`${item.reference} — ${heading}`}
+  pagefind={true}
+  filters={{
+    type: 'Council item',
+    buyer: 'City of Toronto',
+    ...(year ? { year } : {}),
+  }}
+>
+  <p><strong>Council reference:</strong> {item.reference}</p>
+
+  {linkedSol && (
+    <p>
+      Linked solicitation:
+      <a href={href(`/solicitations/${linkedSol.document_number}/`)}>
+        {displayTitle(linkedSol).text}
+      </a>
+    </p>
+  )}
+
+  <section>
+    <h2>Decision</h2>
+    {decisionParas.length > 0 ? (
+      decisionParas.map((para) => <p>{para}</p>)
+    ) : (
+      <p>No decision text captured for this item.</p>
+    )}
+  </section>
+
+  <section>
+    <h2>Bids ({item.bids.length})</h2>
+    {item.bids.length > 0 ? (
+      <>
+        {awardNames.length > 0 ? (
+          <p>
+            Winners are marked from the linked solicitation's deduped award
+            record.
+          </p>
+        ) : (
+          <p>
+            No linked award record — winner cannot be determined from this
+            data.
+          </p>
+        )}
+        <BidsTable
+          bids={item.bids}
+          winners={awardNames.length > 0 ? awardNames : undefined}
+          supplierSlugById={p.supplierSlugById}
+        />
+      </>
+    ) : (
+      <p>No bids captured for this item.</p>
+    )}
+  </section>
+
+  <section>
+    <h2>Background documents ({item.background_pdfs.length})</h2>
+    {item.background_pdfs.length > 0 ? (
+      <ul>
+        {item.background_pdfs.map((pdf) => (
+          <li>
+            <a href={pdf.url} rel="noopener">
+              {pdf.kind}: {pdf.url.split('/').pop()}
+            </a>
+            {pdf.document_number && p.solByDoc.has(pdf.document_number) && (
+              <>
+                {' — relates to '}
+                <a href={href(`/solicitations/${pdf.document_number}/`)}>
+                  Doc {pdf.document_number}
+                </a>
+              </>
+            )}
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p>No background documents captured.</p>
+    )}
+  </section>
+</Base>
