@@ -18,6 +18,39 @@ describe('supplierSlug', () => {
   it('keeps digits', () => {
     expect(supplierSlug('A1 GROUP 2000')).toBe('a1-group-2000');
   });
+
+  it('leaves a normal short key unchanged', () => {
+    expect(supplierSlug('Acme Ltd.')).toBe('acme-ltd');
+  });
+
+  it('caps an over-long key to <=189 chars, pure [a-z0-9-], no edge dashes', () => {
+    const longKey = 'Some scraped footnote text about a supplier that goes on and on. '.repeat(6);
+    expect(longKey.length).toBeGreaterThan(255);
+    const slug = supplierSlug(longKey);
+    expect(slug.length).toBeLessThanOrEqual(189);
+    expect(slug).toMatch(/^[a-z0-9-]+$/);
+    expect(slug.startsWith('-')).toBe(false);
+    expect(slug.endsWith('-')).toBe(false);
+  });
+
+  it('gives two different over-long keys (sharing the same truncated prefix) different slugs', () => {
+    const prefix = 'Some scraped footnote text about a supplier that goes on and on. '.repeat(6);
+    const keyA = `${prefix} variant A tail content here to keep it long enough`;
+    const keyB = `${prefix} variant B tail content here to keep it long enough`;
+    expect(keyA.length).toBeGreaterThan(255);
+    expect(keyB.length).toBeGreaterThan(255);
+    const slugA = supplierSlug(keyA);
+    const slugB = supplierSlug(keyB);
+    // The truncated base (first MAX_SLUG_LEN chars of the normalized slug) is shared.
+    expect(slugA.slice(0, 180)).toBe(slugB.slice(0, 180));
+    expect(slugA).not.toBe(slugB);
+  });
+
+  it('is deterministic for the same long key', () => {
+    const longKey = 'Repeated deterministic footnote text padding for length purposes only. '.repeat(6);
+    expect(longKey.length).toBeGreaterThan(255);
+    expect(supplierSlug(longKey)).toBe(supplierSlug(longKey));
+  });
 });
 
 function supplier(over: Partial<SupplierRec>): SupplierRec {
@@ -62,6 +95,21 @@ describe('buildSupplierSlugs', () => {
     expect(slugs.size).toBe(2);
     expect(slugs.get(41)).toBe('acme-paving-ltd');
     expect(slugs.get(99)).toBe('acme-paving-ltd');
+  });
+
+  it('does not throw on an over-long supplier_key and maps it to the capped slug', () => {
+    const longKey = 'Some scraped footnote text about a supplier that goes on and on. '.repeat(6);
+    expect(longKey.length).toBeGreaterThan(255);
+    const suppliers = [
+      supplier({ supplier_id: 41, supplier_key: 'acme paving ltd' }),
+      supplier({ supplier_id: 7, supplier_key: longKey }),
+    ];
+    let slugs: Map<number, string> | undefined;
+    expect(() => {
+      slugs = buildSupplierSlugs(suppliers);
+    }).not.toThrow();
+    expect(slugs!.get(7)).toBe(supplierSlug(longKey));
+    expect(slugs!.get(7)!.length).toBeLessThanOrEqual(189);
   });
 });
 
