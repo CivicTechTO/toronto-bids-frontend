@@ -1,0 +1,31 @@
+{
+  "name": "toronto-bids-frontend",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build && pagefind --site dist",
+    "preview": "astro preview",
+    "test": "vitest run",
+    "test:site": "vitest run -c vitest.site.config.ts"
+  },
+  "dependencies": {
+    "@astrojs/react": "^4",
+    "@tanstack/react-table": "^8",
+    "astro": "^5",
+    "react": "^19",
+    "react-dom": "^19"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4",
+    "@types/node": "^24",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "cheerio": "^1",
+    "pagefind": "^1",
+    "tailwindcss": "^4",
+    "typescript": "^5",
+    "vitest": "^3"
+  }
+}
