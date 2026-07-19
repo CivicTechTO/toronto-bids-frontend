@@ -10,7 +10,9 @@ describe('home page', () => {
   });
   it('shows the freshness date from meta.generated_at in the footer', () => {
     const $ = loadPage('');
-    expect($('footer').text()).toContain(`Data as of ${loadFixture().meta.generated_at}`);
+    // Visible label is human-formatted; the raw ISO stays machine-readable on <time>.
+    expect($('footer').text()).toContain('Data as of');
+    expect($('footer time').attr('datetime')).toBe(loadFixture().meta.generated_at);
   });
   it('has a search form pointing at /search/', () => {
     const $ = loadPage('');
