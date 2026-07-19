@@ -1,5 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { loadFixture, loadPage } from './helpers';
+import { codedDomains } from '../../src/prepare/domains';
+import { countsOf } from '../../src/prepare/guard';
+import { INDEX_LEGENDS } from '../../src/lib/indexLegend';
 
 // Datasette-Lite loads the sqlite in-browser from a CORS-enabled R2 bucket, not the
 // release asset (which no longer sends ACAO — toronto-bids#155). Downloads stay on the release.
@@ -29,6 +32,39 @@ describe('/data/ page', () => {
     expect(headings).toContain('no title');
     expect(headings).toContain('$15');
     expect(headings).toContain('supplier_id');
+  });
+
+  it('publishes a data dictionary: record counts, coded-value domains, index-key legend (#12)', () => {
+    const $ = loadPage('data');
+    const fx = loadFixture();
+    expect($('h2:contains("Data dictionary")').length).toBe(1);
+    const text = $('body').text();
+
+    // Record counts — every count key from countsOf appears.
+    for (const key of Object.keys(countsOf(fx))) {
+      expect(text, `missing record count for ${key}`).toContain(key);
+    }
+
+    // Coded-value domains — each documented column and its observed values render.
+    const domains = codedDomains(fx);
+    for (const c of domains) {
+      expect(text, `missing coded column ${c.table}.${c.column}`).toContain(`${c.table}.${c.column}`);
+    }
+    const status = domains.find((c) => c.column === 'status')!;
+    for (const v of status.values) {
+      expect(text, `missing status value ${v.value}`).toContain(v.value);
+    }
+
+    // Index-key legend — every index file and each of its keys is documented on the page.
+    for (const legend of INDEX_LEGENDS) {
+      expect(text, `missing legend for ${legend.file}`).toContain(legend.file);
+    }
+    // The confusing keys that tripped reviewers (#7) are explained.
+    expect(text).toContain('number of bids on record'); // nb
+    expect(text).toContain('number of documents'); // nd
+
+    // The exhaustive column schema + file sizes are tracked upstream, not faked here.
+    expect($('a[href="https://github.com/CivicTechTO/toronto-bids/issues/168"]').length).toBe(1);
   });
 
   it('renders the sync-status table from meta.sources', () => {

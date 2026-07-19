@@ -1,8 +1,11 @@
 ---
 import Base from '../layouts/Base.astro';
 import { getPrepared } from '../prepare/prepare';
+import { codedDomains } from '../prepare/domains';
+import { INDEX_LEGENDS } from '../lib/indexLegend';
 
 const p = await getPrepared();
+const domains = codedDomains(p.doc);
 const RELEASES = 'https://github.com/CivicTechTO/toronto-bids-data/releases';
 const LATEST = `${RELEASES}/download/latest`;
 // Datasette-Lite fetches the database in the browser, so it must load from a
@@ -62,6 +65,67 @@ const DATASETTE = `https://lite.datasette.io/?url=${DATASETTE_SQLITE}`;
     latest database with nothing to install (your browser downloads the whole
     database).
   </p>
+
+  <h2>Data dictionary</h2>
+  <p>
+    Reference for anyone querying the download. The record counts and coded-value domains
+    below are computed from this same export, so they match the data exactly. A full
+    column-level dictionary (every column's type and nullability) and per-file sizes are
+    coming from a generated <code>schema.json</code> in the data release — tracked in
+    <a href="https://github.com/CivicTechTO/toronto-bids/issues/168" rel="external">toronto-bids#168</a>.
+  </p>
+
+  <h3>Record counts</h3>
+  <table>
+    <thead><tr><th>Record type</th><th>Rows in this export</th></tr></thead>
+    <tbody>
+      {Object.entries(p.counts).map(([key, n]) => (
+        <tr><td><code>{key}</code></td><td>{n.toLocaleString('en-CA')}</td></tr>
+      ))}
+    </tbody>
+  </table>
+
+  <h3>Coded values (enum domains)</h3>
+  <p>
+    The observed set of values for the coded columns — with row counts — computed from this
+    export, so an analyst never has to guess the valid domain.
+  </p>
+  {domains.map((c) => (
+    <details class="coded-column">
+      <summary>
+        <code>{c.table}.{c.column}</code> — {c.values.length} distinct{c.note && <> · {c.note}</>}
+      </summary>
+      <table>
+        <thead><tr><th>Value</th><th>Rows</th></tr></thead>
+        <tbody>
+          {c.values.map((v) => (
+            <tr><td><code>{v.value}</code></td><td>{v.count.toLocaleString('en-CA')}</td></tr>
+          ))}
+        </tbody>
+      </table>
+    </details>
+  ))}
+
+  <h3>Machine-readable index files (<code>/indexes/*.json</code>)</h3>
+  <p>
+    The browse tables load compact JSON arrays that use single-letter keys to stay small.
+    These files are an internal convenience, not a stable API — the downloads above are the
+    citable dataset — but here is what each key means. The same letter can mean different
+    things in different files.
+  </p>
+  {INDEX_LEGENDS.map((l) => (
+    <>
+      <h4><code>{l.file}</code> — {l.entity}</h4>
+      <table>
+        <thead><tr><th>Key</th><th>Meaning</th></tr></thead>
+        <tbody>
+          {Object.entries(l.keys).map(([k, meaning]) => (
+            <tr><td><code>{k}</code></td><td>{meaning}</td></tr>
+          ))}
+        </tbody>
+      </table>
+    </>
+  ))}
 
   <h2>Reading the data honestly</h2>
   <p>
