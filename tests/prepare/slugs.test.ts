@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { supplierSlug, buildSupplierSlugs } from '../../src/prepare/slugs.ts';
+import { supplierSlug, buildSupplierSlugs, wsSlug } from '../../src/prepare/slugs.ts';
 import type { SupplierRec } from '../../src/prepare/types.ts';
 
 describe('supplierSlug', () => {
@@ -51,5 +51,24 @@ describe('buildSupplierSlugs', () => {
     expect(() => buildSupplierSlugs(suppliers)).toThrowError(
       'Supplier slug collision: "acme-ltd" from supplier_key "acme ltd" and supplier_key "acme. ltd"',
     );
+  });
+});
+
+describe('wsSlug', () => {
+  it('passes clean workspace numbers through unchanged', () => {
+    expect(wsSlug('2021-0001')).toBe('2021-0001');
+    expect(wsSlug('SR1152773518')).toBe('SR1152773518');
+  });
+
+  it('replaces runs of spaces, slashes, commas, and ampersands with a single dash', () => {
+    expect(wsSlug('SR5252910024 / CW2310865')).toBe('SR5252910024-CW2310865');
+    expect(wsSlug('SR5465565873/CW2312872')).toBe('SR5465565873-CW2312872');
+    expect(wsSlug('11393, 11394 & 11395')).toBe('11393-11394-11395');
+  });
+
+  it('trims edge dashes from wrapping punctuation; preserves case, dots, and underscores', () => {
+    expect(wsSlug('10834 (11106)')).toBe('10834-11106');
+    expect(wsSlug('CINTAS CANADA LIMITED')).toBe('CINTAS-CANADA-LIMITED');
+    expect(wsSlug(' No. 6034_A ')).toBe('No.-6034_A');
   });
 });

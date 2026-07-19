@@ -36,3 +36,20 @@ export function buildSupplierSlugs(suppliers: SupplierRec[]): Map<number, string
   }
   return result;
 }
+
+/**
+ * URL-safe slug for a noncompetitive workspace_number. 77 of 2,856 real
+ * values contain spaces, parens, commas, ampersands, or slashes — unusable
+ * raw as an Astro route param (a '/' even splits the path). Case, digits,
+ * dots, underscores, and dashes are preserved so most workspace numbers
+ * pass through unchanged; every other run of characters becomes a single
+ * '-'. Record pages display the raw workspace_number verbatim — only URLs
+ * use the slug. Collision detection lives in prepare() (Task 10), which
+ * builds Prepared.wsSlugByNumber and throws naming both colliding values.
+ */
+export function wsSlug(ws: string): string {
+  return ws
+    .trim()
+    .replace(/[^A-Za-z0-9._-]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
