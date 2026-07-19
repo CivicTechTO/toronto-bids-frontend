@@ -10,6 +10,7 @@ import { getPrepared } from '../../prepare/prepare';
 import { displayTitle, normalizeCategory } from '../../prepare/titles';
 import type { Solicitation } from '../../prepare/types';
 import { href } from '../../lib/url';
+import { deadlinePassed } from '../../lib/dates';
 
 export async function getStaticPaths() {
   const p = await getPrepared();
@@ -41,6 +42,10 @@ const awardTotal = sumAwardNumeric(
 );
 const year = sol.issue_date.slice(0, 4);
 const category = normalizeCategory(sol.category);
+// A record still marked "Open" whose deadline passed before the data snapshot is stale,
+// not biddable — flag it so "Open" isn't read as an actionable status (#10).
+const deadlinePast = deadlinePassed(sol.submission_deadline, p.generatedAt);
+const staleOpen = sol.status === 'Open' && deadlinePast;
 ---
 <Base
   title={title.text}
@@ -58,10 +63,18 @@ const category = normalizeCategory(sol.category);
 
   <dl class="spine">
     <div><dt>Document number</dt><dd>{sol.document_number}</dd></div>
-    <div><dt>Status</dt><dd>{sol.status}</dd></div>
+    <div>
+      <dt>Status</dt>
+      <dd>{sol.status}{staleOpen && <span class="status-expired"> — last captured status; not open for bidding</span>}</dd>
+    </div>
     {sol.rfx_type && <div><dt>Type</dt><dd>{sol.rfx_type}</dd></div>}
     <div><dt>Issued</dt><dd>{sol.issue_date}</dd></div>
-    {sol.submission_deadline && <div><dt>Submission deadline</dt><dd>{sol.submission_deadline}</dd></div>}
+    {sol.submission_deadline && (
+      <div>
+        <dt>Submission deadline</dt>
+        <dd>{sol.submission_deadline}{staleOpen && <span class="deadline-expired"> (passed)</span>}</dd>
+      </div>
+    )}
     {category && (
       <div>
         <dt>Category</dt>
@@ -81,6 +94,14 @@ const category = normalizeCategory(sol.category);
       </div>
     )}
   </dl>
+
+  {staleOpen && (
+    <p class="deadline-expired-note">
+      This record is still marked <strong>Open</strong>, but its submission deadline
+      ({sol.submission_deadline}) passed before this data was captured. It is a historical
+      record, not an opportunity you can bid on now.
+    </p>
+  )}
 
   {sol.description && (
     <section>

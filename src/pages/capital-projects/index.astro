@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import { getPrepared } from '../../prepare/prepare';
+import { TORONTO_BIDS_PORTAL } from '../../lib/sources';
 
 const p = await getPrepared();
 const projects = [...p.doc.capital_projects].sort((a, b) =>
@@ -12,9 +13,15 @@ const projects = [...p.doc.capital_projects].sort((a, b) =>
   description="City-published pipeline of upcoming capital procurements."
 >
   <p>
-    {projects.length} upcoming capital procurements as published by the City.
-    Estimated ranges are the City's published text and are shown verbatim —
+    {projects.length} capital procurements from the City's forward-looking pipeline, as it
+    published them. Estimated ranges are the City's published text and are shown verbatim —
     they are never parsed into numbers or summed.
+  </p>
+  <p class="stats-caveat">
+    This is a <strong>forecast the City published</strong>, not a list of open tenders — and
+    like everything here it is a past snapshot, so the “target” years may already have
+    passed. To actually bid, use the City's{' '}
+    <a href={TORONTO_BIDS_PORTAL} rel="external">Toronto Bids Portal</a>.
   </p>
   <div style="overflow-x:auto">
     <table>

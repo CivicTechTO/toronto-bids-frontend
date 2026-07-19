@@ -13,12 +13,14 @@ describe('/capital-projects/', () => {
   it('lists every project with estimated_range shown verbatim as text', () => {
     const $ = loadPage('capital-projects');
     const text = $('body').text();
-    expect(text).toContain(`${fx.capital_projects.length} upcoming`);
+    expect(text).toContain(`${fx.capital_projects.length} capital procurements`);
     for (const cp of fx.capital_projects) {
       expect(text).toContain(cp.name);
       if (cp.estimated_range) expect(text).toContain(cp.estimated_range);
     }
     expect(text).toContain('never parsed');
+    // Reframed as a City forecast, not open tenders (#10).
+    expect(text).toContain('not a list of open tenders');
   });
 });
 

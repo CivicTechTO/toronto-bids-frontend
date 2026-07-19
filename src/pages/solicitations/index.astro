@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import BrowseTable from '../../islands/BrowseTable';
+import Term from '../../components/Term.astro';
 import { getPrepared } from '../../prepare/prepare';
 import { buildSolicitationIndex } from '../../prepare/indexes';
 import { href } from '../../lib/url';
@@ -15,10 +16,10 @@ const first = rows.slice(0, 50);
   description="Browse all competitive City of Toronto solicitations; filter by status, type, category, division, year, and has-documents."
 >
   <p>
-    {rows.length.toLocaleString('en-CA')} competitive solicitations (the
-    <code>document_number</code> keyspace). Filters and sorting are reflected in the
-    URL, so a filtered view is a citable link. Award totals sum machine-parseable
-    amounts only and are undercounts.
+    {rows.length.toLocaleString('en-CA')} competitive
+    <Term id="solicitation">solicitations</Term> — contracts the City put out to open
+    bidding. Filters and sorting are reflected in the URL, so a filtered view is a citable
+    link. Award totals sum machine-parseable amounts only and are undercounts.
   </p>
   <BrowseTable
     client:load

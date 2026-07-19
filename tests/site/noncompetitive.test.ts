@@ -39,6 +39,6 @@ describe('non-competitive record page', () => {
   });
   it('notes that workspace numbers never join to document numbers', () => {
     const $ = loadPage(ncPath);
-    expect($('.keyspace-note').text()).toContain('never join');
+    expect($('.keyspace-note').text()).toContain('never matched up');
   });
 });

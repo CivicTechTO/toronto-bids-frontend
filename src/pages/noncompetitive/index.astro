@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import BrowseTable from '../../islands/BrowseTable';
+import Term from '../../components/Term.astro';
 import { getPrepared } from '../../prepare/prepare';
 import { buildNoncompetitiveIndex } from '../../prepare/indexes';
 import { formatCAD } from '../../prepare/amounts';
@@ -16,10 +17,10 @@ const first = rows.slice(0, 50);
   description="Browse sole-source City of Toronto contracts with the City's stated reason."
 >
   <p>
-    {rows.length.toLocaleString('en-CA')} sole-source contracts with the City's stated
-    reason (the <code>workspace_number</code> keyspace — never joined with document
-    numbers). Amounts shown are the machine-parseable tier only. Filters and sorting
-    are reflected in the URL.
+    {rows.length.toLocaleString('en-CA')}
+    <Term id="non-competitive">non-competitive (sole-source) contracts</Term>, each with the
+    City's stated reason for skipping open competition. Amounts shown are the
+    machine-parseable tier only. Filters and sorting are reflected in the URL.
   </p>
   <BrowseTable
     client:load

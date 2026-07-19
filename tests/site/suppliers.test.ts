@@ -178,7 +178,7 @@ describe('/suppliers/{slug}/ profile page', () => {
     expect(text).toContain('City awards');
     expect(text).toContain('Composite awards');
     expect(text).toContain('Non-competitive contracts');
-    expect(text).toContain('per keyspace and never merged');
+    expect(text).toContain('kept separate by record type and never merged');
     expect(text).toContain('undercount');
   });
 

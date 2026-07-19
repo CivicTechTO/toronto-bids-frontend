@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import BrowseTable from '../../islands/BrowseTable';
+import Term from '../../components/Term.astro';
 import { getPrepared } from '../../prepare/prepare';
 import { buildCouncilIndex } from '../../prepare/indexes';
 import { href } from '../../lib/url';
@@ -15,10 +16,9 @@ const first = rows.slice(0, 50);
   description="Browse council items with procurement decisions: decision text, bid tables, staff reports."
 >
   <p>
-    {rows.length.toLocaleString('en-CA')} council items (the <code>reference</code>
-    keyspace, <code>YYYY.CCNN.N</code>), including bid tables with winning and losing
-    bidders. Filters and sorting are reflected in the URL, so filtered views are
-    citable.
+    {rows.length.toLocaleString('en-CA')} council items with procurement decisions,
+    including <Term id="bid">bid</Term> tables with winning and losing bidders. Filters and
+    sorting are reflected in the URL, so filtered views are citable.
   </p>
   <BrowseTable
     client:load
