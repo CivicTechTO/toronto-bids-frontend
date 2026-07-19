@@ -1,5 +1,10 @@
 import { describe, it, expect } from 'vitest';
-import { formatCAD, sumAwardNumeric } from '../../src/prepare/amounts.ts';
+import {
+  formatCAD,
+  sumAwardNumeric,
+  sumAwardNumericExcludingOutliers,
+  IMPLAUSIBLE_AWARD_THRESHOLD,
+} from '../../src/prepare/amounts.ts';
 
 describe('formatCAD', () => {
   it('formats with $ prefix, comma thousands, two decimals (en-CA)', () => {
@@ -52,5 +57,46 @@ describe('sumAwardNumeric', () => {
   it('counts rows with any other verdict normally', () => {
     const rows = [{ numeric: 42, verdict: 'plausible' }];
     expect(sumAwardNumeric(rows)).toEqual({ total: 42, counted: 1, skipped: 0 });
+  });
+});
+
+describe('sumAwardNumericExcludingOutliers', () => {
+  it('drops award lines over the threshold and reports how many', () => {
+    const rows = [
+      { numeric: 9_000_000_000, verdict: null }, // outlier — excluded
+      { numeric: 500_000_000, verdict: null }, // kept (below $1B)
+      { numeric: 250, verdict: null }, // kept
+    ];
+    const r = sumAwardNumericExcludingOutliers(rows);
+    expect(r.total).toBe(500_000_250);
+    expect(r.counted).toBe(2);
+    expect(r.outliers).toBe(1);
+  });
+
+  it('leaves totals unchanged when nothing exceeds the threshold', () => {
+    const rows = [
+      { numeric: 100, verdict: null },
+      { numeric: null, verdict: null }, // still skipped, not an outlier
+      { numeric: 200, verdict: 'not_an_award' }, // still skipped, not an outlier
+    ];
+    const r = sumAwardNumericExcludingOutliers(rows);
+    expect(r).toEqual({ total: 100, counted: 1, skipped: 2, outliers: 0 });
+  });
+
+  it('never treats a not_an_award row as an outlier (it was already excluded)', () => {
+    const rows = [{ numeric: 5_000_000_000, verdict: 'not_an_award' }];
+    const r = sumAwardNumericExcludingOutliers(rows);
+    expect(r.outliers).toBe(0);
+    expect(r.total).toBe(0);
+    expect(r.skipped).toBe(1);
+  });
+
+  it('honours a custom threshold', () => {
+    const rows = [{ numeric: 600, verdict: null }, { numeric: 100, verdict: null }];
+    expect(sumAwardNumericExcludingOutliers(rows, 500)).toMatchObject({ total: 100, outliers: 1 });
+  });
+
+  it('exposes the $1B default threshold', () => {
+    expect(IMPLAUSIBLE_AWARD_THRESHOLD).toBe(1_000_000_000);
   });
 });

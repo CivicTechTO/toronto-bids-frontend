@@ -39,6 +39,15 @@ describe('footer on every page', () => {
   });
 });
 
+describe('/about/ page', () => {
+  it('states the license (OGL-Toronto + CC BY 4.0) and links the data page for full terms', () => {
+    const $ = loadPage('about');
+    expect($('h2:contains("License")').length).toBe(1);
+    expect($('a[href="https://open.toronto.ca/open-data-license/"]').length).toBeGreaterThan(0);
+    expect($('a[href="https://creativecommons.org/licenses/by/4.0/"]').length).toBeGreaterThan(0);
+  });
+});
+
 describe('404 page', () => {
   it('explains the five keyspaces and offers search', () => {
     const html = loadFile('404.html');

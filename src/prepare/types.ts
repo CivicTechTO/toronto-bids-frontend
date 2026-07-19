@@ -40,7 +40,7 @@ export interface SupplierRollup {
   suspended: SuspendedFirm[];
   totals: { cityAwards: SumResult; composite: SumResult; noncompetitive: SumResult };
 }
-export interface Headline { solicitations: number; awardedTotal: SumResult; noncompetitiveTotal: SumResult; openCount: number; bidCount: number; supplierCount: number }
+export interface Headline { solicitations: number; awardedTotal: SumResult; awardedTotalTrimmed: SumResult; outlierAwardCount: number; noncompetitiveTotal: SumResult; openCount: number; bidCount: number; supplierCount: number }
 export interface Prepared {
   doc: ExportDoc;
   generatedAt: string;
