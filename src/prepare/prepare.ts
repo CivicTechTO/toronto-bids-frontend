@@ -7,6 +7,7 @@ import { sumAwardNumeric } from './amounts';
 import { dedupeAwards } from './awards';
 import { buildSupplierSlugs, wsSlug } from './slugs';
 import { buildBridge, buildSupplierRollups } from './links';
+import { countsOf } from './guard';
 
 function buildCompositeCalls(doc: ExportDoc): CompositeCall[] {
   const byCall = new Map<string, CompositeCall>();
@@ -25,23 +26,6 @@ function buildCompositeCalls(doc: ExportDoc): CompositeCall[] {
     call.total = sumAwardNumeric(call.lines.map((l) => ({ numeric: l.award_value_numeric, verdict: null })));
   }
   return calls;
-}
-
-// Entity counts (bids = council-nested + solicitation-nested + unlinked).
-// Task 11 extracts this contract into guard.ts countsOf and replaces this
-// helper with an import; keys and values are identical.
-function localCounts(doc: ExportDoc): Record<string, number> {
-  return {
-    solicitations: doc.solicitations.length,
-    awards: doc.solicitations.reduce((n, s) => n + s.awards.length, 0) + doc.unlinked_awards.length,
-    bids: doc.council_items.reduce((n, c) => n + c.bids.length, 0)
-      + doc.solicitations.reduce((n, s) => n + s.bids.length, 0)
-      + doc.unlinked_bids.length,
-    noncompetitive: doc.noncompetitive.length,
-    suppliers: doc.suppliers.length,
-    council_items: doc.council_items.length,
-    composite_awards: doc.composite_awards.length,
-  };
 }
 
 export function prepare(doc: ExportDoc): Prepared {
@@ -87,7 +71,7 @@ export function prepare(doc: ExportDoc): Prepared {
   const councilByRef = new Map(doc.council_items.map((c) => [c.reference, c] as const));
   const solByDoc = new Map(doc.solicitations.map((s) => [s.document_number, s] as const));
   const allDeduped = [...dedupedAwardsByDoc.values()].flat();
-  const counts = localCounts(doc);
+  const counts = countsOf(doc);
   const headline: Headline = {
     solicitations: doc.solicitations.length,
     // City-only, deduped, *_numeric only, not_an_award excluded — a machine-parseable undercount.
