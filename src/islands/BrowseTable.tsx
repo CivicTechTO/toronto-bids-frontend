@@ -85,7 +85,7 @@ function buildColumns(entity: BrowseEntity, link: (path: string) => string): Col
           cell: (c) => (
             <a
               href={link(`solicitations/${c.row.original.d}/`)}
-              className={c.row.original.u ? 'italic' : undefined}
+              className={`line-clamp-3 ${c.row.original.u ? 'italic' : ''}`}
             >
               {c.getValue<string>()}
             </a>
@@ -106,7 +106,11 @@ function buildColumns(entity: BrowseEntity, link: (path: string) => string): Col
         {
           accessorKey: 'n',
           header: 'Supplier',
-          cell: (c) => <a href={link(`suppliers/${c.row.original.g}/`)}>{c.getValue<string>()}</a>,
+          cell: (c) => (
+            <a href={link(`suppliers/${c.row.original.g}/`)} className="line-clamp-3">
+              {c.getValue<string>()}
+            </a>
+          ),
         },
         { accessorKey: 'na', header: 'Award lines' },
         { accessorKey: 'nb', header: 'Bids' },
@@ -122,7 +126,11 @@ function buildColumns(entity: BrowseEntity, link: (path: string) => string): Col
             <a href={link(`noncompetitive/${c.row.original.wl}/`)}>{c.getValue<string>()}</a>
           ),
         },
-        { accessorKey: 'n', header: 'Supplier' },
+        {
+          accessorKey: 'n',
+          header: 'Supplier',
+          cell: (c) => <span className="line-clamp-3">{c.getValue<string>()}</span>,
+        },
         { accessorKey: 'r', header: 'Reason' },
         { accessorKey: 'v', header: 'Division' },
         { accessorKey: 'y', header: 'Year', filterFn: exactText },
@@ -135,7 +143,11 @@ function buildColumns(entity: BrowseEntity, link: (path: string) => string): Col
           header: 'Reference',
           cell: (c) => <a href={link(`council/${c.getValue<string>()}/`)}>{c.getValue<string>()}</a>,
         },
-        { accessorKey: 't', header: 'Title' },
+        {
+          accessorKey: 't',
+          header: 'Title',
+          cell: (c) => <span className="line-clamp-3">{c.getValue<string>()}</span>,
+        },
         { accessorKey: 'y', header: 'Year', filterFn: exactText },
         { accessorKey: 'nb', header: 'Bids' },
       ];

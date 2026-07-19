@@ -13,6 +13,16 @@ interface Props {
 const { title, description, pagefind = false, filters = {} } = Astro.props;
 const p = await getPrepared();
 const fullTitle = title === 'Toronto Bids Archive' ? title : `${title} — Toronto Bids Archive`;
+// Human-readable freshness label; the raw ISO stays on <time datetime> below.
+const asOfLabel = new Date(p.generatedAt).toLocaleString('en-CA', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+  hour: 'numeric',
+  minute: '2-digit',
+  timeZone: 'America/Toronto',
+  timeZoneName: 'short',
+});
 ---
 <html lang="en">
   <head>
@@ -45,7 +55,7 @@ const fullTitle = title === 'Toronto Bids Archive' ? title : `${title} — Toron
       <slot />
     </main>
     <footer class="mt-8 py-3 border-t text-sm text-gray-600">
-      Data as of {p.generatedAt} · <a href={href('/data/')}>Data &amp; downloads</a>
+      Data as of <time datetime={p.generatedAt}>{asOfLabel}</time> · <a href={href('/data/')}>Data &amp; downloads</a>
     </footer>
   </body>
 </html>
