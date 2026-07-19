@@ -42,6 +42,14 @@ export function buildBridge(councilItems: CouncilItem[]): Bridge {
  * council items, solicitation-nested bids, and `unlinked_bids`. Totals are
  * one SumResult per keyspace — cityAwards, composite, noncompetitive —
  * and are NEVER merged into a single figure (data rule 3).
+ *
+ * The slug layer (buildSupplierSlugs) deliberately maps two supplier_ids
+ * sharing the same supplier_key to the SAME slug without throwing (same key
+ * = same firm = one page). So a slug may have more than one supplier_id
+ * behind it; when it does, every one of those supplier_ids must point at
+ * the SAME rollup object so their awards/bids/etc all accumulate onto one
+ * page instead of the second supplier_id's rollup silently overwriting (and
+ * orphaning) the first's in `out`.
  */
 export function buildSupplierRollups(
   doc: ExportDoc,
@@ -60,22 +68,25 @@ export function buildSupplierRollups(
         `No slug for supplier_id ${supplier.supplier_id} (supplier_key "${supplier.supplier_key}")`,
       );
     }
-    const rollup: SupplierRollup = {
-      slug,
-      supplier,
-      awards: [],
-      compositeAwards: [],
-      noncompetitive: [],
-      bids: [],
-      suspended: [],
-      totals: {
-        cityAwards: { total: 0, counted: 0, skipped: 0 },
-        composite: { total: 0, counted: 0, skipped: 0 },
-        noncompetitive: { total: 0, counted: 0, skipped: 0 },
-      },
-    };
+    let rollup = out.get(slug);
+    if (rollup === undefined) {
+      rollup = {
+        slug,
+        supplier,
+        awards: [],
+        compositeAwards: [],
+        noncompetitive: [],
+        bids: [],
+        suspended: [],
+        totals: {
+          cityAwards: { total: 0, counted: 0, skipped: 0 },
+          composite: { total: 0, counted: 0, skipped: 0 },
+          noncompetitive: { total: 0, counted: 0, skipped: 0 },
+        },
+      };
+      out.set(slug, rollup);
+    }
     byId.set(supplier.supplier_id, rollup);
-    out.set(slug, rollup);
   }
 
   for (const [document_number, awards] of dedupedByDoc) {

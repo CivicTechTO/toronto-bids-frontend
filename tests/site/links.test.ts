@@ -69,4 +69,12 @@ describe('page counts', () => {
   it('builds one record page per supplier', () => {
     expect(recordDirs('suppliers')).toBe(counts.suppliers);
   });
+
+  it('builds one record page per noncompetitive contract', () => {
+    expect(recordDirs('noncompetitive')).toBe(counts.noncompetitive);
+  });
+
+  it('builds one record page per council item', () => {
+    expect(recordDirs('council')).toBe(counts.council_items);
+  });
 });

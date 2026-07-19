@@ -34,14 +34,25 @@ jobs:
       - run: npm ci
       - name: Fetch latest export
         run: node scripts/fetch-data.ts
-      - name: Fetch previous deploy's entity counts
+      - name: Fetch previous counts (baseline for shrink guard)
         run: |
-          curl -fsSL "$SITE_URL$BASE_PATH/counts.json" -o .data/previous-counts.json \
-            || echo "no previous counts (first deploy?)"
+          mkdir -p .data
+          code=$(curl -sS --retry 3 --retry-delay 2 -w '%{http_code}' -o .data/previous-counts.json "$SITE_URL$BASE_PATH/counts.json" || echo "000")
+          if [ "$code" = "200" ]; then
+            echo "previous counts fetched"
+          elif [ "$code" = "404" ]; then
+            echo "no previous counts (first deploy) — shrink guard will pass"
+            rm -f .data/previous-counts.json
+          else
+            echo "ERROR: could not fetch previous counts (HTTP $code) — aborting to avoid deploying with the shrink guard disarmed" >&2
+            exit 1
+          fi
       - name: Guard against archive shrink
         run: node scripts/check-shrink.ts
       - name: Build site (Astro + Pagefind)
         run: npm run build
+      - name: Verify internal links (fail deploy on any broken link)
+        run: npx vitest run -c vitest.site.config.ts tests/site/links.test.ts
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:

@@ -365,4 +365,36 @@ describe('buildSupplierRollups', () => {
       'No slug for supplier_id 41 (supplier_key "acme paving ltd")',
     );
   });
+
+  it('merges two supplier_ids sharing the same supplier_key into ONE rollup (no orphan)', () => {
+    // Same supplier_key, different supplier_id — the slug layer maps both to
+    // the same slug (same firm). Each supplier_id is awarded on a different
+    // document; both awards must land on the single merged rollup.
+    const solA = sol({ document_number: '3524228095' });
+    const solB = sol({ document_number: '4444444444' });
+    const doc = makeDoc({
+      solicitations: [solA, solB],
+      suppliers: [
+        supplier({ supplier_id: 41, supplier_key: 'acme paving ltd' }),
+        supplier({ supplier_id: 99, supplier_key: 'acme paving ltd' }),
+      ],
+    });
+    const slugs = new Map([
+      [41, 'acme-paving-ltd'],
+      [99, 'acme-paving-ltd'],
+    ]);
+    const dedupedByDoc = new Map([
+      ['3524228095', [dedupedAward({ supplier_id: 41, award_amount_numeric: 1000000 })]],
+      ['4444444444', [dedupedAward({ supplier_id: 99, award_amount_numeric: 2000000 })]],
+    ]);
+    const rollups = buildSupplierRollups(doc, slugs, dedupedByDoc);
+    expect(rollups.size).toBe(1);
+    const merged = rollups.get('acme-paving-ltd')!;
+    expect(merged.awards).toHaveLength(2);
+    expect(merged.awards.map((a) => a.document_number).sort()).toEqual([
+      '3524228095',
+      '4444444444',
+    ]);
+    expect(merged.totals.cityAwards).toEqual({ total: 3000000, counted: 2, skipped: 0 });
+  });
 });
