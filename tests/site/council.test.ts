@@ -135,7 +135,7 @@ describe('/council/{reference}/ record page', () => {
     const item = fx.council_items[0];
     const $ = loadPage(`council/${item.reference}`);
     expect(
-      $(`a[href="https://app.toronto.ca/tmmis/viewAgendaItemHistory.do?item=${item.reference}"]`).length,
+      $(`a[href="https://secure.toronto.ca/council/agenda-item.do?item=${item.reference}"]`).length,
     ).toBe(1);
   });
 });

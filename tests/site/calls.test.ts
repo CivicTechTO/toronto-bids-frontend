@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { loadFixture, loadPage } from './helpers';
+import { tmmisUrl } from '../../src/lib/sources';
 
 const fixture = loadFixture();
 
@@ -47,6 +48,6 @@ describe('/calls/{call}/ record page', () => {
     const absent = fixture.composite_awards.find((c) => c.reference && !inRefs.has(c.reference))!;
     expect(absent, 'fixture needs a call with an archive-absent reference').toBeDefined();
     const $ = loadPage(`calls/${absent.call_number}`);
-    expect($(`a[href*="item=${absent.reference}"]`).length).toBeGreaterThan(0);
+    expect($(`a[href="${tmmisUrl(absent.reference!)}"]`).length).toBeGreaterThan(0);
   });
 });
