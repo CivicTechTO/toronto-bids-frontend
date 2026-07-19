@@ -19,6 +19,11 @@ function walkHtml(dir: string, out: string[] = []): string[] {
 
 const EXTERNAL = /^(https?:|mailto:|tel:)/;
 
+// The build bakes BASE_PATH into every internal href (via href()); strip it to
+// resolve against dist/, which has no base prefix on disk. Unset or '/' (the
+// fixture/CI build) => empty prefix, nothing to strip.
+const BASE = (process.env.BASE_PATH ?? '/').replace(/\/+$/, '');
+
 describe('internal links', () => {
   it('every internal a[href] in dist resolves to a built file', () => {
     const pages = walkHtml('dist');
@@ -29,11 +34,13 @@ describe('internal links', () => {
       const $ = load(readFileSync(page, 'utf8'));
       $('a[href]').each((_, el) => {
         const href = $(el).attr('href') ?? '';
-        // Internal = starts with '/' after the base (site tests build with
-        // BASE_PATH=/). Skip external protocols, fragments, and Pagefind's
-        // runtime-generated assets.
+        // Internal links start with '/'. Skip external protocols and fragments.
         if (EXTERNAL.test(href) || href.startsWith('#') || !href.startsWith('/')) return;
-        const path = href.split(/[?#]/)[0];
+        let path = href.split(/[?#]/)[0];
+        // Strip the baked-in base path so the target resolves against dist/.
+        if (BASE && (path === BASE || path.startsWith(BASE + '/'))) {
+          path = path.slice(BASE.length) || '/';
+        }
         if (path.startsWith('/pagefind/')) return;
         if (seen.has(path)) return; // check each target once
         seen.add(path);
