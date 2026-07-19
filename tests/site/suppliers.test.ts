@@ -3,11 +3,17 @@ import { readFileSync } from 'node:fs';
 import { loadPage } from './helpers';
 import { supplierSlug } from '../../src/prepare/slugs';
 import { dedupeAwards } from '../../src/prepare/awards';
+import { prepare } from '../../src/prepare/prepare';
+import { validateExport } from '../../src/prepare/validate';
 import type { ExportDoc } from '../../src/prepare/types';
 
 const fx = JSON.parse(
   readFileSync('tests/fixtures/bids.fixture.json', 'utf8'),
 ) as ExportDoc;
+// Expectations for the Lost mirror below are derived through the SAME code
+// path the page uses (prepare()'s bridge + dedupedAwardsByDoc + supplier
+// rollups) — never a re-derivation with different first-match rules.
+const p = prepare(validateExport(fx));
 
 const awarded = fx.suppliers.find((s) =>
   fx.solicitations.some((sol) =>
@@ -41,16 +47,31 @@ const wonBidder = fx.suppliers.find((s) =>
       dedupeAwards(sol.awards).some((a) => a.supplier_id === s.supplier_id),
   ),
 );
-const lostBidder = fx.suppliers.find((s) =>
-  fx.solicitations.some((sol) => {
-    const deduped = dedupeAwards(sol.awards);
-    return (
-      sol.bids.some((b) => b.supplier_id === s.supplier_id) &&
-      deduped.length > 0 &&
-      deduped.every((a) => a.supplier_id !== s.supplier_id)
-    );
-  }),
-);
+// The mirror above only scans solicitations[].bids, but the fixture's real
+// Lost case lives on a bridged council bid (council item 2019.BA42.10, doc
+// 1808735584): a council bid carrying both a `reference` and a
+// `document_number`. Mirror the page's exact derivation
+// (src/pages/suppliers/[slug].astro: bidDoc/bidResult) via the real Prepared
+// maps — including bids resolved through p.bridge.refToDoc — so bids sourced
+// from council_items are considered too, not just solicitations[].bids.
+function bidDocFor(entry: {
+  document_number: string | null;
+  reference: string | null;
+}): string | null {
+  if (entry.document_number !== null) return entry.document_number;
+  if (entry.reference !== null) {
+    return p.bridge.refToDoc.get(entry.reference) ?? null;
+  }
+  return null;
+}
+const lostBidder = [...p.rollupsBySlug.values()].find((rollup) => {
+  const awardDocs = new Set(rollup.awards.map((a) => a.document_number));
+  return rollup.bids.some((entry) => {
+    const doc = bidDocFor(entry);
+    if (doc === null || awardDocs.has(doc)) return false;
+    return (p.dedupedAwardsByDoc.get(doc) ?? []).length > 0;
+  });
+})?.supplier;
 
 // Single-bidder mirror: this supplier's bids whose containing bid table has
 // exactly one bid (the same rule the page applies).
