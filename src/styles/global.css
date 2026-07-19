@@ -30,3 +30,7 @@ th, td { text-align: left; padding: 0.35rem 0.6rem; border-bottom: 1px solid #dd
 .glossary div { margin: 0 0 1rem; scroll-margin-top: 1rem; }
 .glossary dt { font-weight: 700; }
 .glossary dd { margin: 0.2rem 0 0; }
+
+/* Collapsible coded-value domains on the data dictionary (#12). */
+.coded-column { margin: 0.4rem 0; }
+.coded-column summary { cursor: pointer; }

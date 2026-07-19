@@ -1,5 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { loadFixture, loadPage } from './helpers';
+import { codedDomains } from '../../src/prepare/domains';
+import { countsOf } from '../../src/prepare/guard';
+import { INDEX_LEGENDS } from '../../src/lib/indexLegend';
 
 // Datasette-Lite loads the sqlite in-browser from a CORS-enabled R2 bucket, not the
 // release asset (which no longer sends ACAO — toronto-bids#155). Downloads stay on the release.
@@ -29,6 +32,48 @@ describe('/data/ page', () => {
     expect(headings).toContain('no title');
     expect(headings).toContain('$15');
     expect(headings).toContain('supplier_id');
+  });
+
+  it('publishes a data dictionary: record counts, coded-value domains, index-key legend (#12)', () => {
+    const $ = loadPage('data');
+    const fx = loadFixture();
+    expect($('h2:contains("Data dictionary")').length).toBe(1);
+
+    // Record counts — scoped to its own table, asserting the actual numbers render
+    // (not just the key words, which occur elsewhere on the page).
+    const rc = $('h3:contains("Record counts")').nextAll('table').first();
+    expect(rc.length).toBe(1);
+    for (const [key, n] of Object.entries(countsOf(fx))) {
+      const row = rc.find(`tr:contains("${key}")`);
+      expect(row.length, `missing record-count row ${key}`).toBeGreaterThanOrEqual(1);
+      expect(row.text(), `missing count ${n} for ${key}`).toContain(n.toLocaleString('en-CA'));
+    }
+
+    // Coded-value domains — each column has its own <details> listing its values + counts.
+    const domains = codedDomains(fx);
+    expect($('details.coded-column').length).toBe(domains.length);
+    for (const c of domains) {
+      const box = $(`details.coded-column:contains("${c.table}.${c.column}")`);
+      expect(box.length, `missing coded column ${c.table}.${c.column}`).toBe(1);
+      for (const v of c.values) {
+        expect(box.text(), `missing ${c.table}.${c.column} value ${v.value}`).toContain(v.value);
+        expect(box.text(), `missing count for ${c.table}.${c.column}=${v.value}`).toContain(
+          v.count.toLocaleString('en-CA'),
+        );
+      }
+    }
+
+    // Index-key legend — every index file gets its own documented table.
+    for (const legend of INDEX_LEGENDS) {
+      expect($(`h4:contains("${legend.file}")`).length, `missing legend for ${legend.file}`).toBe(1);
+    }
+    // The confusing keys that tripped reviewers (#7) are explained.
+    const text = $('body').text();
+    expect(text).toContain('number of bids on record'); // nb
+    expect(text).toContain('number of documents'); // nd
+
+    // The exhaustive column schema + file sizes are tracked upstream, not faked here.
+    expect($('a[href="https://github.com/CivicTechTO/toronto-bids/issues/168"]').length).toBe(1);
   });
 
   it('renders the sync-status table from meta.sources', () => {
