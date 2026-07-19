@@ -22,7 +22,14 @@ const title = `Call ${call.call_number}${call.title ? ` — ${call.title}` : ''}
 ---
 <Base title={title} pagefind={true} filters={{ type: 'Composite award', buyer: 'City of Toronto' }}>
   {call.reference && (
-    <p>Council reference: <a href={href(`/council/${call.reference}/`)}>{call.reference}</a></p>
+    <p>
+      Council reference:{' '}
+      {p.councilByRef.has(call.reference) ? (
+        <a href={href(`/council/${call.reference}/`)}>{call.reference}</a>
+      ) : (
+        call.reference
+      )}
+    </p>
   )}
 
   <section>
