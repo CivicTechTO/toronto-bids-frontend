@@ -1,0 +1,59 @@
+---
+// src/pages/calls/[call].astro
+import Base from '../../layouts/Base.astro';
+import AmountCell from '../../components/AmountCell.astro';
+import { formatCAD } from '../../prepare/amounts';
+import { getPrepared } from '../../prepare/prepare';
+import type { CompositeCall } from '../../prepare/types';
+import { href } from '../../lib/url';
+
+export async function getStaticPaths() {
+  const p = await getPrepared();
+  return p.compositeCalls.map((call) => ({
+    params: { call: call.call_number },
+    props: { call },
+  }));
+}
+
+interface Props { call: CompositeCall }
+const { call } = Astro.props;
+const p = await getPrepared();
+const title = `Call ${call.call_number}${call.title ? ` — ${call.title}` : ''}`;
+---
+<Base title={title} pagefind={true} filters={{ type: 'Composite award', buyer: 'City of Toronto' }}>
+  {call.reference && (
+    <p>Council reference: <a href={href(`/council/${call.reference}/`)}>{call.reference}</a></p>
+  )}
+
+  <section>
+    <h2>Winners</h2>
+    <table class="composite-lines">
+      <thead>
+        <tr><th>Supplier</th><th>Award value (raw / parsed)</th></tr>
+      </thead>
+      <tbody>
+        {call.lines.map((line) => (
+          <tr>
+            <td>
+              {line.supplier_name_raw ?? '—'}
+              {line.supplier_id !== null && p.supplierSlugById.has(line.supplier_id) && (
+                <a href={href(`/suppliers/${p.supplierSlugById.get(line.supplier_id)}/`)}> (profile)</a>
+              )}
+            </td>
+            <td><AmountCell raw={line.award_value} numeric={line.award_value_numeric} /></td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+    <p>
+      Machine-parseable total: {formatCAD(call.total.total)}
+      ({call.total.counted} of {call.lines.length} lines parseable — an undercount).
+    </p>
+  </section>
+
+  <p class="initial-term-caveat">
+    Award values in the 2009–2012 composite corpus reflect the initial contract term only —
+    options and renewals are not included. For 2009–2011 this composite line is the only
+    award record the City published; there is no underlying solicitation page to link to.
+  </p>
+</Base>
