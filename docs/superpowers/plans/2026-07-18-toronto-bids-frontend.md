@@ -31,7 +31,8 @@ Task 3 verifies #144/#145 against a freshly regenerated export and stops with a 
 - The build fails loudly (no deploy) on: malformed export, >20% entity-count drop vs the previous deploy, missing internal link targets, supplier slug collisions.
 - Documents are listed/indexed, never served: `ariba_attachment` entries render without links; `award_summary`/`staff_report` entries link their City URL.
 - Versions (caret ranges): astro ^5, @astrojs/react ^4, react ^19, @tanstack/react-table ^8, tailwindcss ^4 (+ @tailwindcss/vite), pagefind ^1, vitest ^3, cheerio ^1, typescript ^5. Node ≥ 23.6; scripts are erasable-syntax `.ts` run directly with `node`.
-- Unit tests: `npx vitest run` (inline literal fixtures). Site tests: `TB_DATA_FILE=tests/fixtures/bids.fixture.json BASE_PATH=/ npm run build && npx vitest run -c vitest.site.config.ts`.
+- Import-extension convention: relative imports in `src/` and `tests/` may be extensionless (Vitest/Astro resolve them); `.ts` extensions are REQUIRED only in `scripts/*.ts` chains executed by bare `node`.
+- Unit tests: `npx vitest run` (inline literal fixtures). Site tests: `TB_DATA_FILE=tests/fixtures/bids.fixture.json BASE_PATH=/ npm run build && npx vitest run -c vitest.site.config.ts` — targeted HTML assertions for each entity's record page (per the spec, these supersede golden-file snapshots), plus a dist-wide internal-link crawl and entity page-count checks in `tests/site/links.test.ts` (Task 21).
 
 ---
 
@@ -266,7 +267,7 @@ git add package.json package-lock.json tsconfig.json astro.config.mjs vitest.con
 
 **Interfaces:**
 - Consumes: scaffold from Task 1 (`npx vitest run`, tsconfig with `.ts`-extension imports).
-- Produces: ALL exported interfaces in `src/prepare/types.ts`, verbatim from the contract — `SyncSource`, `Meta`, `AwardRow`, `BidRow`, `DocumentEntry`, `AribaPosting`, `Solicitation`, `NonCompetitive`, `SupplierRec`, `CompositeAward`, `BackgroundPdf`, `CouncilItem`, `SuspendedFirm`, `CapitalProject`, `AgencySolicitation`, `AgencyAward`, `AgencyBid`, `Buyer`, `ExportDoc`, plus derived `DedupedAward`, `DisplayTitle`, `SumResult`, `Bridge`, `CompositeCall`, `SupplierRollup`, `Headline`, `Prepared` — imported (never redeclared) by Tasks 3–21. Also `export class ExportShapeError extends Error { problems: string[] }` and `export function validateExport(raw: unknown): ExportDoc` (throws `ExportShapeError` listing ALL problems) — consumed by `scripts/make-fixture.ts` (Task 3), `getPrepared()` (Task 10), and `scripts/check-shrink.ts` (Task 11). Loader plumbing established here: relative imports carry explicit `.ts` extensions so the same modules load under Vitest, Astro, and bare `node scripts/*.ts` (verified by Step 6); the data-file convention `process.env.TB_DATA_FILE ?? '.data/bids.json'` is implemented in Task 10's `getPrepared()`.
+- Produces: ALL exported interfaces in `src/prepare/types.ts`, verbatim from the contract — `SyncSource`, `Meta`, `AwardRow`, `BidRow`, `DocumentEntry`, `AribaPosting`, `Solicitation`, `NonCompetitive`, `SupplierRec`, `CompositeAward`, `BackgroundPdf`, `CouncilItem`, `SuspendedFirm`, `CapitalProject`, `AgencySolicitation`, `AgencyAward`, `AgencyBid`, `Buyer`, `ExportDoc`, plus derived `DedupedAward`, `DisplayTitle`, `SumResult`, `Bridge`, `CompositeCall`, `SupplierRollup`, `Headline`, `Prepared` — imported (never redeclared) by Tasks 3–21. `Prepared` carries two additions beyond the original contract text (binding review decisions): `wsSlugByNumber: Map<string, string>` — noncompetitive `workspace_number` → URL slug (Task 7's `wsSlug`; built with loud collision detection in Task 10's `prepare()`; consumed by Task 15's `getStaticPaths` and every `/noncompetitive/{slug}/` link) — and `dedupedAwardsByDoc` explicitly covers each solicitation's awards AND the `unlinked_awards` bucket grouped by `document_number` (nothing silently dropped). Also `export class ExportShapeError extends Error { problems: string[] }` and `export function validateExport(raw: unknown): ExportDoc` (throws `ExportShapeError` listing ALL problems) — consumed by `scripts/make-fixture.ts` (Task 3), `getPrepared()` (Task 10), and `scripts/check-shrink.ts` (Task 11). Loader plumbing established here: modules reached by bare `node scripts/*.ts` chains (Tasks 3, 11) need explicit `.ts` extensions on relative imports — this task's `validate.ts` uses them, and Step 6 verifies tsc accepts them; elsewhere in `src/` and `tests/` extensionless relative imports are equally fine (Vitest and Astro resolve both — see the plan header's import-extension convention). The data-file convention `process.env.TB_DATA_FILE ?? '.data/bids.json'` is implemented in Task 10's `getPrepared()`.
 
 All commands run in `/Users/alex/code/projects/toronto-bids/toronto-bids-frontend`.
 
@@ -472,9 +473,10 @@ export interface Headline { solicitations: number; awardedTotal: SumResult; nonc
 export interface Prepared {
   doc: ExportDoc;
   generatedAt: string;
-  dedupedAwardsByDoc: Map<string, DedupedAward[]>;
+  dedupedAwardsByDoc: Map<string, DedupedAward[]>; // per solicitation AND per distinct unlinked_awards document_number
   bridge: Bridge;
   supplierSlugById: Map<number, string>;
+  wsSlugByNumber: Map<string, string>;           // noncompetitive workspace_number → URL slug (wsSlug, Task 7)
   rollupsBySlug: Map<string, SupplierRollup>;
   compositeCalls: CompositeCall[];               // grouped, sorted by call_number
   councilByRef: Map<string, CouncilItem>;
@@ -1620,7 +1622,7 @@ Run in `/Users/alex/code/projects/toronto-bids/toronto-bids-frontend`:
 git add src/prepare/titles.ts tests/prepare/titles.test.ts && git commit -m "feat: add normalizeCategory fold and title_source provenance labels"
 ```
 
-### Task 7: `slugs.ts` — supplierSlug + buildSupplierSlugs
+### Task 7: `slugs.ts` — supplierSlug + buildSupplierSlugs + wsSlug
 
 **Files:**
 - Create: `src/prepare/slugs.ts`
@@ -1629,6 +1631,7 @@ git add src/prepare/titles.ts tests/prepare/titles.test.ts && git commit -m "fea
 **Interfaces:**
 - Consumes: `SupplierRec` from `src/prepare/types.ts` (Task 2).
 - Produces: `supplierSlug(supplierKey: string): string` (lowercase, non-`[a-z0-9]` runs → `'-'`, trim `'-'`) and `buildSupplierSlugs(suppliers: SupplierRec[]): Map<number, string>` (throws an `Error` naming BOTH `supplier_key`s on collision) — consumed by Task 8 (rollup keys), Task 10 (`supplierSlugById`; a collision aborts `prepare()`, satisfying the build-fails-loudly rule), Task 17 (supplier URLs). Implements data rule 8: permalinks slug the stable `supplier_key` — never `display_name`, never `supplier_id`. Runtime data dependency: real exports carry `supplier_key` only after backend issue #144; this task's unit tests use inline literals and need nothing from the backend.
+- Also produces: `wsSlug(ws: string): string` — URL-safe slug for noncompetitive `workspace_number` values: `trim()`, every run of characters outside `[A-Za-z0-9._-]` → `'-'`, trim leading/trailing `'-'`; case, digits, dots, underscores, and dashes are preserved so most values pass through unchanged. Needed because 77 of 2,856 real workspace_number values contain spaces/parens/commas/ampersands/slashes and are unusable raw as an Astro route param. Consumed by Task 9 (`NoncompetitiveIndexRow.wl`), Task 10 (`Prepared.wsSlugByNumber` with loud collision detection), and Task 15 (`getStaticPaths` params and all `/noncompetitive/{slug}/` links; the record page displays the raw `workspace_number` verbatim).
 
 - [ ] **Step 1: Write the failing test for supplierSlug**
 
@@ -1815,6 +1818,125 @@ Run in `/Users/alex/code/projects/toronto-bids/toronto-bids-frontend`:
 
 ```bash
 git add src/prepare/slugs.ts tests/prepare/slugs.test.ts && git commit -m "feat: add buildSupplierSlugs with loud collision detection"
+```
+
+- [ ] **Step 11: Write the failing tests for wsSlug**
+
+In `tests/prepare/slugs.test.ts`, replace the import line
+
+```ts
+import { supplierSlug, buildSupplierSlugs } from '../../src/prepare/slugs.ts';
+```
+
+with
+
+```ts
+import { supplierSlug, buildSupplierSlugs, wsSlug } from '../../src/prepare/slugs.ts';
+```
+
+and append at the end of the file:
+
+```ts
+describe('wsSlug', () => {
+  it('passes clean workspace numbers through unchanged', () => {
+    expect(wsSlug('2021-0001')).toBe('2021-0001');
+    expect(wsSlug('SR1152773518')).toBe('SR1152773518');
+  });
+
+  it('replaces runs of spaces, slashes, commas, and ampersands with a single dash', () => {
+    expect(wsSlug('SR5252910024 / CW2310865')).toBe('SR5252910024-CW2310865');
+    expect(wsSlug('SR5465565873/CW2312872')).toBe('SR5465565873-CW2312872');
+    expect(wsSlug('11393, 11394 & 11395')).toBe('11393-11394-11395');
+  });
+
+  it('trims edge dashes from wrapping punctuation; preserves case, dots, and underscores', () => {
+    expect(wsSlug('10834 (11106)')).toBe('10834-11106');
+    expect(wsSlug('CINTAS CANADA LIMITED')).toBe('CINTAS-CANADA-LIMITED');
+    expect(wsSlug(' No. 6034_A ')).toBe('No.-6034_A');
+  });
+});
+```
+
+- [ ] **Step 12: Run test to verify it fails**
+
+Run in `/Users/alex/code/projects/toronto-bids/toronto-bids-frontend`:
+`npx vitest run tests/prepare/slugs.test.ts`
+Expected: FAIL — the file fails to load because `slugs.ts` has no `wsSlug` export (error names the missing export, e.g. `does not provide an export named 'wsSlug'`).
+
+- [ ] **Step 13: Implement wsSlug**
+
+Replace `src/prepare/slugs.ts` with the complete final module:
+
+```ts
+import type { SupplierRec } from './types.ts';
+
+/**
+ * Data rule 8: supplier permalinks slug the stable normalized
+ * `supplier_key` — never `display_name` (shifts as variants accrue) and
+ * never `supplier_id` (rebuilt nightly). Lowercase; every run of
+ * characters outside [a-z0-9] becomes a single '-'; leading/trailing
+ * dashes are trimmed.
+ */
+export function supplierSlug(supplierKey: string): string {
+  return supplierKey
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+/**
+ * Slug every supplier, mapping the build-internal `supplier_id` join key
+ * to the permalink slug. Two distinct supplier_keys slugging identically
+ * would silently merge two firms' permalinks, so a collision throws —
+ * naming both keys — and the site build fails instead of deploying.
+ */
+export function buildSupplierSlugs(suppliers: SupplierRec[]): Map<number, string> {
+  const keyBySlug = new Map<string, string>();
+  const result = new Map<number, string>();
+  for (const s of suppliers) {
+    const slug = supplierSlug(s.supplier_key);
+    const existing = keyBySlug.get(slug);
+    if (existing !== undefined) {
+      throw new Error(
+        `Supplier slug collision: "${slug}" from supplier_key "${existing}" and supplier_key "${s.supplier_key}"`,
+      );
+    }
+    keyBySlug.set(slug, s.supplier_key);
+    result.set(s.supplier_id, slug);
+  }
+  return result;
+}
+
+/**
+ * URL-safe slug for a noncompetitive workspace_number. 77 of 2,856 real
+ * values contain spaces, parens, commas, ampersands, or slashes — unusable
+ * raw as an Astro route param (a '/' even splits the path). Case, digits,
+ * dots, underscores, and dashes are preserved so most workspace numbers
+ * pass through unchanged; every other run of characters becomes a single
+ * '-'. Record pages display the raw workspace_number verbatim — only URLs
+ * use the slug. Collision detection lives in prepare() (Task 10), which
+ * builds Prepared.wsSlugByNumber and throws naming both colliding values.
+ */
+export function wsSlug(ws: string): string {
+  return ws
+    .trim()
+    .replace(/[^A-Za-z0-9._-]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+```
+
+- [ ] **Step 14: Run test to verify it passes**
+
+Run in `/Users/alex/code/projects/toronto-bids/toronto-bids-frontend`:
+`npx vitest run tests/prepare/slugs.test.ts`
+Expected: PASS — `Test Files  1 passed (1)`, `Tests  9 passed (9)`
+
+- [ ] **Step 15: Commit**
+
+Run in `/Users/alex/code/projects/toronto-bids/toronto-bids-frontend`:
+
+```bash
+git add src/prepare/slugs.ts tests/prepare/slugs.test.ts && git commit -m "feat: add wsSlug (URL-safe workspace_number slugging)"
 ```
 
 ### Task 8: `links.ts` — buildBridge + buildSupplierRollups
@@ -2443,8 +2565,8 @@ git add src/prepare/links.ts tests/prepare/links.test.ts && git commit -m "feat:
 - Test: `tests/prepare/indexes.test.ts`
 
 **Interfaces:**
-- Consumes: types from Task 2 (`Prepared`, `Solicitation`, `CouncilItem`, `NonCompetitive`, `BidRow`, `DedupedAward`, `SupplierRollup`, `ExportDoc`); `sumAwardNumeric` (Task 4); `displayTitle`, `normalizeCategory` (Task 6).
-- Produces: `SolicitationIndexRow`, `SupplierIndexRow`, `NoncompetitiveIndexRow`, `CouncilIndexRow` and `buildSolicitationIndex(p)`, `buildSupplierIndex(p)`, `buildNoncompetitiveIndex(p)`, `buildCouncilIndex(p)` — consumed by Task 19's JSON index endpoints and the BrowseTable island.
+- Consumes: types from Task 2 (`Prepared`, `Solicitation`, `CouncilItem`, `NonCompetitive`, `BidRow`, `DedupedAward`, `SupplierRollup`, `ExportDoc`); `sumAwardNumeric` (Task 4); `displayTitle`, `normalizeCategory` (Task 6); `wsSlug` (Task 7).
+- Produces: `SolicitationIndexRow`, `SupplierIndexRow`, `NoncompetitiveIndexRow`, `CouncilIndexRow` and `buildSolicitationIndex(p)`, `buildSupplierIndex(p)`, `buildNoncompetitiveIndex(p)`, `buildCouncilIndex(p)` — consumed by Task 19's JSON index endpoints and the BrowseTable island. `NoncompetitiveIndexRow` carries both `w` (the raw `workspace_number`, displayed verbatim) and `wl` (its `wsSlug` URL slug) — Task 19's island and noscript tables build `/noncompetitive/{row.wl}/` links from `wl`, matching the paths Task 15 generates from `Prepared.wsSlugByNumber`.
 
 - [ ] **Step 1: Write the failing test**
 
@@ -2532,7 +2654,8 @@ function prepared(over: Partial<Prepared>): Prepared {
   return {
     doc: exportDoc({}), generatedAt: '2026-07-18T05:30:00Z',
     dedupedAwardsByDoc: new Map(), bridge: { refToDoc: new Map(), docToRefs: new Map() },
-    supplierSlugById: new Map(), rollupsBySlug: new Map(), compositeCalls: [],
+    supplierSlugById: new Map(), wsSlugByNumber: new Map(),
+    rollupsBySlug: new Map(), compositeCalls: [],
     councilByRef: new Map(), solByDoc: new Map(),
     headline: {
       solicitations: 0, awardedTotal: zero(), noncompetitiveTotal: zero(),
@@ -2622,18 +2745,20 @@ describe('buildSupplierIndex', () => {
 });
 
 describe('buildNoncompetitiveIndex', () => {
-  it('compact rows; null year/amount when contract_date/numeric missing', () => {
+  it('compact rows with URL slug; null year/amount when contract_date/numeric missing', () => {
     const p = prepared({
       doc: exportDoc({
         noncompetitive: [
           nc({}),
           nc({ workspace_number: '2019-0442', supplier_name_raw: null, reason: null, division: null, contract_date: null, contract_amount: 'kj', contract_amount_numeric: null }),
+          nc({ workspace_number: 'SR5252910024 / CW2310865' }),
         ],
       }),
     });
     expect(buildNoncompetitiveIndex(p)).toEqual([
-      { w: '2021-0001', n: 'Acme Ltd', r: 'Sole source', v: 'Parks', y: 2021, a: 25000 },
-      { w: '2019-0442', n: null, r: null, v: null, y: null, a: null },
+      { w: '2021-0001', wl: '2021-0001', n: 'Acme Ltd', r: 'Sole source', v: 'Parks', y: 2021, a: 25000 },
+      { w: '2019-0442', wl: '2019-0442', n: null, r: null, v: null, y: null, a: null },
+      { w: 'SR5252910024 / CW2310865', wl: 'SR5252910024-CW2310865', n: 'Acme Ltd', r: 'Sole source', v: 'Parks', y: 2021, a: 25000 },
     ]);
   });
 });
@@ -2671,6 +2796,7 @@ Create `src/prepare/indexes.ts`:
 // every key is documented on its interface.
 import type { Prepared } from './types';
 import { sumAwardNumeric } from './amounts';
+import { wsSlug } from './slugs';
 import { displayTitle, normalizeCategory } from './titles';
 
 export interface SolicitationIndexRow { d: string; t: string; u: boolean; s: string; r: string | null; c: string | null; v: string | null; y: number; dl: string | null; a: number | null; nb: number; nd: number }
@@ -2680,8 +2806,9 @@ export interface SolicitationIndexRow { d: string; t: string; u: boolean; s: str
 export interface SupplierIndexRow { g: string; n: string; na: number; nb: number; a: number | null }
 // g=slug n=display_name na=award-line count nb=bid count a=city award total
 
-export interface NoncompetitiveIndexRow { w: string; n: string | null; r: string | null; v: string | null; y: number | null; a: number | null }
-// w=workspace_number n=supplier r=reason v=division y=contract year a=numeric amount
+export interface NoncompetitiveIndexRow { w: string; wl: string; n: string | null; r: string | null; v: string | null; y: number | null; a: number | null }
+// w=workspace_number (raw, displayed) wl=URL slug (wsSlug — links are /noncompetitive/{wl}/)
+// n=supplier r=reason v=division y=contract year a=numeric amount
 
 export interface CouncilIndexRow { f: string; t: string | null; y: number; nb: number }
 // f=reference t=title y=year nb=bid count
@@ -2722,8 +2849,12 @@ export function buildSupplierIndex(p: Prepared): SupplierIndexRow[] {
 }
 
 export function buildNoncompetitiveIndex(p: Prepared): NoncompetitiveIndexRow[] {
+  // wl is computed with wsSlug directly (deterministic) — identical to the
+  // value prepare() stores in Prepared.wsSlugByNumber, which has already
+  // collision-checked every workspace_number before any index is built.
   return p.doc.noncompetitive.map((row) => ({
-    w: row.workspace_number, n: row.supplier_name_raw, r: row.reason, v: row.division,
+    w: row.workspace_number, wl: wsSlug(row.workspace_number),
+    n: row.supplier_name_raw, r: row.reason, v: row.division,
     y: row.contract_date ? Number(row.contract_date.slice(0, 4)) : null,
     a: row.contract_amount_numeric,
   }));
@@ -2757,8 +2888,8 @@ git add src/prepare/indexes.ts tests/prepare/indexes.test.ts && git commit -m "f
 - Test: `tests/prepare/prepare.test.ts`
 
 **Interfaces:**
-- Consumes: `validateExport` (Task 2); `sumAwardNumeric` (Task 4); `dedupeAwards` (Task 5); `buildSupplierSlugs` (Task 7); `buildBridge`, `buildSupplierRollups` (Task 8); `tests/fixtures/bids.fixture.json` (Task 3 — requires backend issues #144+#145 landed).
-- Produces: `prepare(doc: ExportDoc): Prepared` and `getPrepared(): Promise<Prepared>` — every page task (13–21) calls `getPrepared()` at the top of frontmatter. `Prepared.counts` is computed by a local helper here; Task 11 replaces it with `countsOf` from `guard.ts` (same keys, same values).
+- Consumes: `validateExport` (Task 2); `sumAwardNumeric` (Task 4); `dedupeAwards` (Task 5); `buildSupplierSlugs`, `wsSlug` (Task 7); `buildBridge`, `buildSupplierRollups` (Task 8); `tests/fixtures/bids.fixture.json` (Task 3 — requires backend issues #144+#145 landed).
+- Produces: `prepare(doc: ExportDoc): Prepared` and `getPrepared(): Promise<Prepared>` — every page task (13–21) calls `getPrepared()` at the top of frontmatter. `Prepared.counts` is computed by a local helper here; Task 11 replaces it with `countsOf` from `guard.ts` (same keys, same values). `prepare()` builds `dedupedAwardsByDoc` over each solicitation's awards AND the `unlinked_awards` bucket (grouped by `document_number`, run through `dedupeAwards`) — so unlinked awards reach Task 8's rollups (`sol: null` branch) and `headline.awardedTotal`; nothing is silently dropped. `prepare()` also builds `Prepared.wsSlugByNumber` (noncompetitive `workspace_number` → `wsSlug` URL slug) with a collision check that throws an `Error` naming BOTH colliding workspace_numbers — the same build-fails-loudly failure class as supplier slug collisions; consumed by Task 15's `getStaticPaths` and every `/noncompetitive/{slug}/` link.
 
 - [ ] **Step 1: Write the failing integration test**
 
@@ -2769,6 +2900,7 @@ import { readFileSync } from 'node:fs';
 import { beforeAll, describe, expect, it } from 'vitest';
 import type { ExportDoc, Prepared } from '../../src/prepare/types';
 import { validateExport } from '../../src/prepare/validate';
+import { wsSlug } from '../../src/prepare/slugs';
 import { getPrepared, prepare } from '../../src/prepare/prepare';
 
 const FIXTURE = 'tests/fixtures/bids.fixture.json';
@@ -2789,9 +2921,15 @@ describe('prepare() over the committed fixture', () => {
   it('lookup map sizes match the export arrays', () => {
     expect(p.solByDoc.size).toBe(doc.solicitations.length);
     expect(p.councilByRef.size).toBe(doc.council_items.length);
-    // One (possibly empty) deduped-awards entry per solicitation.
-    expect(p.dedupedAwardsByDoc.size).toBe(doc.solicitations.length);
+    // One (possibly empty) deduped-awards entry per solicitation, PLUS one
+    // per distinct unlinked-award document_number — the unlinked_awards
+    // bucket is never silently dropped (the fixture ships it empty, so the
+    // two terms are equal there; the formula holds for real data too).
+    expect(p.dedupedAwardsByDoc.size).toBe(
+      doc.solicitations.length + new Set(doc.unlinked_awards.map((a) => a.document_number)).size,
+    );
     expect(p.supplierSlugById.size).toBe(doc.suppliers.length);
+    expect(p.wsSlugByNumber.size).toBe(new Set(doc.noncompetitive.map((n) => n.workspace_number)).size);
     // One rollup per supplier — supplier pages exist for every supplier.
     expect(p.rollupsBySlug.size).toBe(doc.suppliers.length);
   });
@@ -2837,6 +2975,45 @@ describe('prepare() over the committed fixture', () => {
     expect(p.counts.composite_awards).toBe(doc.composite_awards.length);
     expect(p.counts.noncompetitive).toBe(doc.noncompetitive.length);
   });
+
+  it('maps every workspace_number to its wsSlug URL slug', () => {
+    expect(doc.noncompetitive.length).toBeGreaterThan(0); // fixture guarantee (Task 3)
+    for (const row of doc.noncompetitive) {
+      expect(p.wsSlugByNumber.get(row.workspace_number)).toBe(wsSlug(row.workspace_number));
+    }
+  });
+
+  it('throws on a workspace slug collision, naming BOTH workspace_numbers', () => {
+    const ncRow = (workspace_number: string): ExportDoc['noncompetitive'][number] => ({
+      workspace_number, supplier_name_raw: 'Acme Ltd', supplier_id: null, reason: 'Sole source',
+      contract_amount: '$1.00', contract_amount_numeric: 1, contract_amount_labelled: null,
+      contract_amount_verdict: null, contract_date: '2021-01-01', division: null,
+      council_authority_link: null, source: 'ckan', first_seen: '2026-01-01', last_seen: '2026-07-18',
+    });
+    const clone = structuredClone(doc);
+    clone.noncompetitive.push(ncRow('WS 100'), ncRow('WS  100')); // both slug to "WS-100"
+    expect(() => prepare(clone)).toThrowError(
+      'Workspace slug collision: "WS-100" from workspace_number "WS 100" and workspace_number "WS  100"',
+    );
+  });
+
+  it('routes unlinked_awards through dedupeAwards into dedupedAwardsByDoc', () => {
+    const clone = structuredClone(doc);
+    const unlinked: ExportDoc['unlinked_awards'][number] = {
+      document_number: '8888888888', supplier_name_raw: 'Orphan Paving Ltd', supplier_id: null,
+      award_amount: '$500.00', award_amount_numeric: 500, award_amount_labelled: null,
+      award_amount_verdict: null, award_date: '2024-01-01', source: 'ckan_awarded',
+      first_seen: '2026-01-01', last_seen: '2026-07-18',
+    };
+    clone.unlinked_awards.push(unlinked, { ...unlinked, source: 'odata' });
+    const p2 = prepare(clone);
+    const rows = p2.dedupedAwardsByDoc.get('8888888888')!;
+    expect(rows).toHaveLength(1); // the dual-source pair collapses like any linked award group
+    expect(rows[0]!.sources).toEqual(['odata', 'ckan_awarded']); // odata-first ordering (Task 5)
+    expect(p2.dedupedAwardsByDoc.size).toBe(
+      clone.solicitations.length + new Set(clone.unlinked_awards.map((a) => a.document_number)).size,
+    );
+  });
 });
 
 describe('getPrepared()', () => {
@@ -2864,11 +3041,11 @@ Create `src/prepare/prepare.ts`:
 // The prepare step: turns a validated ExportDoc into everything the pages need.
 // Pure except getPrepared(), which reads the export file once and caches.
 import { readFile } from 'node:fs/promises';
-import type { CompositeCall, DedupedAward, ExportDoc, Headline, Prepared } from './types';
+import type { AwardRow, CompositeCall, DedupedAward, ExportDoc, Headline, Prepared } from './types';
 import { validateExport } from './validate';
 import { sumAwardNumeric } from './amounts';
 import { dedupeAwards } from './awards';
-import { buildSupplierSlugs } from './slugs';
+import { buildSupplierSlugs, wsSlug } from './slugs';
 import { buildBridge, buildSupplierRollups } from './links';
 
 function buildCompositeCalls(doc: ExportDoc): CompositeCall[] {
@@ -2912,8 +3089,40 @@ export function prepare(doc: ExportDoc): Prepared {
   for (const sol of doc.solicitations) {
     dedupedAwardsByDoc.set(sol.document_number, dedupeAwards(sol.awards));
   }
+  // Unlinked awards (document_number matching no exported solicitation) are
+  // never silently dropped: group by document_number and dedupe exactly like
+  // linked awards, so supplier rollups (sol: null branch, Task 8) and
+  // headline.awardedTotal include them. By definition of "unlinked" these
+  // keys cannot collide with a solicitation's document_number.
+  const unlinkedAwardsByDoc = new Map<string, AwardRow[]>();
+  for (const award of doc.unlinked_awards) {
+    const group = unlinkedAwardsByDoc.get(award.document_number);
+    if (group) group.push(award);
+    else unlinkedAwardsByDoc.set(award.document_number, [award]);
+  }
+  for (const [documentNumber, group] of unlinkedAwardsByDoc) {
+    dedupedAwardsByDoc.set(documentNumber, dedupeAwards(group));
+  }
   const bridge = buildBridge(doc.council_items);
   const supplierSlugById = buildSupplierSlugs(doc.suppliers);
+  // Workspace-number slugs for /noncompetitive/ URLs (wsSlug, Task 7). Two
+  // distinct workspace_numbers slugging identically would merge two records'
+  // permalinks, so a collision throws naming both — the same fails-loudly
+  // class as supplier slug collisions. Duplicate rows of the SAME
+  // workspace_number are fine and share a slug.
+  const wsSlugByNumber = new Map<string, string>();
+  const wsNumberBySlug = new Map<string, string>();
+  for (const row of doc.noncompetitive) {
+    const slug = wsSlug(row.workspace_number);
+    const existing = wsNumberBySlug.get(slug);
+    if (existing !== undefined && existing !== row.workspace_number) {
+      throw new Error(
+        `Workspace slug collision: "${slug}" from workspace_number "${existing}" and workspace_number "${row.workspace_number}"`,
+      );
+    }
+    wsNumberBySlug.set(slug, row.workspace_number);
+    wsSlugByNumber.set(row.workspace_number, slug);
+  }
   const rollupsBySlug = buildSupplierRollups(doc, supplierSlugById, dedupedAwardsByDoc);
   const councilByRef = new Map(doc.council_items.map((c) => [c.reference, c] as const));
   const solByDoc = new Map(doc.solicitations.map((s) => [s.document_number, s] as const));
@@ -2930,7 +3139,7 @@ export function prepare(doc: ExportDoc): Prepared {
   };
   return {
     doc, generatedAt: doc.meta.generated_at, dedupedAwardsByDoc, bridge,
-    supplierSlugById, rollupsBySlug, compositeCalls: buildCompositeCalls(doc),
+    supplierSlugById, wsSlugByNumber, rollupsBySlug, compositeCalls: buildCompositeCalls(doc),
     councilByRef, solByDoc, headline, counts,
   };
 }
@@ -2950,7 +3159,7 @@ export function getPrepared(): Promise<Prepared> {
 - [ ] **Step 4: Run test to verify it passes**
 
 Run in `/Users/alex/code/projects/toronto-bids/toronto-bids-frontend`: `npx vitest run tests/prepare/prepare.test.ts`
-Expected: PASS — `Test Files  1 passed`, 7 tests passed.
+Expected: PASS — `Test Files  1 passed`, 10 tests passed.
 
 - [ ] **Step 5: Run the whole unit suite (regression)**
 
@@ -3457,7 +3666,7 @@ All commands in this task run in the frontend repo: `/Users/alex/code/projects/t
 
 **Interfaces:**
 - Consumes: `getPrepared(): Promise<Prepared>` (Task 10), `formatCAD` (Task 4), `TITLE_SOURCE_LABELS` (Task 6), types from `src/prepare/types.ts` (Task 2), committed fixture `tests/fixtures/bids.fixture.json` (Task 3), installed deps astro/vitest/cheerio/tailwind (Task 1).
-- Produces: `href(path: string, base?: string): string` in `src/lib/url.ts`; `Base.astro` with props `{ title: string; description?: string; pagefind?: boolean; filters?: Record<string, string> }` (renders the `h1`, pagefind body/meta/filter markup, and the `Data as of {generatedAt}` footer on every page); components `AmountCell` (`{ raw: string | null; numeric: number | null }`), `ProvenanceBadge` (`{ titleSource: string | null }`), `DocumentsList` (`{ documents: DocumentEntry[] }`), `BidsTable` (`{ bids: BidRow[]; winners?: string[] }`), `StatsStrip` (`{ headline: Headline }`); site-test helpers `loadPage(relPath: string): CheerioAPI`, `loadFile(relPath: string): string`, `loadFixture(): ExportDoc`; the canonical site-test command used by all later page tasks: `TB_DATA_FILE=tests/fixtures/bids.fixture.json BASE_PATH=/ npm run build && npx vitest run -c vitest.site.config.ts`.
+- Produces: `href(path: string, base?: string): string` in `src/lib/url.ts`; `Base.astro` with props `{ title: string; description?: string; pagefind?: boolean; filters?: Record<string, string> }` (renders the `h1`, pagefind body/meta/filter markup, and the `Data as of {generatedAt}` footer on every page); components `AmountCell` (`{ raw: string | null; numeric: number | null }`), `ProvenanceBadge` (`{ titleSource: string | null }`), `DocumentsList` (`{ documents: DocumentEntry[] }`), `BidsTable` (`{ bids: BidRow[]; winners?: string[]; supplierSlugById?: Map<number, string> }` — the Result column renders ONLY when `winners !== undefined && winners.length > 0`, otherwise no Result column and no winner/loser claim; winner matching is `new Set((winners ?? []).map((w) => w.trim().toLowerCase()))` against the trimmed/lowercased bidder name; bidder names link to `/suppliers/{slug}/` only when `supplierSlugById` is provided AND `bid.supplier_id != null` AND the map has that id, else plain text — consumed by Tasks 14 and 16), `StatsStrip` (`{ headline: Headline }`); site-test helpers `loadPage(relPath: string): CheerioAPI`, `loadFile(relPath: string): string`, `loadFixture(): ExportDoc`; the canonical site-test command used by all later page tasks: `TB_DATA_FILE=tests/fixtures/bids.fixture.json BASE_PATH=/ npm run build && npx vitest run -c vitest.site.config.ts`.
 
 - [ ] **Step 1: Write the failing unit test for `href()`**
 
@@ -3583,6 +3792,12 @@ describe('home page', () => {
     const $ = loadPage('');
     expect($('form[role="search"]').attr('action')).toBe('/search/');
   });
+  it('links every spec page so none is orphaned', () => {
+    const $ = loadPage('');
+    for (const path of ['/calls/', '/capital-projects/', '/suspended-firms/', '/buyers/']) {
+      expect($(`a[href="${path}"]`).length, `missing home link to ${path}`).toBeGreaterThanOrEqual(1);
+    }
+  });
 });
 
 describe('footer on every page', () => {
@@ -3631,7 +3846,7 @@ describe('counts.json', () => {
 - [ ] **Step 7: Run the site suite to verify it fails**
 
 Run (frontend repo): `TB_DATA_FILE=tests/fixtures/bids.fixture.json BASE_PATH=/ npm run build && npx vitest run -c vitest.site.config.ts`
-Expected: FAIL — `ENOENT: no such file or directory, open 'dist/index.html'` (the build has no pages yet, or lacks the elements asserted).
+Expected: FAIL — `dist/index.html` DOES exist (Task 1's placeholder `index.astro` builds it), so the home-page tests fail on assertions, not ENOENT: `expected 0 to be 1` for `.stats-strip`, the footer and home-link assertions fail against the placeholder markup. Only the tests that open not-yet-built files error with `ENOENT: no such file or directory` — `dist/404.html` and `dist/counts.json`.
 
 - [ ] **Step 8: Write the global stylesheet and `Base.astro`**
 
@@ -3782,27 +3997,53 @@ const sizeLabel = (n: number) => (n >= 1048576 ? `${(n / 1048576).toFixed(1)} MB
 
 ```astro
 ---
-// src/components/BidsTable.astro — bids with hst_basis ALWAYS displayed; winners marked.
+// src/components/BidsTable.astro — bids with hst_basis ALWAYS displayed. The Result
+// column exists ONLY when the caller passes a non-empty winners list (i.e. an award
+// record exists); with no winners prop (or an empty one) the table makes NO
+// winner/loser claim at all. Bidder names link to supplier profiles when
+// supplierSlugById is provided and resolves the bid's supplier_id.
 import type { BidRow } from '../prepare/types';
 import AmountCell from './AmountCell.astro';
+import { href } from '../lib/url';
 
-interface Props { bids: BidRow[]; winners?: string[] }
-const { bids, winners = [] } = Astro.props;
-const winnerSet = new Set(winners.map((w) => w.toLowerCase()));
+interface Props {
+  bids: BidRow[];
+  winners?: string[];
+  supplierSlugById?: Map<number, string>;
+}
+const { bids, winners, supplierSlugById } = Astro.props;
+const winnerSet = new Set((winners ?? []).map((w) => w.trim().toLowerCase()));
+const showResult = winners !== undefined && winners.length > 0;
+const isWinner = (b: BidRow) => winnerSet.has(b.bidder_name_raw.trim().toLowerCase());
+const slugFor = (b: BidRow) =>
+  supplierSlugById !== undefined && b.supplier_id != null
+    ? supplierSlugById.get(b.supplier_id)
+    : undefined;
 const basisLabel = (b: BidRow['hst_basis']) =>
   b === 'including' ? 'incl. HST' : b === 'excluding' ? 'excl. HST' : 'basis unknown';
 ---
 <table class="bids-table">
   <thead>
-    <tr><th>Bidder</th><th>Bid price (raw / parsed)</th><th>HST basis</th><th>Result</th></tr>
+    <tr>
+      <th>Bidder</th>
+      <th>Bid price (raw / parsed)</th>
+      <th>HST basis</th>
+      {showResult && <th>Result</th>}
+    </tr>
   </thead>
   <tbody>
     {bids.map((b) => (
-      <tr class={winnerSet.has(b.bidder_name_raw.toLowerCase()) ? 'bid-winner' : 'bid-loser'}>
-        <td>{b.bidder_name_raw}</td>
+      <tr class={showResult ? (isWinner(b) ? 'bid-winner' : 'bid-loser') : undefined}>
+        <td>
+          {slugFor(b) !== undefined ? (
+            <a href={href(`/suppliers/${slugFor(b)}/`)}>{b.bidder_name_raw}</a>
+          ) : (
+            b.bidder_name_raw
+          )}
+        </td>
         <td><AmountCell raw={b.bid_price} numeric={b.bid_price_numeric} /></td>
         <td>{basisLabel(b.hst_basis)}</td>
-        <td>{winnerSet.has(b.bidder_name_raw.toLowerCase()) ? 'Winner' : ''}</td>
+        {showResult && <td>{isWinner(b) ? 'Winner' : ''}</td>}
       </tr>
     ))}
   </tbody>
@@ -3873,6 +4114,9 @@ const p = await getPrepared();
       <li><a href={href('/calls/')}>Composite award calls (2009–2012)</a></li>
       <li><a href={href('/council/')}>Council items</a></li>
       <li><a href={href('/suppliers/')}>Suppliers</a></li>
+      <li><a href={href('/buyers/')}>Buyers (agencies &amp; corporations)</a></li>
+      <li><a href={href('/capital-projects/')}>Upcoming capital projects</a></li>
+      <li><a href={href('/suspended-firms/')}>Suspended firms</a></li>
       <li><a href={href('/data/')}>Downloads &amp; in-browser SQL</a></li>
     </ul>
   </nav>
@@ -3972,7 +4216,7 @@ export async function GET(): Promise<Response> {
 - [ ] **Step 11: Run the site suite to verify it passes**
 
 Run (frontend repo): `TB_DATA_FILE=tests/fixtures/bids.fixture.json BASE_PATH=/ npm run build && npx vitest run -c vitest.site.config.ts`
-Expected: build succeeds, then PASS — all tests in `tests/site/base.test.ts` pass (home stats, footers, 404 keyspaces, counts.json keys).
+Expected: build succeeds, then PASS — all tests in `tests/site/base.test.ts` pass (home stats, home links to /calls/, /capital-projects/, /suspended-firms/, /buyers/, footers, 404 keyspaces, counts.json keys).
 
 - [ ] **Step 12: Run the unit suite to confirm nothing regressed**
 
@@ -3994,8 +4238,8 @@ All commands in this task run in the frontend repo: `/Users/alex/code/projects/t
 - Test: `tests/site/solicitation.test.ts`
 
 **Interfaces:**
-- Consumes: `getPrepared()` (Task 10) — uses `p.doc.solicitations`, `p.dedupedAwardsByDoc`, `p.bridge.docToRefs`, `p.councilByRef`, `p.supplierSlugById`; `displayTitle`, `normalizeCategory` (Task 6); `dedupeAwards` (Task 5, in tests); `sumAwardNumeric`, `formatCAD` (Task 4); `href` and components `Base`, `AmountCell`, `ProvenanceBadge`, `DocumentsList`, `BidsTable` (Task 13); fixture (Task 3, requires backend issues #144+#145 landed so the fixture carries solicitation-nested `bids`).
-- Produces: the `/solicitations/{document_number}/` pages that Tasks 16–17 and 19–20 link to; pagefind filters `type: 'Solicitation'`, `status`, `year`.
+- Consumes: `getPrepared()` (Task 10) — uses `p.doc.solicitations`, `p.dedupedAwardsByDoc`, `p.bridge.docToRefs`, `p.councilByRef`, `p.supplierSlugById`; `displayTitle`, `normalizeCategory` (Task 6); `dedupeAwards` (Task 5, in tests); `sumAwardNumeric`, `formatCAD` (Task 4); `href` and components `Base`, `AmountCell`, `ProvenanceBadge`, `DocumentsList`, `BidsTable` (Task 13 — final contract `{ bids: BidRow[]; winners?: string[]; supplierSlugById?: Map<number, string> }`; this page passes `winners` only when named deduped award winners exist, so the Result column and winner claims appear only with an award record); fixture (Task 3, requires backend issues #144+#145 landed so the fixture carries solicitation-nested `bids`).
+- Produces: the `/solicitations/{document_number}/` pages that Tasks 16–17 and 19–20 link to; pagefind filters `type: 'Solicitation'`, `status`, `year`, `buyer: 'City of Toronto'`.
 
 - [ ] **Step 1: Write the failing site tests**
 
@@ -4081,6 +4325,23 @@ describe('bids table', () => {
     const $ = loadPage(`solicitations/${sol.document_number}`);
     expect($('.bids-table tbody').text()).toContain(sol.bids[0].bidder_name_raw);
   });
+  it('renders a Result column only when the record has named award winners', () => {
+    // Fixture-safe: each branch runs only if the fixture has a matching record.
+    const withWinners = fixture.solicitations.find(
+      (s) => s.bids.length > 0 && dedupeAwards(s.awards).some((a) => a.supplier_name_raw !== null),
+    );
+    if (withWinners) {
+      const $ = loadPage(`solicitations/${withWinners.document_number}`);
+      expect($('.bids-table thead').text()).toContain('Result');
+    }
+    const withoutAwards = fixture.solicitations.find((s) => s.bids.length > 0 && s.awards.length === 0);
+    if (withoutAwards) {
+      const $ = loadPage(`solicitations/${withoutAwards.document_number}`);
+      expect($('.bids-table thead').text()).not.toContain('Result');
+      expect($('.bids-table').text()).not.toContain('Winner');
+    }
+    expect(withWinners ?? withoutAwards, 'fixture has no solicitation with bids').toBeDefined();
+  });
 });
 
 describe('documents list', () => {
@@ -4158,7 +4419,10 @@ const bridgedBids = refs.flatMap((ref) =>
 // Direct bids are reference-null award_summary rows (backend issue #145); bridged bids
 // carry a council reference — the two sets are disjoint by construction.
 const allBids = [...sol.bids, ...bridgedBids];
-const winners = awards.map((a) => a.supplier_name_raw).filter((n): n is string => n !== null);
+const awardNames = awards.map((a) => a.supplier_name_raw).filter((n): n is string => n !== null);
+// BidsTable renders its Result column only when winners is a non-empty array —
+// pass undefined when there is no named award record so no winner claim is made.
+const winners = awardNames.length > 0 ? awardNames : undefined;
 const awardTotal = sumAwardNumeric(
   awards.map((a) => ({ numeric: a.award_amount_numeric, verdict: a.award_amount_verdict })),
 );
@@ -4169,7 +4433,7 @@ const category = normalizeCategory(sol.category);
   title={title.text}
   description={sol.description ?? undefined}
   pagefind={true}
-  filters={{ type: 'Solicitation', status: sol.status, year }}
+  filters={{ type: 'Solicitation', status: sol.status, year, buyer: 'City of Toronto' }}
 >
   {title.untitled && (
     <p class="untitled-marker">
@@ -4250,7 +4514,7 @@ const category = normalizeCategory(sol.category);
     {allBids.length === 0 ? (
       <p>No bids on record for this solicitation.</p>
     ) : (
-      <BidsTable bids={allBids} winners={winners} />
+      <BidsTable bids={allBids} winners={winners} supplierSlugById={p.supplierSlugById} />
     )}
   </section>
 
@@ -4313,8 +4577,8 @@ All commands in this task run in the frontend repo: `/Users/alex/code/projects/t
 - Test: `tests/site/calls.test.ts`
 
 **Interfaces:**
-- Consumes: `getPrepared()` (Task 10) — uses `p.doc.noncompetitive`, `p.compositeCalls` (`CompositeCall { call_number, reference, title, lines, total }`), `p.supplierSlugById`; `formatCAD` (Task 4); `href`, `Base`, `AmountCell` (Task 13); fixture (Task 3: one noncompetitive record, one composite call with ≥2 winners). Note `/noncompetitive/` (browse index) is Task 19, not this task.
-- Produces: `/noncompetitive/{workspace_number}/`, `/calls/`, `/calls/{call_number}/` pages that Tasks 16–17 and 19–20 link to; pagefind filters `type: 'Non-competitive contract'` and `type: 'Composite award'`.
+- Consumes: `getPrepared()` (Task 10) — uses `p.doc.noncompetitive`, `p.wsSlugByNumber` (`Map<string, string>`, workspace_number → URL-safe slug, built in `prepare()` with a loud collision check), `p.compositeCalls` (`CompositeCall { call_number, reference, title, lines, total }`), `p.supplierSlugById`; `wsSlug` (Task 7 `src/prepare/slugs.ts`, used in the site tests to compute expected paths); `formatCAD` (Task 4); `href`, `Base`, `AmountCell` (Task 13); fixture (Task 3: one noncompetitive record, one composite call with ≥2 winners). Note `/noncompetitive/` (browse index) is Task 19, not this task.
+- Produces: `/noncompetitive/{ws-slug}/` pages routed by `p.wsSlugByNumber.get(workspace_number)` (77 real workspace_number values contain spaces/parens/commas/slashes — the raw value is never used in a URL; the page displays the raw `workspace_number` verbatim), plus `/calls/` and `/calls/{call_number}/` pages, all linked by Tasks 16–17 and 19–20 (which must also build noncompetitive links from the slug); pagefind filters `type: 'Non-competitive contract'` and `type: 'Composite award'`, each with `buyer: 'City of Toronto'`.
 
 - [ ] **Step 1: Write the failing site tests for non-competitive pages**
 
@@ -4323,17 +4587,25 @@ All commands in this task run in the frontend repo: `/Users/alex/code/projects/t
 import { describe, expect, it } from 'vitest';
 import { loadFixture, loadPage } from './helpers';
 import { formatCAD } from '../../src/prepare/amounts';
+import { wsSlug } from '../../src/prepare/slugs';
 
 const fixture = loadFixture();
 
 describe('non-competitive record page', () => {
   const nc = fixture.noncompetitive.find((n) => n.reason !== null) ?? fixture.noncompetitive[0];
+  // Pages are routed by the URL-safe slug, never the raw workspace_number (which can
+  // contain spaces, parens, commas, ampersands, slashes in real data). Computing the
+  // path through wsSlug keeps this fixture-safe whether or not the fixture's value is clean.
+  const ncPath = `noncompetitive/${wsSlug(nc.workspace_number)}`;
   it('has a fixture record', () => {
     expect(nc).toBeDefined();
   });
-  it('shows the workspace number and the stated reason', () => {
-    const $ = loadPage(`noncompetitive/${nc.workspace_number}`);
+  it('is routed at the wsSlug path and displays the raw workspace number verbatim', () => {
+    const $ = loadPage(ncPath);
     expect($('body').text()).toContain(nc.workspace_number);
+  });
+  it('shows the stated reason', () => {
+    const $ = loadPage(ncPath);
     if (nc.reason !== null) {
       expect($('.nc-reason').text()).toContain(nc.reason);
     } else {
@@ -4341,7 +4613,7 @@ describe('non-competitive record page', () => {
     }
   });
   it('shows the amount tiers: raw verbatim and parsed numeric side by side', () => {
-    const $ = loadPage(`noncompetitive/${nc.workspace_number}`);
+    const $ = loadPage(ncPath);
     if (nc.contract_amount !== null) {
       expect($('.amount-raw').text()).toContain(nc.contract_amount);
     }
@@ -4352,7 +4624,7 @@ describe('non-competitive record page', () => {
     }
   });
   it('notes that workspace numbers never join to document numbers', () => {
-    const $ = loadPage(`noncompetitive/${nc.workspace_number}`);
+    const $ = loadPage(ncPath);
     expect($('.keyspace-note').text()).toContain('never join');
   });
 });
@@ -4361,7 +4633,7 @@ describe('non-competitive record page', () => {
 - [ ] **Step 2: Run to verify it fails**
 
 Run (frontend repo): `TB_DATA_FILE=tests/fixtures/bids.fixture.json BASE_PATH=/ npm run build && npx vitest run -c vitest.site.config.ts`
-Expected: FAIL — `tests/site/noncompetitive.test.ts` errors with `ENOENT: no such file or directory, open 'dist/noncompetitive/<ws>/index.html'`; earlier site tests still pass.
+Expected: FAIL — `tests/site/noncompetitive.test.ts` errors with `ENOENT: no such file or directory, open 'dist/noncompetitive/<ws-slug>/index.html'`; earlier site tests still pass.
 
 - [ ] **Step 3: Write the non-competitive record page**
 
@@ -4376,8 +4648,11 @@ import { href } from '../../lib/url';
 
 export async function getStaticPaths() {
   const p = await getPrepared();
+  // Route by the URL-safe slug (p.wsSlugByNumber, Task 10) — raw workspace_number
+  // values can contain spaces, parens, commas, ampersands, and slashes, which are not
+  // routable as a single [ws] segment. The raw value is displayed verbatim below.
   return p.doc.noncompetitive.map((nc) => ({
-    params: { ws: nc.workspace_number },
+    params: { ws: p.wsSlugByNumber.get(nc.workspace_number)! },
     props: { nc },
   }));
 }
@@ -4389,7 +4664,7 @@ const p = await getPrepared();
 const year = nc.contract_date ? nc.contract_date.slice(0, 4) : null;
 const slug = nc.supplier_id !== null ? p.supplierSlugById.get(nc.supplier_id) : undefined;
 const title = `Non-competitive ${nc.workspace_number}${nc.supplier_name_raw ? ` — ${nc.supplier_name_raw}` : ''}`;
-const filters: Record<string, string> = { type: 'Non-competitive contract' };
+const filters: Record<string, string> = { type: 'Non-competitive contract', buyer: 'City of Toronto' };
 if (year) filters.year = year;
 ---
 <Base title={title} pagefind={true} filters={filters}>
@@ -4560,7 +4835,7 @@ const { call } = Astro.props;
 const p = await getPrepared();
 const title = `Call ${call.call_number}${call.title ? ` — ${call.title}` : ''}`;
 ---
-<Base title={title} pagefind={true} filters={{ type: 'Composite award' }}>
+<Base title={title} pagefind={true} filters={{ type: 'Composite award', buyer: 'City of Toronto' }}>
   {call.reference && (
     <p>Council reference: <a href={href(`/council/${call.reference}/`)}>{call.reference}</a></p>
   )}
@@ -4623,8 +4898,8 @@ git add src/pages/calls tests/site/calls.test.ts && git commit -m "feat: composi
 - Test: `tests/site/council.test.ts`
 
 **Interfaces:**
-- Consumes: `getPrepared(): Promise<Prepared>` (Task 10) — uses `p.doc.council_items`, `p.bridge.refToDoc`, `p.dedupedAwardsByDoc`, `p.solByDoc`, `p.supplierSlugById`; `href(path)` from `src/lib/url.ts` (Task 13); `Base.astro` props `{ title, description?, pagefind?, filters? }` (Task 13); `BidsTable.astro` (Task 13) with props `{ bids: BidRow[]; winners?: Set<string>; supplierSlugById: Map<number, string> }` — `winners` is a Set of lowercased+trimmed bidder names; when the prop is omitted the table renders NO winner column (no claim is made); `displayTitle` (Task 6); `dedupeAwards` (Task 5, used in the site test to compute expected winners); types from Task 2; fixture from Task 3; site-test harness `loadPage` from `tests/site/helpers.ts` (Task 13).
-- Produces: routes `/council/` and `/council/{reference}/` that Tasks 17, 18, and 19 link to. `/council/` is a plain prerendered year-grouped table — NO island (Task 19 owns islands and does not touch this page).
+- Consumes: `getPrepared(): Promise<Prepared>` (Task 10) — uses `p.doc.council_items`, `p.bridge.refToDoc`, `p.dedupedAwardsByDoc`, `p.solByDoc`, `p.supplierSlugById`; `href(path)` from `src/lib/url.ts` (Task 13); `Base.astro` props `{ title, description?, pagefind?, filters? }` (Task 13) — Base renders the page's ONLY `<h1>` from `title`; slot content on these pages adds no `<h1>` of its own; `BidsTable.astro` (Task 13) with props `{ bids: BidRow[]; winners?: string[]; supplierSlugById?: Map<number, string> }` — winner matching is by trimmed, lowercased bidder name inside the component; the Result column renders ONLY when `winners !== undefined && winners.length > 0` (otherwise no Result column and no winner claim); bidder names render as links to `/suppliers/{slug}/` when `supplierSlugById` is provided and maps the bid's `supplier_id`, else plain text; `displayTitle` (Task 6); `prepare` + `validateExport` (Tasks 10/2 — the site test derives expected bridge/winners through the SAME code path the page uses); `supplierSlug` (Task 7, in the site test); types from Task 2; fixture from Task 3; site-test harness `loadPage` from `tests/site/helpers.ts` (Task 13).
+- Produces: routes `/council/` and `/council/{reference}/` that Tasks 17, 18, and 19 link to. This task's `/council/` is an interim plain prerendered year-grouped table (no island); Task 19 REPLACES `src/pages/council/index.astro` with the BrowseTable-island version and rewrites the index-page assertions in `tests/site/council.test.ts`. The record page passes `buyer: 'City of Toronto'` in Base's `filters` (the search buyer facet for City record pages).
 
 - [ ] **Step 1: Write the failing site test**
 
@@ -4634,35 +4909,42 @@ Create `tests/site/council.test.ts`:
 import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { loadPage } from './helpers';
-import { dedupeAwards } from '../../src/prepare/awards';
-import type { ExportDoc } from '../../src/prepare/types';
+import { prepare } from '../../src/prepare/prepare';
+import { validateExport } from '../../src/prepare/validate';
+import { supplierSlug } from '../../src/prepare/slugs';
 
-const fx = JSON.parse(
-  readFileSync('tests/fixtures/bids.fixture.json', 'utf8'),
-) as ExportDoc;
+// Expectations are derived through the SAME code path the page uses
+// (prepare()'s bridge + dedupedAwardsByDoc) — never a re-derivation with
+// different first-match rules.
+const fx = validateExport(
+  JSON.parse(readFileSync('tests/fixtures/bids.fixture.json', 'utf8')),
+);
+const p = prepare(fx);
 
-// Fixture guarantees (Task 3 criteria): a council item bridged to an included
-// solicitation with mixed hst_basis bids, and a pre-2019 item whose bids all
-// have document_number: null.
-const bridged = fx.council_items.find((ci) =>
-  ci.bids.some(
-    (b) =>
-      b.document_number !== null &&
-      fx.solicitations.some((s) => s.document_number === b.document_number),
-  ),
-)!;
-const bridgedDoc = bridged.bids.find(
-  (b) =>
-    b.document_number !== null &&
-    fx.solicitations.some((s) => s.document_number === b.document_number),
-)!.document_number!;
-const bridgedSol = fx.solicitations.find(
-  (s) => s.document_number === bridgedDoc,
-)!;
+// Fixture guarantees (Task 3 criteria): a council item whose bridge target is
+// an included solicitation with mixed hst_basis bids, and a pre-2019 item
+// whose bids all have document_number: null.
+const bridged = fx.council_items.find((ci) => {
+  const doc = p.bridge.refToDoc.get(ci.reference);
+  return doc !== undefined && p.solByDoc.has(doc);
+})!;
+const bridgedDoc = p.bridge.refToDoc.get(bridged.reference)!;
+const bridgedWinners = (p.dedupedAwardsByDoc.get(bridgedDoc) ?? [])
+  .map((a) => a.supplier_name_raw)
+  .filter((n): n is string => n !== null);
 const unbridged = fx.council_items.find(
   (ci) => ci.bids.length > 0 && ci.bids.every((b) => b.document_number === null),
 )!;
 const withPdfs = fx.council_items.find((ci) => ci.background_pdfs.length > 0);
+// A bridged-item bidder that resolves to an exported supplier — its name must
+// link to the supplier profile (BidsTable's supplierSlugById prop).
+const profileBidder = bridged.bids
+  .map((b) =>
+    b.supplier_id === null
+      ? undefined
+      : fx.suppliers.find((s) => s.supplier_id === b.supplier_id),
+  )
+  .find((s) => s !== undefined);
 
 describe('/council/ index', () => {
   it('lists every council item, grouped by year, as plain HTML (no island)', () => {
@@ -4679,8 +4961,9 @@ describe('/council/ index', () => {
 });
 
 describe('/council/{reference}/ record page', () => {
-  it('renders reference, decision text, and every bidder', () => {
+  it('renders reference, decision text, and every bidder under a single h1', () => {
     const $ = loadPage(`council/${bridged.reference}`);
+    expect($('h1').length).toBe(1);
     const text = $('body').text();
     expect(text).toContain(bridged.reference);
     if (bridged.decision_text) {
@@ -4699,21 +4982,38 @@ describe('/council/{reference}/ record page', () => {
     const $ = loadPage(`council/${bridged.reference}`);
     const text = $('body').text();
     expect($(`a[href$="/solicitations/${bridgedDoc}/"]`).length).toBeGreaterThan(0);
-    const winnerNames = dedupeAwards(bridgedSol.awards)
-      .map((a) => a.supplier_name_raw)
-      .filter((n): n is string => n !== null);
-    if (winnerNames.length > 0) {
+    const headers = $('th')
+      .toArray()
+      .map((el) => $(el).text());
+    if (bridgedWinners.length > 0) {
       expect(text).toContain('Winners are marked from the linked solicitation');
+      expect(headers).toContain('Result');
     } else {
       expect(text).toContain('winner cannot be determined');
+      expect(headers).not.toContain('Result');
     }
   });
 
-  it('makes no winner claim on an unbridged pre-2019 item', () => {
+  it.runIf(profileBidder !== undefined)(
+    'links bidder names to supplier profiles via supplierSlugById',
+    () => {
+      const $ = loadPage(`council/${bridged.reference}`);
+      expect(
+        $(`a[href$="/suppliers/${supplierSlug(profileBidder!.supplier_key)}/"]`)
+          .length,
+      ).toBeGreaterThan(0);
+    },
+  );
+
+  it('makes no winner claim and renders no Result column on an unbridged pre-2019 item', () => {
     const $ = loadPage(`council/${unbridged.reference}`);
     const text = $('body').text();
     expect(text).toContain('winner cannot be determined');
     expect(text).not.toContain('Winners are marked');
+    const headers = $('th')
+      .toArray()
+      .map((el) => $(el).text());
+    expect(headers).not.toContain('Result');
     for (const b of unbridged.bids) {
       expect(text).toContain(b.bidder_name_raw);
     }
@@ -4773,17 +5073,14 @@ const year = yearMatch ? yearMatch[1] : null;
 const linkedDoc = p.bridge.refToDoc.get(item.reference) ?? null;
 const linkedSol = linkedDoc ? (p.solByDoc.get(linkedDoc) ?? null) : null;
 
-// Winner marking is only determinable when the linked solicitation has
-// deduped award suppliers; otherwise no winner column is claimed at all.
+// Winner marking is only determinable when the linked document has deduped
+// award suppliers. BidsTable renders a Result column ONLY when winners is a
+// non-empty string[]; passing undefined makes no winner claim at all.
 const awardNames = linkedDoc
   ? (p.dedupedAwardsByDoc.get(linkedDoc) ?? [])
       .map((a) => a.supplier_name_raw)
       .filter((n): n is string => n !== null)
   : [];
-const winners =
-  awardNames.length > 0
-    ? new Set(awardNames.map((n) => n.trim().toLowerCase()))
-    : undefined;
 
 const heading = item.title ?? `Council item ${item.reference}`;
 const decisionParas = (item.decision_text ?? '')
@@ -4794,9 +5091,12 @@ const decisionParas = (item.decision_text ?? '')
 <Base
   title={`${item.reference} — ${heading}`}
   pagefind={true}
-  filters={{ type: 'Council item', ...(year ? { year } : {}) }}
+  filters={{
+    type: 'Council item',
+    buyer: 'City of Toronto',
+    ...(year ? { year } : {}),
+  }}
 >
-  <h1>{heading}</h1>
   <p><strong>Council reference:</strong> {item.reference}</p>
 
   {linkedSol && (
@@ -4821,7 +5121,7 @@ const decisionParas = (item.decision_text ?? '')
     <h2>Bids ({item.bids.length})</h2>
     {item.bids.length > 0 ? (
       <>
-        {winners ? (
+        {awardNames.length > 0 ? (
           <p>
             Winners are marked from the linked solicitation's deduped award
             record.
@@ -4834,7 +5134,7 @@ const decisionParas = (item.decision_text ?? '')
         )}
         <BidsTable
           bids={item.bids}
-          winners={winners}
+          winners={awardNames.length > 0 ? awardNames : undefined}
           supplierSlugById={p.supplierSlugById}
         />
       </>
@@ -4870,6 +5170,8 @@ const decisionParas = (item.decision_text ?? '')
 </Base>
 ```
 
+Note: the page renders no `<h1>` in the slot — `Base.astro` renders the single `<h1>` from the `title` prop (`{reference} — {heading}`).
+
 - [ ] **Step 4: Write the council index page (plain prerendered, no island)**
 
 Create `src/pages/council/index.astro`:
@@ -4899,7 +5201,6 @@ for (const y of years) {
   title="Council items"
   description="City of Toronto council decisions on procurement, with bid tables including losing bidders."
 >
-  <h1>Council items</h1>
   <p>
     {p.doc.council_items.length} council items with procurement decisions,
     grouped by year. Bid tables (including losing bidders) live on each item
@@ -4931,6 +5232,8 @@ for (const y of years) {
 </Base>
 ```
 
+(No slot `<h1>` here either — Base's `title="Council items"` renders it. Task 19 later replaces this whole file with the island version.)
+
 - [ ] **Step 5: Rebuild and run the site tests to verify they pass**
 
 Run (frontend repo):
@@ -4939,7 +5242,7 @@ Run (frontend repo):
 TB_DATA_FILE=tests/fixtures/bids.fixture.json BASE_PATH=/ npm run build && npx vitest run -c vitest.site.config.ts
 ```
 
-Expected: PASS — all tests in `tests/site/council.test.ts` green, all previously passing site tests still green.
+Expected: PASS — all tests in `tests/site/council.test.ts` green (the supplier-profile-link and background-PDF tests are `runIf`-guarded and skip if the fixture lacks the triggering shape), all previously passing site tests still green. The `/suppliers/{slug}/` anchors asserted here are markup only — the target pages arrive in Task 17.
 
 - [ ] **Step 6: Commit**
 
@@ -4955,8 +5258,8 @@ git add src/pages/council tests/site/council.test.ts && git commit -m "feat: cou
 - Test: `tests/site/suppliers.test.ts`
 
 **Interfaces:**
-- Consumes: `getPrepared()` (Task 10) — uses `p.rollupsBySlug: Map<string, SupplierRollup>` and `p.councilByRef`; `SupplierRollup` / `SumResult` types (Task 2); `formatCAD` (Task 4); `displayTitle` (Task 6); `supplierSlug` (Task 7, used in tests to compute expected slugs from `supplier_key`); `href` and `Base.astro` (Task 13); `AmountCell.astro` (Task 13) with props `{ raw: string | null; numeric: number | null }`; `loadPage` (Task 13); fixture (Task 3, requires backend #144 so suppliers carry `supplier_key`).
-- Produces: routes `/suppliers/` and `/suppliers/{slug}/`. Task 18's suspended-firms table and Task 19's browse island link to `/suppliers/{slug}/`. Task 19 later adds the full browse island for suppliers on a browse page — this task's `/suppliers/` stays a plain top-by-award-total table with a link note.
+- Consumes: `getPrepared()` (Task 10) — uses `p.rollupsBySlug: Map<string, SupplierRollup>`, `p.councilByRef`, `p.solByDoc`, `p.dedupedAwardsByDoc`, `p.bridge.refToDoc`, and `p.wsSlugByNumber` (workspace_number → routable slug from Task 7's `wsSlug`; noncompetitive links use the slug, the visible cell text stays the raw `workspace_number`); `SupplierRollup` / `SumResult` types (Task 2); `formatCAD` (Task 4); `dedupeAwards` (Task 5, used in tests to mirror the page's Won/Lost derivation); `displayTitle` (Task 6); `supplierSlug` (Task 7, used in tests to compute expected slugs from `supplier_key`); `href` and `Base.astro` (Task 13) — Base renders each page's ONLY `<h1>` from `title`; the slot adds none; `AmountCell.astro` with props `{ raw: string | null; numeric: number | null }` (Task 13); `loadPage` (Task 13); fixture (Task 3, requires backend #144 so suppliers carry `supplier_key`).
+- Produces: routes `/suppliers/` and `/suppliers/{slug}/`. Won/Lost and single-bidder appearances are computed IN THE PAGE from existing `Prepared` data — no contract change: a bid is **Won** when its resolved document (`document_number`, else `bridge.refToDoc.get(reference)`) is among the documents where this supplier holds a deduped award, **Lost** when that document's deduped awards belong only to others, and **—** when no award record exists to decide; a **single-bidder appearance** is a bid whose containing bid table has exactly one bid (`reference ? p.councilByRef.get(reference)?.bids.length === 1 : p.solByDoc.get(document_number)?.bids.length === 1`). Unlinked bids and awards (document matching no solicitation) render as plain text with an explicit "not linked" note — never a dead link. Task 18's suspended-firms table and Task 19's browse island link to `/suppliers/{slug}/`. Task 19 REPLACES `src/pages/suppliers/index.astro` with the BrowseTable-island version and rewrites the index-page assertions in `tests/site/suppliers.test.ts`; this task's `/suppliers/` is an interim plain top-by-award-total table with a link note.
 
 - [ ] **Step 1: Write the failing site test**
 
@@ -4967,6 +5270,7 @@ import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { loadPage } from './helpers';
 import { supplierSlug } from '../../src/prepare/slugs';
+import { dedupeAwards } from '../../src/prepare/awards';
 import type { ExportDoc } from '../../src/prepare/types';
 
 const fx = JSON.parse(
@@ -4995,6 +5299,70 @@ const suspendedWithId = fx.suspended_firms.filter(
 );
 const withVariants = fx.suppliers.find((s) => s.variants.length > 0);
 
+// Won/Lost mirror of the page's derivation: a bid is Won when the supplier
+// holds a deduped award on the bid's document, Lost when that document's
+// deduped awards belong only to others.
+const wonBidder = fx.suppliers.find((s) =>
+  fx.solicitations.some(
+    (sol) =>
+      sol.bids.some((b) => b.supplier_id === s.supplier_id) &&
+      dedupeAwards(sol.awards).some((a) => a.supplier_id === s.supplier_id),
+  ),
+);
+const lostBidder = fx.suppliers.find((s) =>
+  fx.solicitations.some((sol) => {
+    const deduped = dedupeAwards(sol.awards);
+    return (
+      sol.bids.some((b) => b.supplier_id === s.supplier_id) &&
+      deduped.length > 0 &&
+      deduped.every((a) => a.supplier_id !== s.supplier_id)
+    );
+  }),
+);
+
+// Single-bidder mirror: this supplier's bids whose containing bid table has
+// exactly one bid (the same rule the page applies).
+function soleBidCount(supplierId: number): number {
+  const all = [
+    ...fx.council_items.flatMap((ci) => ci.bids),
+    ...fx.solicitations.flatMap((sol) => sol.bids),
+    ...fx.unlinked_bids,
+  ];
+  return all.filter((b) => {
+    if (b.supplier_id !== supplierId) return false;
+    if (b.reference !== null) {
+      return (
+        fx.council_items.find((ci) => ci.reference === b.reference)?.bids
+          .length === 1
+      );
+    }
+    if (b.document_number !== null) {
+      return (
+        fx.solicitations.find(
+          (sol) => sol.document_number === b.document_number,
+        )?.bids.length === 1
+      );
+    }
+    return false;
+  }).length;
+}
+const soleBidder = fx.suppliers.find((s) => soleBidCount(s.supplier_id) > 0);
+
+// Unlinked records must render as text with a not-linked note, never a link.
+const unlinkedBid = fx.unlinked_bids.find(
+  (b) =>
+    b.supplier_id !== null &&
+    b.document_number !== null &&
+    !fx.solicitations.some((s) => s.document_number === b.document_number) &&
+    fx.suppliers.some((s) => s.supplier_id === b.supplier_id),
+);
+const unlinkedBidder = unlinkedBid
+  ? fx.suppliers.find((s) => s.supplier_id === unlinkedBid.supplier_id)!
+  : undefined;
+const unlinkedAwardSupplier = fx.suppliers.find((s) =>
+  fx.unlinked_awards.some((a) => a.supplier_id === s.supplier_id),
+);
+
 describe('/suppliers/ index', () => {
   it('renders a plain top-by-award-total table with a search note, no island', () => {
     const $ = loadPage('suppliers');
@@ -5009,9 +5377,10 @@ describe('/suppliers/ index', () => {
 });
 
 describe('/suppliers/{slug}/ profile page', () => {
-  it('builds a page for every supplier, slugged from supplier_key', () => {
+  it('builds a page for every supplier, slugged from supplier_key, with a single h1', () => {
     for (const s of fx.suppliers.slice(0, 3)) {
       const $ = loadPage(`suppliers/${supplierSlug(s.supplier_key)}`);
+      expect($('h1').length).toBe(1);
       expect($('h1').first().text()).toBe(s.display_name);
     }
   });
@@ -5049,6 +5418,70 @@ describe('/suppliers/{slug}/ profile page', () => {
     },
   );
 
+  it.runIf(wonBidder !== undefined)(
+    'marks a winning bid Won in the Result column',
+    () => {
+      const $ = loadPage(`suppliers/${supplierSlug(wonBidder!.supplier_key)}`);
+      const results = $('td.bid-result')
+        .toArray()
+        .map((el) => $(el).text().trim());
+      expect(results).toContain('Won');
+    },
+  );
+
+  it.runIf(lostBidder !== undefined)(
+    'marks a losing bid Lost in the Result column',
+    () => {
+      const $ = loadPage(`suppliers/${supplierSlug(lostBidder!.supplier_key)}`);
+      const results = $('td.bid-result')
+        .toArray()
+        .map((el) => $(el).text().trim());
+      expect(results).toContain('Lost');
+    },
+  );
+
+  it('renders a Single-bidder appearances section with a count on every profile', () => {
+    const $ = loadPage(`suppliers/${supplierSlug(awarded.supplier_key)}`);
+    expect($('body').text()).toMatch(/Single-bidder appearances \(\d+\)/);
+  });
+
+  it.runIf(soleBidder !== undefined)(
+    'counts single-bidder appearances from the containing bid tables',
+    () => {
+      const $ = loadPage(`suppliers/${supplierSlug(soleBidder!.supplier_key)}`);
+      expect($('body').text()).toContain(
+        `Single-bidder appearances (${soleBidCount(soleBidder!.supplier_id)})`,
+      );
+    },
+  );
+
+  it.runIf(unlinkedBidder !== undefined)(
+    'renders unlinked bids as text with an explicit not-linked note, never a dead link',
+    () => {
+      const $ = loadPage(
+        `suppliers/${supplierSlug(unlinkedBidder!.supplier_key)}`,
+      );
+      expect($('body').text()).toContain(
+        'not linked — no matching solicitation record',
+      );
+      expect(
+        $(`a[href$="/solicitations/${unlinkedBid!.document_number}/"]`).length,
+      ).toBe(0);
+    },
+  );
+
+  it.runIf(unlinkedAwardSupplier !== undefined)(
+    'renders unlinked award rows without a solicitation link',
+    () => {
+      const $ = loadPage(
+        `suppliers/${supplierSlug(unlinkedAwardSupplier!.supplier_key)}`,
+      );
+      expect($('body').text()).toContain(
+        'not linked — no matching solicitation record',
+      );
+    },
+  );
+
   it.runIf(suspendedWithId.length > 0)(
     'shows a suspended banner on suspended suppliers',
     () => {
@@ -5072,7 +5505,7 @@ Run (frontend repo):
 TB_DATA_FILE=tests/fixtures/bids.fixture.json BASE_PATH=/ npm run build && npx vitest run -c vitest.site.config.ts
 ```
 
-Expected: build succeeds; vitest FAILS — every test in `tests/site/suppliers.test.ts` errors with `ENOENT: no such file or directory` opening `dist/suppliers/index.html` (and the profile paths). Other site test files stay green.
+Expected: build succeeds; vitest FAILS — every non-skipped test in `tests/site/suppliers.test.ts` errors with `ENOENT: no such file or directory` opening `dist/suppliers/index.html` (and the profile paths). Other site test files stay green.
 
 - [ ] **Step 3: Write the supplier profile page**
 
@@ -5103,10 +5536,48 @@ const s = rollup.supplier;
 function totalLine(t: SumResult): string {
   return `${formatCAD(t.total)} from ${t.counted} machine-parseable rows (${t.skipped} rows unparseable or excluded — an undercount)`;
 }
+
+/** Noncompetitive links use the routable slug; displayed text stays raw. */
+function ncHref(workspaceNumber: string): string {
+  return href(`/noncompetitive/${p.wsSlugByNumber.get(workspaceNumber)!}/`);
+}
+
+// Won/Lost and single-bidder appearances are computed here from Prepared
+// data — no contract change.
+type RollupBid = SupplierRollup['bids'][number];
+
+const awardDocs = new Set(rollup.awards.map((a) => a.document_number));
+
+function bidDoc(entry: RollupBid): string | null {
+  if (entry.document_number !== null) return entry.document_number;
+  if (entry.reference !== null) {
+    return p.bridge.refToDoc.get(entry.reference) ?? null;
+  }
+  return null;
+}
+
+/** Won/Lost is claimed only when the resolved document has a deduped award record. */
+function bidResult(entry: RollupBid): 'Won' | 'Lost' | '—' {
+  const doc = bidDoc(entry);
+  if (doc === null) return '—';
+  if (awardDocs.has(doc)) return 'Won';
+  return (p.dedupedAwardsByDoc.get(doc) ?? []).length > 0 ? 'Lost' : '—';
+}
+
+/** A single-bidder appearance: the containing bid table has exactly one bid. */
+function isSoleBidder(entry: RollupBid): boolean {
+  if (entry.reference !== null) {
+    return p.councilByRef.get(entry.reference)?.bids.length === 1;
+  }
+  if (entry.document_number !== null) {
+    return p.solByDoc.get(entry.document_number)?.bids.length === 1;
+  }
+  return false;
+}
+
+const soleBids = rollup.bids.filter(isSoleBidder);
 ---
 <Base title={s.display_name} pagefind={true} filters={{ type: 'Supplier' }}>
-  <h1>{s.display_name}</h1>
-
   {rollup.suspended.length > 0 && (
     <aside role="alert">
       <strong>Suspended firm.</strong>
@@ -5163,9 +5634,14 @@ function totalLine(t: SumResult): string {
             {rollup.awards.map(({ document_number, sol, award }) => (
               <tr>
                 <td>
-                  <a href={href(`/solicitations/${document_number}/`)}>
-                    {sol ? displayTitle(sol).text : `Doc ${document_number}`}
-                  </a>
+                  {sol ? (
+                    <a href={href(`/solicitations/${document_number}/`)}>
+                      {displayTitle(sol).text}
+                    </a>
+                  ) : (
+                    // Kept on one line: site tests assert this exact phrase.
+                    <span>Doc {document_number} (not linked — no matching solicitation record)</span>
+                  )}
                 </td>
                 <td>
                   <AmountCell
@@ -5227,7 +5703,7 @@ function totalLine(t: SumResult): string {
             {rollup.noncompetitive.map((nc) => (
               <tr>
                 <td>
-                  <a href={href(`/noncompetitive/${nc.workspace_number}/`)}>
+                  <a href={ncHref(nc.workspace_number)}>
                     {nc.workspace_number}
                   </a>
                 </td>
@@ -5252,46 +5728,95 @@ function totalLine(t: SumResult): string {
   <section>
     <h2>Bids ({rollup.bids.length})</h2>
     {rollup.bids.length > 0 ? (
-      <table>
-        <thead>
-          <tr><th>Record</th><th>Bid price</th><th>HST basis</th></tr>
-        </thead>
-        <tbody>
-          {rollup.bids.map(({ reference, document_number, bid }) => (
+      <>
+        <table class="supplier-bids">
+          <thead>
             <tr>
-              <td>
-                {reference ? (
-                  <a href={href(`/council/${reference}/`)}>
-                    Council {reference}
-                  </a>
-                ) : document_number ? (
-                  <a href={href(`/solicitations/${document_number}/`)}>
-                    Doc {document_number}
-                  </a>
-                ) : (
-                  'not linked'
-                )}
-              </td>
-              <td>
-                <AmountCell raw={bid.bid_price} numeric={bid.bid_price_numeric} />
-              </td>
-              <td>
-                {bid.hst_basis === 'including'
-                  ? 'incl. HST'
-                  : bid.hst_basis === 'excluding'
-                    ? 'excl. HST'
-                    : 'basis unknown'}
-              </td>
+              <th>Record</th>
+              <th>Bid price</th>
+              <th>HST basis</th>
+              <th>Result</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {rollup.bids.map((entry) => (
+              <tr>
+                <td>
+                  {entry.reference && p.councilByRef.has(entry.reference) ? (
+                    <a href={href(`/council/${entry.reference}/`)}>
+                      Council {entry.reference}
+                    </a>
+                  ) : entry.document_number &&
+                    p.solByDoc.has(entry.document_number) ? (
+                    <a href={href(`/solicitations/${entry.document_number}/`)}>
+                      Doc {entry.document_number}
+                    </a>
+                  ) : entry.document_number ? (
+                    // Kept on one line: site tests assert this exact phrase.
+                    <span>Doc {entry.document_number} (not linked — no matching solicitation record)</span>
+                  ) : entry.reference ? (
+                    <span>Council {entry.reference} (not linked — no matching council item)</span>
+                  ) : (
+                    'not linked'
+                  )}
+                </td>
+                <td>
+                  <AmountCell
+                    raw={entry.bid.bid_price}
+                    numeric={entry.bid.bid_price_numeric}
+                  />
+                </td>
+                <td>
+                  {entry.bid.hst_basis === 'including'
+                    ? 'incl. HST'
+                    : entry.bid.hst_basis === 'excluding'
+                      ? 'excl. HST'
+                      : 'basis unknown'}
+                </td>
+                <td class="bid-result">{bidResult(entry)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <p>
+          Won/Lost is determined from the linked record's deduped awards; "—"
+          means no award record exists to determine an outcome.
+        </p>
+      </>
     ) : (
       <p>No bids recorded for this supplier.</p>
     )}
   </section>
+
+  <section>
+    <h2>Single-bidder appearances ({soleBids.length})</h2>
+    {soleBids.length > 0 ? (
+      <>
+        <p>Records where this supplier's bid was the only bid received.</p>
+        <ul>
+          {soleBids.map((entry) => (
+            <li>
+              {entry.reference ? (
+                <a href={href(`/council/${entry.reference}/`)}>
+                  Council {entry.reference}
+                </a>
+              ) : (
+                <a href={href(`/solicitations/${entry.document_number}/`)}>
+                  Doc {entry.document_number}
+                </a>
+              )}
+            </li>
+          ))}
+        </ul>
+      </>
+    ) : (
+      <p>No single-bidder appearances in the captured bid record.</p>
+    )}
+  </section>
 </Base>
 ```
+
+Notes: the page renders no `<h1>` in the slot — Base's `title={s.display_name}` is the single `<h1>`. Every entry in `soleBids` resolves by construction (the sole-bidder rule only matches bids whose container exists in `councilByRef` / `solByDoc`), so its links are never dead.
 
 - [ ] **Step 4: Write the suppliers index page**
 
@@ -5315,7 +5840,6 @@ const top = rollups
   title="Suppliers"
   description="Supplier profiles: awards won, bids lost, name variants, suspensions."
 >
-  <h1>Suppliers</h1>
   <p>
     {rollups.length} supplier profiles. Below: the top {top.length} by City
     award total (machine-parseable amounts only — an undercount). Every
@@ -5351,6 +5875,8 @@ const top = rollups
 </Base>
 ```
 
+(No slot `<h1>` — Base's `title="Suppliers"` renders it, so the index test's `$('h1').first().text()` assertion sees exactly one heading. Task 19 later replaces this whole file with the island version.)
+
 - [ ] **Step 5: Rebuild and run the site tests to verify they pass**
 
 Run (frontend repo):
@@ -5359,12 +5885,12 @@ Run (frontend repo):
 TB_DATA_FILE=tests/fixtures/bids.fixture.json BASE_PATH=/ npm run build && npx vitest run -c vitest.site.config.ts
 ```
 
-Expected: PASS — all tests in `tests/site/suppliers.test.ts` green, all previously passing site tests still green.
+Expected: PASS — all tests in `tests/site/suppliers.test.ts` green; the Won/Lost, single-bidder-count, unlinked-bid, and unlinked-award tests are `runIf`-guarded and skip when the fixture lacks the triggering shape (the fixture's `unlinked_bids`/`unlinked_awards` are empty, so those two skip; the always-on test still asserts the Single-bidder appearances section renders with a count). All previously passing site tests stay green.
 
 - [ ] **Step 6: Commit**
 
 ```bash
-git add src/pages/suppliers tests/site/suppliers.test.ts && git commit -m "feat: supplier profile pages with per-keyspace totals and top-suppliers index"
+git add src/pages/suppliers tests/site/suppliers.test.ts && git commit -m "feat: supplier profile pages with won/lost, single-bidder appearances, per-keyspace totals"
 ```
 
 ### Task 18: Buyer pages + capital-projects + suspended-firms tables
@@ -5379,7 +5905,7 @@ git add src/pages/suppliers tests/site/suppliers.test.ts && git commit -m "feat:
 
 **Interfaces:**
 - Consumes: `getPrepared()` (Task 10) — uses `p.doc.buyers`, `p.doc.capital_projects`, `p.doc.suspended_firms`, `p.supplierSlugById`, `p.councilByRef`; `Buyer` type (Task 2); `href` and `Base.astro` (Task 13); `AmountCell.astro` props `{ raw: string | null; numeric: number | null }` (Task 13); `supplierSlug` (Task 7, in tests); `loadPage` (Task 13); fixture (Task 3) — the tests key off the fixture's SYNTHETIC buyers: slug `toronto-zoo-test` (partnered 0) and the partnered TRCA-like buyer (funding_share 0.626, one award with `value_confidential: 1`). Supplier profile routes from Task 17 and council routes from Task 16 are link targets.
-- Produces: routes `/buyers/`, `/buyers/{slug}/`, `/capital-projects/`, `/suspended-firms/`. `estimated_range` is rendered verbatim text, never parsed or summed. `value_confidential === 1` renders exactly `value withheld (confidential attachment)`.
+- Produces: routes `/buyers/`, `/buyers/{slug}/`, `/capital-projects/`, `/suspended-firms/`. `estimated_range` is rendered verbatim text, never parsed or summed. `value_confidential === 1` renders exactly `value withheld (confidential attachment)`. Buyer record pages pass `filters={{ type: 'Buyer', buyer: buyer.name }}` to Base — the search buyer facet for agency records (City record pages pass `buyer: 'City of Toronto'`; see Tasks 14–16). `Base.astro` renders each page's ONLY `<h1>` from its `title` prop; none of these four pages renders an `<h1>` in the slot.
 
 - [ ] **Step 1: Write the failing buyer site test**
 
@@ -5418,6 +5944,7 @@ describe('/buyers/{slug}/ pages', () => {
   it('renders honest empty states for sections with no records', () => {
     const $ = loadPage(`buyers/${zoo.slug}`);
     const text = $('body').text();
+    expect($('h1').length).toBe(1);
     expect($('h1').first().text()).toBe(zoo.name);
     expect(text).toContain('Portal captured since');
     const sections: Array<[number, string]> = [
@@ -5529,10 +6056,9 @@ const p = await getPrepared();
 const buyers = [...p.doc.buyers].sort((a, b) => a.name.localeCompare(b.name));
 ---
 <Base
-  title="Agencies and boards (buyers)"
-  description="Procurement records from partner agency portals, kept separate from City headline numbers."
+  title="Agencies and boards"
+  description="Procurement records from partner agency (buyer) portals, kept separate from City headline numbers."
 >
-  <h1>Agencies and boards</h1>
   <p>
     Records captured from agency procurement portals. Agency data lives in its
     own keyspace and is never merged into City headline numbers.
@@ -5594,8 +6120,11 @@ export async function getStaticPaths() {
 const { buyer } = Astro.props as { buyer: Buyer };
 const capturedSince = buyer.first_seen.slice(0, 10);
 ---
-<Base title={buyer.name} pagefind={true} filters={{ type: 'Buyer' }}>
-  <h1>{buyer.name}</h1>
+<Base
+  title={buyer.name}
+  pagefind={true}
+  filters={{ type: 'Buyer', buyer: buyer.name }}
+>
   <p>
     {buyer.kind}
     {buyer.partnered === 1 && <strong> · Partnered</strong>}
@@ -5746,7 +6275,6 @@ const projects = [...p.doc.capital_projects].sort((a, b) =>
   title="Capital project pipeline"
   description="City-published pipeline of upcoming capital procurements."
 >
-  <h1>Capital project pipeline</h1>
   <p>
     {projects.length} upcoming capital procurements as published by the City.
     Estimated ranges are the City's published text and are shown verbatim —
@@ -5804,7 +6332,6 @@ const firms = p.doc.suspended_firms;
   title="Suspended firms"
   description="Firms suspended from City procurement, with council authority."
 >
-  <h1>Suspended firms</h1>
   <p>{firms.length} firms suspended from bidding on City procurement.</p>
   <table>
     <thead>
@@ -5885,11 +6412,13 @@ git add src/pages/buyers src/pages/capital-projects src/pages/suspended-firms te
 - Create: `src/pages/noncompetitive/index.astro`
 - Modify: `src/pages/council/index.astro` (full replacement of Task 16's placeholder list page)
 - Modify: `src/pages/suppliers/index.astro` (full replacement of Task 17's placeholder list page)
+- Modify: `tests/site/council.test.ts` (replace the `/council/ index` describe block — its no-island/year-h2/per-item-link assertions target the page this task replaces)
+- Modify: `tests/site/suppliers.test.ts` (replace the `/suppliers/ index` describe block — its no-island/"supplier profiles"/search-link assertions target the page this task replaces)
 - Test: `tests/site/browse.test.ts`
 
 **Interfaces:**
-- Consumes: `getPrepared(): Promise<Prepared>` (Task 10); `buildSolicitationIndex`, `buildSupplierIndex`, `buildNoncompetitiveIndex`, `buildCouncilIndex` and the `SolicitationIndexRow`/`SupplierIndexRow`/`NoncompetitiveIndexRow`/`CouncilIndexRow` interfaces (Task 9); `formatCAD(n: number): string` (Task 4); `href(path: string): string` and `Base.astro` (Task 13); `loadPage(relPath: string): CheerioAPI` (Task 13). Depends on `astro`, `@astrojs/react`, `react`, `@tanstack/react-table` from Task 1.
-- Produces: `BrowseTable` (default export) with props `{ entity: 'solicitations' | 'suppliers' | 'noncompetitive' | 'council'; indexUrl: string; base: string }`; static JSON endpoints at `/indexes/solicitations.json`, `/indexes/suppliers.json`, `/indexes/noncompetitive.json`, `/indexes/council.json` (Task 20's tests read these from `dist/` to discover record slugs); browse pages at `/solicitations/`, `/noncompetitive/`, `/council/`, `/suppliers/`, each with a `<noscript>` first-50-rows static table.
+- Consumes: `getPrepared(): Promise<Prepared>` (Task 10); `buildSolicitationIndex`, `buildSupplierIndex`, `buildNoncompetitiveIndex`, `buildCouncilIndex` and the `SolicitationIndexRow`/`SupplierIndexRow`/`NoncompetitiveIndexRow`/`CouncilIndexRow` interfaces (Task 9) — `NoncompetitiveIndexRow` carries `wl` (the URL-safe workspace slug from `wsSlug`, Tasks 7/9/10): every `/noncompetitive/{...}/` link is built from `wl`, never from the raw `w`, which is display-only; `formatCAD(n: number): string` (Task 4); `href(path: string): string` and `Base.astro` (Task 13); `loadPage(relPath: string): CheerioAPI` (Task 13). Depends on `astro`, `@astrojs/react`, `react`, `@tanstack/react-table` from Task 1.
+- Produces: `BrowseTable` (default export) with props `{ entity: 'solicitations' | 'suppliers' | 'noncompetitive' | 'council'; indexUrl: string; base: string }` — the solicitations table carries all six spec facets: status, rfx type, category, division, year (selects) and has-documents (checkbox); static JSON endpoints at `/indexes/solicitations.json`, `/indexes/suppliers.json`, `/indexes/noncompetitive.json`, `/indexes/council.json` (Task 20's tests read these from `dist/` to discover record slugs); browse pages at `/solicitations/`, `/noncompetitive/`, `/council/`, `/suppliers/`, each with a `<noscript>` first-50-rows static table and NO slot `<h1>` (Base renders the only h1 from `title`). This task replaces the Task 16/17 index pages AND their index-page site-test describe blocks (the record-page tests in those files are untouched).
 
 - [ ] **Step 1: Write the failing site test**
 
@@ -5904,7 +6433,7 @@ import { loadPage } from './helpers';
 const ENDPOINTS: { file: string; keys: string[] }[] = [
   { file: 'indexes/solicitations.json', keys: ['d', 't', 'u', 's', 'r', 'c', 'v', 'y', 'dl', 'a', 'nb', 'nd'] },
   { file: 'indexes/suppliers.json', keys: ['g', 'n', 'na', 'nb', 'a'] },
-  { file: 'indexes/noncompetitive.json', keys: ['w', 'n', 'r', 'v', 'y', 'a'] },
+  { file: 'indexes/noncompetitive.json', keys: ['w', 'wl', 'n', 'r', 'v', 'y', 'a'] },
   { file: 'indexes/council.json', keys: ['f', 't', 'y', 'nb'] },
 ];
 
@@ -5944,6 +6473,17 @@ describe('browse pages', () => {
     });
   }
 });
+
+describe('solicitations facets', () => {
+  it('/solicitations/ prerenders all six facet controls in the island', () => {
+    const $ = loadPage('solicitations');
+    const labels = $('astro-island label').text();
+    for (const facet of ['Status', 'Type', 'Category', 'Division', 'Year', 'Has documents']) {
+      expect(labels, `missing facet control "${facet}"`).toContain(facet);
+    }
+    expect($('astro-island input[type="checkbox"]').length).toBe(1);
+  });
+});
 ```
 
 - [ ] **Step 2: Run the test to verify it fails**
@@ -5955,7 +6495,7 @@ TB_DATA_FILE=tests/fixtures/bids.fixture.json BASE_PATH=/ npm run build
 npx vitest run -c vitest.site.config.ts tests/site/browse.test.ts
 ```
 
-Expected: build succeeds (pages from Tasks 13-18 unchanged), then FAIL — the four endpoint tests error with `ENOENT: no such file or directory, open 'dist/indexes/solicitations.json'` (etc.), the solicitations/noncompetitive page tests error with `ENOENT ... 'dist/solicitations/index.html'` / `'dist/noncompetitive/index.html'`, and the council/suppliers island tests fail with `expected 0 to be greater than or equal to 1`.
+Expected: build succeeds (pages from Tasks 13-18 unchanged), then FAIL — the four endpoint tests error with `ENOENT: no such file or directory, open 'dist/indexes/solicitations.json'` (etc.), the solicitations/noncompetitive page tests and the facets test error with `ENOENT ... 'dist/solicitations/index.html'` / `'dist/noncompetitive/index.html'`, the council/suppliers island tests fail with `expected 0 to be greater than or equal to 1`, and the council/suppliers noscript tests fail (the Task 16/17 index pages have no `<noscript>` table).
 
 - [ ] **Step 3: Create the four JSON index endpoints**
 
@@ -6039,7 +6579,7 @@ import { formatCAD } from '../prepare/amounts';
 // Rows are the compact index rows emitted by src/prepare/indexes.ts:
 //   solicitations: { d, t, u, s, r, c, v, y, dl, a, nb, nd }
 //   suppliers:     { g, n, na, nb, a }
-//   noncompetitive:{ w, n, r, v, y, a }
+//   noncompetitive:{ w, wl, n, r, v, y, a }  (wl = URL-safe workspace slug; links use it)
 //   council:       { f, t, y, nb }
 type Row = Record<string, any>;
 
@@ -6058,11 +6598,14 @@ interface SelectFilter {
   label: string;
 }
 
+// All six spec facets for solicitations: status, rfx type, category, division,
+// and year are selects; has-documents is a checkbox (CHECKS below).
 const SELECTS: Record<BrowseEntity, SelectFilter[]> = {
   solicitations: [
     { id: 's', param: 'status', label: 'Status' },
     { id: 'r', param: 'type', label: 'Type' },
     { id: 'c', param: 'category', label: 'Category' },
+    { id: 'v', param: 'division', label: 'Division' },
     { id: 'y', param: 'year', label: 'Year' },
   ],
   suppliers: [],
@@ -6070,8 +6613,24 @@ const SELECTS: Record<BrowseEntity, SelectFilter[]> = {
   council: [{ id: 'y', param: 'year', label: 'Year' }],
 };
 
+interface CheckFilter {
+  id: string; // column whose filterFn implements the boolean facet
+  param: string; // query-string parameter name (serialized as `<param>=yes`)
+  label: string;
+}
+
+const CHECKS: Record<BrowseEntity, CheckFilter[]> = {
+  solicitations: [{ id: 'nd', param: 'docs', label: 'Has documents' }],
+  suppliers: [],
+  noncompetitive: [],
+  council: [],
+};
+
 const exactText: FilterFn<Row> = (row, columnId, filterValue) =>
   String(row.getValue(columnId)) === String(filterValue);
+
+// Checkbox facet: keep only rows with a positive count (nd > 0 = has documents).
+const positiveCount: FilterFn<Row> = (row, columnId) => Number(row.getValue(columnId)) > 0;
 
 function money(v: unknown): string {
   return typeof v === 'number' ? formatCAD(v) : '—';
@@ -6097,12 +6656,12 @@ function buildColumns(entity: BrowseEntity, link: (path: string) => string): Col
         { accessorKey: 's', header: 'Status', filterFn: exactText },
         { accessorKey: 'r', header: 'Type', filterFn: exactText },
         { accessorKey: 'c', header: 'Category', filterFn: exactText },
-        { accessorKey: 'v', header: 'Division' },
+        { accessorKey: 'v', header: 'Division', filterFn: exactText },
         { accessorKey: 'y', header: 'Year', filterFn: exactText },
         { accessorKey: 'dl', header: 'Deadline' },
         { accessorKey: 'a', header: 'Awarded (parsed)', cell: (c) => money(c.getValue()) },
         { accessorKey: 'nb', header: 'Bids' },
-        { accessorKey: 'nd', header: 'Docs' },
+        { accessorKey: 'nd', header: 'Docs', filterFn: positiveCount },
       ];
     case 'suppliers':
       return [
@@ -6120,8 +6679,9 @@ function buildColumns(entity: BrowseEntity, link: (path: string) => string): Col
         {
           accessorKey: 'w',
           header: 'Workspace #',
+          // Link from the URL-safe slug (wl); display the raw workspace_number.
           cell: (c) => (
-            <a href={link(`noncompetitive/${c.getValue<string>()}/`)}>{c.getValue<string>()}</a>
+            <a href={link(`noncompetitive/${c.row.original.wl}/`)}>{c.getValue<string>()}</a>
           ),
         },
         { accessorKey: 'n', header: 'Supplier' },
@@ -6157,6 +6717,7 @@ export default function BrowseTable({ entity, indexUrl, base }: BrowseTableProps
   const [ready, setReady] = useState(false); // true once the URL query string has been read
 
   const selects = SELECTS[entity];
+  const checks = CHECKS[entity];
   const link = useMemo(() => {
     const b = base.endsWith('/') ? base : `${base}/`;
     return (path: string) => b + path;
@@ -6200,6 +6761,9 @@ export default function BrowseTable({ entity, indexUrl, base }: BrowseTableProps
       const v = params.get(s.param);
       if (v) cf.push({ id: s.id, value: v });
     }
+    for (const cb of checks) {
+      if (params.get(cb.param) === 'yes') cf.push({ id: cb.id, value: true });
+    }
     if (cf.length > 0) setColumnFilters(cf);
     const sort = params.get('sort');
     if (sort) {
@@ -6211,7 +6775,7 @@ export default function BrowseTable({ entity, indexUrl, base }: BrowseTableProps
       setPagination((prev) => ({ ...prev, pageIndex: page - 1 }));
     }
     setReady(true);
-    // Runs once on mount; `selects` is a module-level constant per entity.
+    // Runs once on mount; `selects`/`checks` are module-level constants per entity.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -6224,13 +6788,16 @@ export default function BrowseTable({ entity, indexUrl, base }: BrowseTableProps
       const f = columnFilters.find((c) => c.id === s.id);
       if (f && f.value != null && f.value !== '') params.set(s.param, String(f.value));
     }
+    for (const cb of checks) {
+      if (columnFilters.some((f) => f.id === cb.id)) params.set(cb.param, 'yes');
+    }
     if (sorting.length > 0) {
       params.set('sort', `${sorting[0].id}.${sorting[0].desc ? 'desc' : 'asc'}`);
     }
     if (pagination.pageIndex > 0) params.set('page', String(pagination.pageIndex + 1));
     const qs = params.toString();
     window.history.replaceState(null, '', qs ? `?${qs}` : window.location.pathname);
-  }, [ready, globalFilter, columnFilters, sorting, pagination, selects]);
+  }, [ready, globalFilter, columnFilters, sorting, pagination, selects, checks]);
 
   const table = useReactTable({
     data,
@@ -6267,6 +6834,14 @@ export default function BrowseTable({ entity, indexUrl, base }: BrowseTableProps
     setColumnFilters((prev) => {
       const rest = prev.filter((f) => f.id !== id);
       return value === '' ? rest : [...rest, { id, value }];
+    });
+    setPagination((prev) => ({ ...prev, pageIndex: 0 }));
+  };
+
+  const setCheck = (id: string, on: boolean) => {
+    setColumnFilters((prev) => {
+      const rest = prev.filter((f) => f.id !== id);
+      return on ? [...rest, { id, value: true }] : rest;
     });
     setPagination((prev) => ({ ...prev, pageIndex: 0 }));
   };
@@ -6314,6 +6889,16 @@ export default function BrowseTable({ entity, indexUrl, base }: BrowseTableProps
             </label>
           );
         })}
+        {checks.map((cb) => (
+          <label key={cb.id} className="flex items-center gap-1 text-sm">
+            <input
+              type="checkbox"
+              checked={columnFilters.some((f) => f.id === cb.id)}
+              onChange={(e) => setCheck(cb.id, e.target.checked)}
+            />
+            {cb.label}
+          </label>
+        ))}
       </div>
       {loading ? (
         <p>Loading table…</p>
@@ -6385,6 +6970,8 @@ export default function BrowseTable({ entity, indexUrl, base }: BrowseTableProps
 
 - [ ] **Step 5: Create the solicitations and noncompetitive browse pages**
 
+All four browse pages render NO slot `<h1>` — `Base.astro` renders the only h1 from the `title` prop (single-h1 rule).
+
 Create `src/pages/solicitations/index.astro`:
 
 ```astro
@@ -6402,9 +6989,8 @@ const first = rows.slice(0, 50);
 
 <Base
   title="Solicitations"
-  description="Browse all competitive City of Toronto solicitations; filter by status, type, category and year."
+  description="Browse all competitive City of Toronto solicitations; filter by status, type, category, division, year, and has-documents."
 >
-  <h1>Solicitations</h1>
   <p>
     {rows.length.toLocaleString('en-CA')} competitive solicitations (the
     <code>document_number</code> keyspace). Filters and sorting are reflected in the
@@ -6462,7 +7048,6 @@ const first = rows.slice(0, 50);
   title="Non-competitive contracts"
   description="Browse sole-source City of Toronto contracts with the City's stated reason."
 >
-  <h1>Non-competitive contracts</h1>
   <p>
     {rows.length.toLocaleString('en-CA')} sole-source contracts with the City's stated
     reason (the <code>workspace_number</code> keyspace — never joined with document
@@ -6490,7 +7075,7 @@ const first = rows.slice(0, 50);
       <tbody>
         {first.map((r) => (
           <tr>
-            <td><a href={href(`/noncompetitive/${r.w}/`)}>{r.w}</a></td>
+            <td><a href={href(`/noncompetitive/${r.wl}/`)}>{r.w}</a></td>
             <td>{r.n ?? '—'}</td>
             <td>{r.v ?? '—'}</td>
             <td>{r.y ?? '—'}</td>
@@ -6524,7 +7109,6 @@ const first = rows.slice(0, 50);
   title="Council items"
   description="Browse council items with procurement decisions: decision text, bid tables, staff reports."
 >
-  <h1>Council items</h1>
   <p>
     {rows.length.toLocaleString('en-CA')} council items (the <code>reference</code>
     keyspace, <code>YYYY.CCNN.N</code>), including bid tables with winning and losing
@@ -6581,7 +7165,6 @@ const first = rows.slice(0, 50);
   title="Suppliers"
   description="Browse all suppliers: awards won, bids lost, suspensions, name variants."
 >
-  <h1>Suppliers</h1>
   <p>
     {rows.length.toLocaleString('en-CA')} suppliers. Award totals sum machine-parseable
     City award amounts only (undercounts) and never merge keyspaces. Filters and
@@ -6617,7 +7200,73 @@ const first = rows.slice(0, 50);
 </Base>
 ```
 
-- [ ] **Step 7: Rebuild and run the browse tests to verify they pass**
+- [ ] **Step 7: Replace the index-page describe blocks in the council and suppliers site tests**
+
+The Task 16/17 index pages no longer exist, so their index-page tests (no-island, year-`h2`s, per-item visible links, the `"N supplier profiles"` literal, the `/search/` link) must be replaced. The record-page describes in both files are untouched.
+
+In `tests/site/council.test.ts`, replace the entire `describe('/council/ index', ...)` block with:
+
+```ts
+describe('/council/ index (island browse page)', () => {
+  it('mounts the BrowseTable island pointing at the council index', () => {
+    const $ = loadPage('council');
+    const island = $('astro-island[client="load"]');
+    expect(island.length).toBeGreaterThanOrEqual(1);
+    expect(island.attr('props') ?? '').toContain('indexes/council.json');
+    expect($('h1').length).toBe(1); // Base renders the only h1
+    expect($('body').text()).toContain(
+      `${fx.council_items.length.toLocaleString('en-CA')} council items`,
+    );
+  });
+
+  it('renders a noscript first-50 static table linking council items', () => {
+    const raw = readFileSync('dist/council/index.html', 'utf8');
+    const noscripts = raw.match(/<noscript>[\s\S]*?<\/noscript>/g)?.join('') ?? '';
+    expect(noscripts).toContain('<table');
+    // buildCouncilIndex preserves doc order, so the noscript table shows the
+    // first 50 council items; the fixture has fewer than 50.
+    for (const ci of fx.council_items.slice(0, 50)) {
+      expect(noscripts).toContain(`/council/${ci.reference}/`);
+    }
+  });
+});
+```
+
+In `tests/site/suppliers.test.ts`, replace the entire `describe('/suppliers/ index', ...)` block with:
+
+```ts
+describe('/suppliers/ index (island browse page)', () => {
+  it('mounts the BrowseTable island pointing at the suppliers index', () => {
+    const $ = loadPage('suppliers');
+    const island = $('astro-island[client="load"]');
+    expect(island.length).toBeGreaterThanOrEqual(1);
+    expect(island.attr('props') ?? '').toContain('indexes/suppliers.json');
+    expect($('h1').length).toBe(1); // Base renders the only h1
+    expect($('body').text()).toContain(
+      `${fx.suppliers.length.toLocaleString('en-CA')} suppliers`,
+    );
+    expect($('body').text()).toContain('undercount');
+  });
+
+  it('renders a noscript first-50 static table linking supplier profiles', () => {
+    const raw = readFileSync('dist/suppliers/index.html', 'utf8');
+    const noscripts = raw.match(/<noscript>[\s\S]*?<\/noscript>/g)?.join('') ?? '';
+    expect(noscripts).toContain('<table');
+    // buildSupplierIndex sorts by display_name (en-CA), tiebreak slug — mirror it.
+    const first = fx.suppliers
+      .map((s) => ({ n: s.display_name, g: supplierSlug(s.supplier_key) }))
+      .sort((a, b) => a.n.localeCompare(b.n, 'en-CA') || a.g.localeCompare(b.g, 'en-CA'))
+      .slice(0, 50);
+    for (const s of first) {
+      expect(noscripts).toContain(`/suppliers/${s.g}/`);
+    }
+  });
+});
+```
+
+Both replacements use only imports/fixtures already present at the top of each file (`loadPage`, `readFileSync`, `fx`, and — in suppliers — `supplierSlug`).
+
+- [ ] **Step 8: Rebuild and run the browse tests to verify they pass**
 
 Run in `/Users/alex/code/projects/toronto-bids/toronto-bids-frontend`:
 
@@ -6626,9 +7275,9 @@ TB_DATA_FILE=tests/fixtures/bids.fixture.json BASE_PATH=/ npm run build
 npx vitest run -c vitest.site.config.ts tests/site/browse.test.ts
 ```
 
-Expected: build succeeds (the build output lists `/indexes/solicitations.json` etc. among generated routes), then PASS — `Test Files  1 passed (1)`, 12 tests passed.
+Expected: build succeeds (the build output lists `/indexes/solicitations.json` etc. among generated routes), then PASS — `Test Files  1 passed (1)`, 13 tests passed.
 
-- [ ] **Step 8: Run the full suites to catch regressions**
+- [ ] **Step 9: Run the full suites to catch regressions**
 
 Run in `/Users/alex/code/projects/toronto-bids/toronto-bids-frontend`:
 
@@ -6637,27 +7286,28 @@ npx vitest run
 npx vitest run -c vitest.site.config.ts
 ```
 
-Expected: PASS on both (all unit tests, all site tests including Tasks 13-18's files against the dist built in Step 7).
+Expected: PASS on both — all unit tests, and all site tests including Tasks 13-18's files against the dist built in Step 8 (`council.test.ts` and `suppliers.test.ts` now assert the island index pages via the Step 7 replacements).
 
-- [ ] **Step 9: Commit**
+- [ ] **Step 10: Commit**
 
 Run in `/Users/alex/code/projects/toronto-bids/toronto-bids-frontend`:
 
 ```bash
-git add src/islands/BrowseTable.tsx src/pages/indexes src/pages/solicitations/index.astro src/pages/noncompetitive/index.astro src/pages/council/index.astro src/pages/suppliers/index.astro tests/site/browse.test.ts
+git add src/islands/BrowseTable.tsx src/pages/indexes src/pages/solicitations/index.astro src/pages/noncompetitive/index.astro src/pages/council/index.astro src/pages/suppliers/index.astro tests/site/browse.test.ts tests/site/council.test.ts tests/site/suppliers.test.ts
 git commit -m "feat: BrowseTable island, JSON browse indexes, browse pages with noscript fallback"
 ```
 
-### Task 20: Pagefind search (`/search/`) + filters + build chaining
+### Task 20: Pagefind search page (`/search/`) with `?q=` carry-over
+
+Note: the build script has been the chained `astro build && pagefind --site dist` since Task 1 Step 1 (Task 1 Step 6 verified Pagefind logging `Indexed 1 page`). This task does NOT touch `package.json` — it creates the search page, carries `?q=` from the home/404 search forms into PagefindUI, and verifies the indexing attributes on the built output.
 
 **Files:**
-- Modify: `package.json` (chain pagefind into the build script)
 - Create: `src/pages/search.astro`
 - Test: `tests/site/search.test.ts`
 
 **Interfaces:**
-- Consumes: `Base.astro` pagefind props `{ pagefind?: boolean; filters?: Record<string, string> }` (Task 13 — record pages from Tasks 14-18 already set `pagefind: true` and pass `type`/`status`/`year` filters; this task only verifies the built output); `/indexes/solicitations.json` and `/indexes/suppliers.json` in `dist/` (Task 19, used by the tests to discover a record slug); `href(path: string): string` (Task 13); `pagefind ^1` devDependency (Task 1).
-- Produces: `npm run build` = `astro build && pagefind --site dist` (relied on by Task 22's deploy workflow and verification checklist); `/search/` page with PagefindUI, a dev fallback note, and a noscript pointer to the browse pages.
+- Consumes: `Base.astro` pagefind props `{ pagefind?: boolean; filters?: Record<string, string> }` (Task 13 — record pages from Tasks 14-18 already set `pagefind: true` and pass filters from the key set `type`/`status`/`year`/`buyer`; this task only verifies the built output); the chained build script `astro build && pagefind --site dist` (in place since Task 1 — verified, not modified, here); `/indexes/solicitations.json` and `/indexes/suppliers.json` in `dist/` (Task 19, used by the tests to discover a record slug); `href(path: string): string` (Task 13); `pagefind ^1` devDependency (Task 1).
+- Produces: `/search/` page with PagefindUI, `?q=` carry-over from the home and 404 search forms, a dev fallback note, and a noscript pointer to the browse pages. The page documents the search filter keys `type`, `status`, `year`, `buyer`. (No slot `<h1>` — Base renders the only h1 from `title`.)
 
 - [ ] **Step 1: Write the failing test**
 
@@ -6673,7 +7323,7 @@ function firstIndexRow(file: string): Record<string, any> {
   return JSON.parse(readFileSync(join('dist', 'indexes', file), 'utf8'))[0];
 }
 
-describe('build chaining', () => {
+describe('build chaining (created in Task 1, verified here)', () => {
   it('pagefind ran after astro build and emitted its UI bundle', () => {
     expect(existsSync(join('dist', 'pagefind', 'pagefind-ui.js'))).toBe(true);
     expect(existsSync(join('dist', 'pagefind', 'pagefind-ui.css'))).toBe(true);
@@ -6688,6 +7338,21 @@ describe('search page', () => {
     const raw = readFileSync(join('dist', 'search', 'index.html'), 'utf8');
     expect(raw).toContain('<noscript>');
     expect(raw).toContain('solicitations/');
+  });
+
+  it('carries ?q= from the home/404 search forms into the Pagefind input', () => {
+    // The page script (inlined or bundled to a file by Astro) must read ?q=
+    // and feed it to PagefindUI's input. Both markers survive esbuild
+    // minification: one is a global identifier, the other a string literal.
+    const $ = loadPage('search');
+    let scriptText = $('script:not([src])').text();
+    $('script[src]').each((_, el) => {
+      const src = ($(el).attr('src') ?? '').replace(/^\//, '');
+      const file = join('dist', src);
+      if (existsSync(file)) scriptText += readFileSync(file, 'utf8');
+    });
+    expect(scriptText).toContain('URLSearchParams');
+    expect(scriptText).toContain('pagefind-ui__search-input');
   });
 });
 
@@ -6724,23 +7389,19 @@ TB_DATA_FILE=tests/fixtures/bids.fixture.json BASE_PATH=/ npm run build
 npx vitest run -c vitest.site.config.ts tests/site/search.test.ts
 ```
 
-Expected: build succeeds, then FAIL — `expected false to be true` for the pagefind bundle assertions (the unchained build never runs pagefind) and `ENOENT: no such file or directory, open 'dist/search/index.html'` for the search-page test. The two record-page attribute tests already pass (Tasks 14/17 set `pagefind: true`).
+Expected: build succeeds (including the Pagefind pass — the bundle already exists because Task 1 chained `pagefind --site dist` into `npm run build`), then a PARTIAL fail. Passing already: the build-chaining test and the two record-page attribute tests (Tasks 14/17 set `pagefind: true`). Failing: the two search-page tests error with `ENOENT: no such file or directory, open 'dist/search/index.html'`, and the browse/utility indexing test errors with the same ENOENT (its page loop includes `'search'`).
 
-- [ ] **Step 3: Chain pagefind into the build script**
+- [ ] **Step 3: Verify the build chain (no edit — Task 1 owns it)**
 
-Edit `package.json`: change the `build` entry (leave every other script untouched) so it reads exactly:
-
-```json
-"build": "astro build && pagefind --site dist"
-```
-
-Verify — run in `/Users/alex/code/projects/toronto-bids/toronto-bids-frontend`:
+Do NOT modify `package.json`. Confirm the chain is already in place — run in `/Users/alex/code/projects/toronto-bids/toronto-bids-frontend`:
 
 ```bash
 node -p "require('./package.json').scripts.build"
 ```
 
 Expected output: `astro build && pagefind --site dist`
+
+If it prints anything else, stop and fix Task 1's `package.json` first — Task 22's deploy workflow relies on the chained script.
 
 - [ ] **Step 4: Create the search page**
 
@@ -6756,12 +7417,11 @@ import { href } from '../lib/url';
   title="Search"
   description="Full-text search over every record in the Toronto Bids Archive."
 >
-  <h1>Search</h1>
   <p>
     Searches titles, descriptions, supplier names and variants, council decision text,
     and every document filename. Identifiers (document numbers, workspace numbers,
     call numbers, council references) match verbatim. Filter results by record type,
-    status, and year.
+    status, year, and buyer.
   </p>
   <div id="search"></div>
   <p id="search-fallback" hidden>
@@ -6784,7 +7444,8 @@ import { href } from '../lib/url';
   <link rel="stylesheet" href={href('/pagefind/pagefind-ui.css')} />
   <script>
     // The pagefind bundle exists only after `pagefind --site dist` has run
-    // (production build). In `astro dev` it 404s: show the fallback note.
+    // (production build — chained since Task 1). In `astro dev` it 404s: show
+    // the fallback note.
     type PagefindUIConstructor = new (opts: { element: string; showSubResults: boolean }) => unknown;
     const base = import.meta.env.BASE_URL;
     const join = (p: string) => (base.endsWith('/') ? base : base + '/') + p.replace(/^\//, '');
@@ -6793,6 +7454,23 @@ import { href } from '../lib/url';
     script.onload = () => {
       const { PagefindUI } = window as unknown as { PagefindUI: PagefindUIConstructor };
       new PagefindUI({ element: '#search', showSubResults: true });
+      // Carry ?q= from the home/404 search forms into the Pagefind input.
+      // PagefindUI builds its DOM asynchronously, so retry briefly until the
+      // input exists.
+      const q = new URLSearchParams(location.search).get('q');
+      if (q) {
+        let tries = 0;
+        const fill = () => {
+          const input = document.querySelector('.pagefind-ui__search-input');
+          if (input instanceof HTMLInputElement) {
+            input.value = q;
+            input.dispatchEvent(new Event('input', { bubbles: true }));
+          } else if (tries++ < 50) {
+            requestAnimationFrame(fill);
+          }
+        };
+        fill();
+      }
     };
     script.onerror = () => {
       document.getElementById('search-fallback')?.removeAttribute('hidden');
@@ -6802,7 +7480,7 @@ import { href } from '../lib/url';
 </Base>
 ```
 
-- [ ] **Step 5: Rebuild with the chained script and verify the tests pass**
+- [ ] **Step 5: Rebuild and verify the tests pass**
 
 Run in `/Users/alex/code/projects/toronto-bids/toronto-bids-frontend`:
 
@@ -6811,7 +7489,7 @@ TB_DATA_FILE=tests/fixtures/bids.fixture.json BASE_PATH=/ npm run build
 npx vitest run -c vitest.site.config.ts tests/site/search.test.ts
 ```
 
-Expected: the build output now ends with a Pagefind summary (`Running Pagefind v1.x`, `Indexed <n> pages` where n > 0 — the fixture's record pages, and only those, carry `data-pagefind-body`), then PASS — `Test Files  1 passed (1)`, 5 tests passed.
+Expected: the build output ends with a Pagefind summary (`Running Pagefind v1.x`, `Indexed <n> pages` where n > 0 — the fixture's record pages, and only those, carry `data-pagefind-body`), then PASS — `Test Files  1 passed (1)`, 6 tests passed.
 
 - [ ] **Step 6: Run the full site suite to catch regressions**
 
@@ -6821,26 +7499,27 @@ Run in `/Users/alex/code/projects/toronto-bids/toronto-bids-frontend`:
 npx vitest run -c vitest.site.config.ts
 ```
 
-Expected: PASS — all site test files, including Task 19's browse tests, against the chained build.
+Expected: PASS — all site test files, including Task 19's browse tests, against the build from Step 5.
 
 - [ ] **Step 7: Commit**
 
 Run in `/Users/alex/code/projects/toronto-bids/toronto-bids-frontend`:
 
 ```bash
-git add package.json src/pages/search.astro tests/site/search.test.ts
-git commit -m "feat: Pagefind search page and build chaining"
+git add src/pages/search.astro tests/site/search.test.ts
+git commit -m "feat: Pagefind search page with ?q= carry-over"
 ```
 
-### Task 21: `/data/` page
+### Task 21: `/data/` page + internal-link crawl / page-count site test
 
 **Files:**
 - Create: `src/pages/data.astro`
+- Create: `tests/site/links.test.ts`
 - Test: `tests/site/data.test.ts`
 
 **Interfaces:**
-- Consumes: `getPrepared(): Promise<Prepared>` (Task 10) — uses `p.generatedAt` and `p.doc.meta.sources: SyncSource[]` (types from Task 2); `Base.astro` (Task 13, whose footer on every page already links to `/data/` — this task creates that link's target); `loadPage` (Task 13). Download URLs and the Datasette-Lite URL point at the `toronto-bids-data` releases created by backend issue #146 (links render regardless; they 404 until #146 lands).
-- Produces: `/data/` page with download links, Datasette-Lite link, the seven documented schema gotchas, sync-status table, and citation guidance.
+- Consumes: `getPrepared(): Promise<Prepared>` (Task 10) — uses `p.generatedAt`, `p.doc.meta.sources: SyncSource[]`, and the `p.doc.unlinked_ariba_postings` / `p.doc.unlinked_awards` / `p.doc.unlinked_bids` buckets (types from Task 2); `Base.astro` (Task 13, whose footer on every page already links to `/data/` — this task creates that link's target; Base renders the only `<h1>`); `loadPage`, `loadFile`, `loadFixture` (Task 13); `dist/counts.json` (Task 13 — `links.test.ts` derives its page-count expectations from it); `cheerio` (already a dependency via the site-test harness). Download URLs and the Datasette-Lite URL point at the `toronto-bids-data` releases created by backend issue #146 (links render regardless; they 404 until #146 lands).
+- Produces: `/data/` page with download links, Datasette-Lite link, the seven documented schema gotchas, sync-status table, an **Unlinked records** section (every `unlinked_*` bucket rendered with explicit "not linked to any solicitation" copy — nothing silently dropped), and citation guidance. Also `tests/site/links.test.ts` — the zero-broken-internal-links crawl plus page-count assertions, satisfying the spec's "zero broken internal links" and page-count testing requirements. It is deliberately data-independent (expectations derive from `dist/` and `dist/counts.json`, never from the fixture) so Task 22 runs exactly this file against the full-data build: `npx vitest run -c vitest.site.config.ts tests/site/links.test.ts`.
 
 - [ ] **Step 1: Write the failing test**
 
@@ -6848,7 +7527,7 @@ Create `tests/site/data.test.ts`:
 
 ```ts
 import { describe, expect, it } from 'vitest';
-import { loadPage } from './helpers';
+import { loadFixture, loadPage } from './helpers';
 
 const DATASETTE =
   'https://lite.datasette.io/?url=https://github.com/CivicTechTO/toronto-bids-data/releases/download/latest/bids.sqlite';
@@ -6886,6 +7565,25 @@ describe('/data/ page', () => {
     expect(headers).toContain('Source');
     expect(headers).toContain('Rows fetched');
     expect($('table tbody tr').length).toBeGreaterThan(0);
+  });
+
+  it('renders every unlinked bucket in the Unlinked records section', () => {
+    const $ = loadPage('data');
+    const fx = loadFixture();
+    const text = $('body').text();
+    expect(text).toContain('not linked to any solicitation');
+    // Counts derive from the fixture, so this test also holds if the fixture
+    // gains unlinked awards/bids later.
+    expect(text).toContain(
+      `Unlinked Ariba postings (${fx.unlinked_ariba_postings.length})`,
+    );
+    expect(text).toContain(`Unlinked award lines (${fx.unlinked_awards.length})`);
+    expect(text).toContain(`Unlinked bids (${fx.unlinked_bids.length})`);
+    for (const posting of fx.unlinked_ariba_postings) {
+      expect(text, `missing unlinked posting ${posting.rfx_id}`).toContain(
+        posting.rfx_id,
+      );
+    }
   });
 
   it('gives citation guidance and stays out of the search index', () => {
@@ -6928,7 +7626,6 @@ const DATASETTE =
   title="Data"
   description="Download the Toronto Bids Archive dataset, query it in the browser, and read the schema rules before aggregating."
 >
-  <h1>Data</h1>
   <p>
     Everything on this site is built from one nightly export of the
     <a href="https://github.com/CivicTechTO/toronto-bids">Toronto Bids Archive</a>.
@@ -7054,6 +7751,83 @@ const DATASETTE =
     </tbody>
   </table>
 
+  <h2>Unlinked records</h2>
+  <p>
+    The export's <code>unlinked_*</code> buckets hold rows that are
+    <strong>not linked to any solicitation</strong> record. Nothing is silently
+    dropped — they are listed here in full.
+  </p>
+
+  <h3>Unlinked Ariba postings ({p.doc.unlinked_ariba_postings.length})</h3>
+  {p.doc.unlinked_ariba_postings.length > 0 ? (
+    <table>
+      <thead>
+        <tr><th>RFx ID</th><th>Title</th><th>Posted</th><th>Closes</th><th>Link</th></tr>
+      </thead>
+      <tbody>
+        {p.doc.unlinked_ariba_postings.map((a) => (
+          <tr>
+            <td>{a.rfx_id}</td>
+            <td>{a.title ?? '—'}</td>
+            <td>{a.posted_date ?? '—'}</td>
+            <td>{a.close_date ?? '—'}</td>
+            <td>
+              {a.public_posting_url ? (
+                <a href={a.public_posting_url} rel="noopener">Ariba posting</a>
+              ) : (
+                '—'
+              )}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  ) : (
+    <p>None in this export.</p>
+  )}
+
+  <h3>Unlinked award lines ({p.doc.unlinked_awards.length})</h3>
+  {p.doc.unlinked_awards.length > 0 ? (
+    <table>
+      <thead>
+        <tr><th>Document #</th><th>Supplier</th><th>Amount (raw)</th><th>Date</th></tr>
+      </thead>
+      <tbody>
+        {p.doc.unlinked_awards.map((a) => (
+          <tr>
+            <td>{a.document_number}</td>
+            <td>{a.supplier_name_raw ?? '—'}</td>
+            <td>{a.award_amount ?? '—'}</td>
+            <td>{a.award_date ?? '—'}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  ) : (
+    <p>None in this export.</p>
+  )}
+
+  <h3>Unlinked bids ({p.doc.unlinked_bids.length})</h3>
+  {p.doc.unlinked_bids.length > 0 ? (
+    <table>
+      <thead>
+        <tr><th>Document #</th><th>Bidder</th><th>Bid price (raw)</th><th>HST basis</th></tr>
+      </thead>
+      <tbody>
+        {p.doc.unlinked_bids.map((b) => (
+          <tr>
+            <td>{b.document_number ?? '—'}</td>
+            <td>{b.bidder_name_raw}</td>
+            <td>{b.bid_price ?? '—'}</td>
+            <td>{b.hst_basis ?? 'unknown'}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  ) : (
+    <p>None in this export.</p>
+  )}
+
   <h2>Citing this archive</h2>
   <p>
     For reproducible citations, cite a dated monthly snapshot
@@ -7074,9 +7848,100 @@ TB_DATA_FILE=tests/fixtures/bids.fixture.json BASE_PATH=/ npm run build
 npx vitest run -c vitest.site.config.ts tests/site/data.test.ts
 ```
 
-Expected: build succeeds (route `/data/` now generated), then PASS — `Test Files  1 passed (1)`, 4 tests passed.
+Expected: build succeeds (route `/data/` now generated), then PASS — `Test Files  1 passed (1)`, 5 tests passed.
 
-- [ ] **Step 5: Run the full site suite to catch regressions**
+- [ ] **Step 5: Create the internal-link crawl + page-count test**
+
+This is the spec's "zero broken internal links" and page-count check. It is an invariant test, not a feature, so there is no red-first cycle: if it fails, the failures are real broken links or missing pages from earlier tasks — fix those before proceeding. It is deliberately data-independent (page counts derive from `dist/counts.json`, which under the fixture build equals the fixture's entity array lengths); Task 22 runs exactly this file against the full-data build.
+
+Create `tests/site/links.test.ts`:
+
+```ts
+import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
+import { join } from 'node:path';
+import { load } from 'cheerio';
+import { describe, expect, it } from 'vitest';
+import { loadFile } from './helpers';
+
+// Data-independent invariants: run against ANY dist (fixture or full data).
+// Task 22's full-data verification runs exactly this file:
+//   npx vitest run -c vitest.site.config.ts tests/site/links.test.ts
+
+function walkHtml(dir: string, out: string[] = []): string[] {
+  for (const entry of readdirSync(dir)) {
+    const full = join(dir, entry);
+    if (statSync(full).isDirectory()) walkHtml(full, out);
+    else if (entry.endsWith('.html')) out.push(full);
+  }
+  return out;
+}
+
+const EXTERNAL = /^(https?:|mailto:|tel:)/;
+
+describe('internal links', () => {
+  it('every internal a[href] in dist resolves to a built file', () => {
+    const pages = walkHtml('dist');
+    expect(pages.length).toBeGreaterThan(0);
+    const broken: string[] = [];
+    const seen = new Set<string>();
+    for (const page of pages) {
+      const $ = load(readFileSync(page, 'utf8'));
+      $('a[href]').each((_, el) => {
+        const href = $(el).attr('href') ?? '';
+        // Internal = starts with '/' after the base (site tests build with
+        // BASE_PATH=/). Skip external protocols, fragments, and Pagefind's
+        // runtime-generated assets.
+        if (EXTERNAL.test(href) || href.startsWith('#') || !href.startsWith('/')) return;
+        const path = href.split(/[?#]/)[0];
+        if (path.startsWith('/pagefind/')) return;
+        if (seen.has(path)) return; // check each target once
+        seen.add(path);
+        const rel = path.replace(/^\//, '');
+        const file = join('dist', rel === '' ? 'index.html' : rel);
+        const ok =
+          (existsSync(file) && statSync(file).isFile()) ||
+          existsSync(join(file, 'index.html'));
+        if (!ok) broken.push(`${page} -> ${href}`);
+      });
+    }
+    expect(broken, `broken internal links:\n${broken.join('\n')}`).toEqual([]);
+  });
+});
+
+describe('page counts', () => {
+  // counts.json is countsOf() of the export THIS dist was built from, so these
+  // assertions hold for the fixture build AND the full-data build. Under the
+  // fixture build, counts.solicitations === fixture solicitations.length and
+  // counts.suppliers === fixture suppliers.length.
+  const counts = JSON.parse(loadFile('counts.json')) as Record<string, number>;
+
+  function recordDirs(entity: string): number {
+    return readdirSync(join('dist', entity)).filter((e) =>
+      statSync(join('dist', entity, e)).isDirectory(),
+    ).length;
+  }
+
+  it('builds one record page per solicitation', () => {
+    expect(recordDirs('solicitations')).toBe(counts.solicitations);
+  });
+
+  it('builds one record page per supplier', () => {
+    expect(recordDirs('suppliers')).toBe(counts.suppliers);
+  });
+});
+```
+
+- [ ] **Step 6: Run the link crawl against the fixture build**
+
+Run in `/Users/alex/code/projects/toronto-bids/toronto-bids-frontend`:
+
+```bash
+npx vitest run -c vitest.site.config.ts tests/site/links.test.ts
+```
+
+Expected: PASS — `Test Files  1 passed (1)`, 3 tests passed: zero broken internal links across every page in `dist/`, and one record directory per fixture solicitation and per fixture supplier. If the crawl lists broken links, those are real bugs in earlier page tasks (a dead href or a missing page) — fix the page, rebuild, and rerun; do not weaken the test.
+
+- [ ] **Step 7: Run the full site suite to catch regressions**
 
 Run in `/Users/alex/code/projects/toronto-bids/toronto-bids-frontend`:
 
@@ -7086,13 +7951,13 @@ npx vitest run -c vitest.site.config.ts
 
 Expected: PASS — all site test files. (This also clears the footer's `/data/` link, which until this task pointed at a missing page.)
 
-- [ ] **Step 6: Commit**
+- [ ] **Step 8: Commit**
 
 Run in `/Users/alex/code/projects/toronto-bids/toronto-bids-frontend`:
 
 ```bash
-git add src/pages/data.astro tests/site/data.test.ts
-git commit -m "feat: /data/ page with downloads, Datasette-Lite, schema gotchas"
+git add src/pages/data.astro tests/site/data.test.ts tests/site/links.test.ts
+git commit -m "feat: /data/ page with downloads, schema gotchas, unlinked records; internal-link crawl test"
 ```
 
 ### Task 22: `deploy.yml` + repo/Pages manual setup + README + full-data verification checklist
@@ -7102,7 +7967,7 @@ git commit -m "feat: /data/ page with downloads, Datasette-Lite, schema gotchas"
 - Create: `README.md`
 
 **Interfaces:**
-- Consumes: `scripts/fetch-data.ts` (Task 12 — skips download when `TB_DATA_FILE` is set, else streams `TB_DATA_URL` to `.data/bids.json`); `scripts/check-shrink.ts` (Task 11 — `validateExport` + `countsOf` + `checkShrink` against `.data/previous-counts.json`, exit 1 on violations); the `counts.json` endpoint on the live site (Task 13); the chained `npm run build` (Task 20); all site tests (Tasks 13-21). **Depends on backend issue #146** (the `toronto-bids-data` `latest` release assets and plexbox's `gh workflow run deploy.yml -R CivicTechTO/toronto-bids-frontend` trigger) — the deploy cannot succeed before it lands.
+- Consumes: `scripts/fetch-data.ts` (Task 12 — skips download when `TB_DATA_FILE` is set, else streams `TB_DATA_URL` to `.data/bids.json`); `scripts/check-shrink.ts` (Task 11 — `validateExport` + `countsOf` + `checkShrink` against `.data/previous-counts.json`, exit 1 on violations; reads `.data/bids.json`); the `counts.json` endpoint on the live site (Task 13); the chained `npm run build` (Task 1, verified in Task 20); `tests/site/links.test.ts` (Task 21 — the data-independent internal-link crawl + page-count checks; the ONLY site-test file run against the full-data build, because every other site-test file is fixture-coupled and runs in CI against the fixture build only). **Depends on backend issue #146** (the `toronto-bids-data` `latest` release assets and plexbox's `gh workflow run deploy.yml -R CivicTechTO/toronto-bids-frontend` trigger) — the deploy cannot succeed before it lands.
 - Produces: `.github/workflows/deploy.yml` (nightly-dispatch + cron + manual → fetch → shrink guard → build → Pages); `README.md`; a verified live site at `https://civictechto.github.io/toronto-bids-frontend/`.
 
 - [ ] **Step 1: Write the deploy workflow**
@@ -7291,49 +8156,40 @@ Nothing to commit; work through these in order:
 5. Note the nightly trigger path (backend side, informational): after `tb nightly` uploads the release assets, plexbox runs `gh workflow run deploy.yml -R CivicTechTO/toronto-bids-frontend` using the token in `~/.config/toronto-bids/tb.env`.
 6. First-deploy expectation: the "Fetch previous deploy's entity counts" step will print `no previous counts (first deploy?)` because the site (and its `counts.json`) does not exist yet; `check-shrink` then runs with a null baseline and reports no violations. This is expected, not an error — the shrink guard arms itself from the second deploy onward.
 
-- [ ] **Step 7: Full-data verification — obtain a real export**
+- [ ] **Step 7: Full-data verification — regenerate a real export locally**
 
-Either option lands the export at `.data/bids.json` (~24 MB):
-
-Option A (after #146): run in `/Users/alex/code/projects/toronto-bids/toronto-bids-frontend`:
-
-```bash
-node scripts/fetch-data.ts
-ls -lh .data/bids.json
-```
-
-Option B (local backend export): run:
+Regenerate the export from the local backend (this works today, before #146). `TB_DATA_DIR` is unset on this machine, so the backend's config defaults its data dir to `<backend>/scrapers/files` and `tb export` writes `scrapers/files/export/bids.json`:
 
 ```bash
 cd /Users/alex/code/projects/toronto-bids/toronto-bids/scrapers && uv run tb export
-mkdir -p /Users/alex/code/projects/toronto-bids/toronto-bids-frontend/.data
-cp "${TB_DATA_DIR:-$HOME/tb-data}/export/bids.json" /Users/alex/code/projects/toronto-bids/toronto-bids-frontend/.data/bids.json
-ls -lh /Users/alex/code/projects/toronto-bids/toronto-bids-frontend/.data/bids.json
+ls -lh /Users/alex/code/projects/toronto-bids/toronto-bids/scrapers/files/export/bids.json
 ```
 
-Expected: `.data/bids.json` present, roughly 24 MB.
+Expected: `files/export/bids.json` present, roughly 24 MB. (Alternative, only after backend #146 lands: run `node scripts/fetch-data.ts` in the frontend repo to download the `latest` release asset to `.data/bids.json`, and drop the `TB_DATA_FILE` override in Step 9.)
 
 - [ ] **Step 8: Run the shrink guard against the real export**
 
-Run in `/Users/alex/code/projects/toronto-bids/toronto-bids-frontend`:
+`scripts/check-shrink.ts` reads `.data/bids.json` (fixed path), so copy the fresh export there first. Run:
 
 ```bash
-node scripts/check-shrink.ts
+mkdir -p /Users/alex/code/projects/toronto-bids/toronto-bids-frontend/.data
+cp /Users/alex/code/projects/toronto-bids/toronto-bids/scrapers/files/export/bids.json /Users/alex/code/projects/toronto-bids/toronto-bids-frontend/.data/bids.json
+cd /Users/alex/code/projects/toronto-bids/toronto-bids-frontend && node scripts/check-shrink.ts
 ```
 
 Expected: exit 0, printing the entity counts — approximately `solicitations 7444`, `awards 15031`, `bids 18632`, `noncompetitive 2856`, `suppliers 7744`, `council_items 4801`, `composite_awards 1052` (slightly higher on a newer export is fine; there is no `.data/previous-counts.json` locally, so no baseline comparison).
 
 - [ ] **Step 9: Full-data build (long-running — hand this to Alex)**
 
-This builds ~24,000 pages plus the Pagefind index and takes several minutes. Per the global long-running-command rule, do not execute it inline from an agent session — give Alex the exact command to run in `/Users/alex/code/projects/toronto-bids/toronto-bids-frontend` (or run it in a background shell):
+This builds ~24,000 pages plus the Pagefind index. Expect several minutes end to end — roughly 2-5 minutes for the Astro page build on this machine, plus more for Pagefind indexing. Per the global long-running-command rule, do not execute it inline from an agent session — give Alex the exact command to run in `/Users/alex/code/projects/toronto-bids/toronto-bids-frontend` (or run it in a background shell):
 
 ```bash
-BASE_PATH=/ npm run build
+TB_DATA_FILE=/Users/alex/code/projects/toronto-bids/toronto-bids/scrapers/files/export/bids.json BASE_PATH=/ npm run build
 ```
 
 Expected: Astro reports ~24,000 pages built; Pagefind reports `Indexed` roughly 23,900 pages (record pages carry `data-pagefind-body`; browse/utility pages do not); exit 0.
 
-- [ ] **Step 10: Spot-check the full-data build**
+- [ ] **Step 10: Spot-check the full-data build (one URL per entity type)**
 
 Run in `/Users/alex/code/projects/toronto-bids/toronto-bids-frontend`:
 
@@ -7343,17 +8199,46 @@ node -p "JSON.parse(require('fs').readFileSync('dist/counts.json','utf8'))"
 grep -ril "no title published" dist/solicitations --include=index.html | wc -l
 ```
 
-Expected: `7445` (7,444 record folders + the browse page's `index.html`); the counts object matching Step 8's numbers exactly; roughly `3464` untitled-marker pages (46.5% of solicitations have no published title).
+Expected: `7445` (record folders + the browse page's `index.html` — exactly `counts.solicitations + 1`); the counts object parses and matches Step 8's numbers exactly; roughly `3464` untitled-marker pages (46.5% of solicitations have no published title).
 
-- [ ] **Step 11: Site tests against the full-data build (includes the internal link check)**
-
-Run in `/Users/alex/code/projects/toronto-bids/toronto-bids-frontend`:
+Then verify one built record page per entity type (buyers has no record pages on real data — the export's `buyers` array is empty until agency data lands, so its browse page alone is expected):
 
 ```bash
-npx vitest run -c vitest.site.config.ts
+for d in solicitations noncompetitive calls council suppliers buyers capital-projects suspended-firms; do
+  first=$(ls "dist/$d" | grep -xv index.html | head -1)
+  if [ -n "$first" ]; then p="dist/$d/$first/index.html"; else p="dist/$d/index.html"; fi
+  test -f "$p" && echo "OK $p" || echo "MISSING $p"
+done
 ```
 
-Expected: PASS — every site test, including the zero-broken-internal-links check, holds against real data, not just the fixture. If any test fails here because it hard-coded a fixture-only literal, that test is the bug: site tests must derive expectations from `dist/counts.json` and the `/indexes/*.json` endpoints. Fix the test, rerun, and commit the fix (`test: derive site-test expectations from build outputs`).
+Expected: eight `OK` lines, no `MISSING`.
+
+Finally, grep a known supplier page for its display name (derived from the build's own index, so it works on any export):
+
+```bash
+node -e "
+const fs = require('fs');
+const rows = JSON.parse(fs.readFileSync('dist/indexes/suppliers.json','utf8'));
+const top = rows.find((r) => r.a !== null);
+const html = fs.readFileSync('dist/suppliers/' + top.g + '/index.html','utf8');
+if (!html.includes(top.n)) { console.error('FAIL: supplier page missing display name'); process.exit(1); }
+console.log('supplier spot-check OK:', top.n);
+"
+```
+
+Expected: `supplier spot-check OK: <a real supplier name>`.
+
+- [ ] **Step 11: Data-independent site checks against the full-data build (link crawl + page counts)**
+
+Run ONLY `tests/site/links.test.ts` — run in `/Users/alex/code/projects/toronto-bids/toronto-bids-frontend`:
+
+```bash
+npx vitest run -c vitest.site.config.ts tests/site/links.test.ts
+```
+
+Expected: PASS (the crawl walks all ~24,000 pages, so allow a few minutes) — zero broken internal links against real data, and the page-count assertions hold because they derive from `dist/counts.json`, which now reflects the full export.
+
+Do NOT run the full site suite (`npx vitest run -c vitest.site.config.ts`) against this dist. Every other site-test file is fixture-coupled by design — e.g. `buyers.test.ts` loads the fixture's synthetic `buyers/toronto-zoo-test/` page (real exports have `buyers: []`, so no buyer record pages exist), `tables.test.ts` asserts the fixture's capital-project count, and `base.test.ts` pins the fixture's `generated_at`. Those files run in CI against the fixture build (Task 13's canonical command); failures from running them against full data would be noise, not signal.
 
 - [ ] **Step 12: Manual eyeball via preview (long-running server — hand to Alex)**
 
@@ -7363,7 +8248,7 @@ Run in `/Users/alex/code/projects/toronto-bids/toronto-bids-frontend` (leave run
 BASE_PATH=/ npx astro preview
 ```
 
-Open `http://localhost:4321/` and verify: home shows labeled City-only headline stats and `Data as of <generated_at>` in the footer; `/search/` returns results for a query like `winter` and for a raw document number (Pagefind serves from `dist`); one solicitation record shows raw + numeric amounts side by side, deduped awards (no doubled rows), and `hst_basis` beside every bid price; one supplier page shows per-keyspace totals; `/data/` shows the sync-status table and the Datasette-Lite link (the link itself only resolves once #146's release exists).
+Open `http://localhost:4321/` and verify: home shows labeled City-only headline stats and `Data as of <generated_at>` in the footer; typing a query in the home page's search box and submitting lands on `/search/?q=<term>` with results already loaded (the `?q=` carry-over from Task 20); `/search/` also returns results for a query like `winter` and for a raw document number (Pagefind serves from `dist`); one solicitation record shows raw + numeric amounts side by side, deduped awards (no doubled rows), and `hst_basis` beside every bid price; one supplier page shows per-keyspace totals; `/solicitations/` offers all six facets (status, type, category, division, year, has-documents); `/data/` shows the sync-status table, the Unlinked records section, and the Datasette-Lite link (the link itself only resolves once #146's release exists).
 
 - [ ] **Step 13: First deploy (long-running — hand to Alex; requires Steps 6's checklist complete)**
 
