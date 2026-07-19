@@ -1,5 +1,10 @@
 import { describe, it, expect } from 'vitest';
-import { displayTitle, normalizeCategory, TITLE_SOURCE_LABELS } from '../../src/prepare/titles.ts';
+import {
+  displayTitle,
+  normalizeCategory,
+  operatingName,
+  TITLE_SOURCE_LABELS,
+} from '../../src/prepare/titles.ts';
 
 describe('displayTitle', () => {
   it('uses the published title verbatim when present', () => {
@@ -77,5 +82,27 @@ describe('TITLE_SOURCE_LABELS', () => {
     for (const label of Object.values(TITLE_SOURCE_LABELS)) {
       expect(label.length).toBeGreaterThan(0);
     }
+  });
+});
+
+describe('operatingName', () => {
+  it('extracts the trade name after an o/a marker', () => {
+    expect(operatingName(['614128 ONTARIO LTD, O/A TRISAN CONSTRUCTION'])).toBe(
+      'TRISAN CONSTRUCTION',
+    );
+  });
+
+  it('handles "operating as", "d.b.a.", and "trading as"', () => {
+    expect(operatingName(['2489960 Ontario Inc. operating as Kore Group'])).toBe('Kore Group');
+    expect(operatingName(['123 Ontario Ltd d.b.a. Acme Paving'])).toBe('Acme Paving');
+    expect(operatingName(['456 Ontario Inc trading as BuildCo'])).toBe('BuildCo');
+  });
+
+  it('returns null when no variant carries a trade-name marker', () => {
+    expect(operatingName(['Compugen Inc.', 'Compugen Incorporated'])).toBeNull();
+  });
+
+  it('returns null for an empty variant list', () => {
+    expect(operatingName([])).toBeNull();
   });
 });

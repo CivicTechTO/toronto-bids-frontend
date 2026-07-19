@@ -36,3 +36,19 @@ export const TITLE_SOURCE_LABELS: Record<string, string> = {
   council_composite: 'Title from council composite award records',
   legacy_ariba_html: 'Title from legacy Ariba HTML',
 };
+
+const OPERATING_MARK = /\b(?:o\/a|operating as|c\.?o\.?b\.?(?:\s+as)?|d\.?b\.?a\.?|trading as)\b\.?\s*/i;
+
+/**
+ * A numbered company's operating / trade name, taken from a name variant carrying an
+ * "o/a" / "operating as" / "c.o.b." / "d.b.a." marker (e.g. "614128 Ontario Ltd, O/A
+ * Trisan Construction" → "Trisan Construction"), so a reader can see who actually
+ * received the money. Null when no variant carries such a marker.
+ */
+export function operatingName(variants: string[]): string | null {
+  for (const v of variants) {
+    const parts = v.split(OPERATING_MARK);
+    if (parts.length > 1 && parts[1].trim()) return parts[1].trim();
+  }
+  return null;
+}

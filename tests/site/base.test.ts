@@ -24,6 +24,16 @@ describe('home page', () => {
       expect($(`a[href="${path}"]`).length, `missing home link to ${path}`).toBeGreaterThanOrEqual(1);
     }
   });
+  it('offers curated "New here?" example entry points (#13)', () => {
+    const $ = loadPage('');
+    for (const path of [
+      '/suppliers/?sort=a.desc',
+      '/solicitations/?sole=yes',
+      '/noncompetitive/?sort=a.desc',
+    ]) {
+      expect($(`a[href="${path}"]`).length, `missing example link ${path}`).toBeGreaterThanOrEqual(1);
+    }
+  });
 });
 
 describe('footer on every page', () => {

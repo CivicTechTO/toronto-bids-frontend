@@ -145,6 +145,13 @@ describe('/suppliers/ index (island browse page)', () => {
 });
 
 describe('/suppliers/{slug}/ profile page', () => {
+  it('surfaces the operating (trade) name for a numbered company (#13)', () => {
+    const oa = fx.suppliers.find((s) => s.variants.some((v) => /\bo\/a\b/i.test(v)))!;
+    expect(oa, 'fixture needs a supplier with an o/a variant').toBeDefined();
+    const $ = loadPage(`suppliers/${supplierSlug(oa.supplier_key)}`);
+    expect($('.trade-name').text()).toContain('Trading as');
+  });
+
   it('builds a page for every supplier, slugged from supplier_key, with a single h1', () => {
     for (const s of fx.suppliers.slice(0, 3)) {
       const $ = loadPage(`suppliers/${supplierSlug(s.supplier_key)}`);

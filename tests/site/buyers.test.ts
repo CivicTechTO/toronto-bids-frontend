@@ -15,6 +15,13 @@ const confidentialAward = partnered.awards.find(
 )!;
 
 describe('/buyers/ index', () => {
+  it('clarifies City divisions live under Solicitations/Suppliers, not here (#13)', () => {
+    const $ = loadPage('buyers');
+    expect($('body').text()).toContain('divisions');
+    expect($('a[href="/solicitations/"]').length).toBeGreaterThanOrEqual(1);
+    expect($('a[href="/suppliers/"]').length).toBeGreaterThanOrEqual(1);
+  });
+
   it('lists every buyer with a partnered marker and keyspace separation note', () => {
     const $ = loadPage('buyers');
     for (const b of fx.buyers) {
