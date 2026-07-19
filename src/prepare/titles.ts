@@ -37,18 +37,26 @@ export const TITLE_SOURCE_LABELS: Record<string, string> = {
   legacy_ariba_html: 'Title from legacy Ariba HTML',
 };
 
-const OPERATING_MARK = /\b(?:o\/a|operating as|c\.?o\.?b\.?(?:\s+as)?|d\.?b\.?a\.?|trading as)\b\.?\s*/i;
+// Abbreviations require their dots (d.b.a., c.o.b.) so a real name containing a bare
+// "DBA"/"COB" token isn't mistaken for a trade-name marker. "o/a" is unambiguous (the
+// slash), as are the full phrases. A trailing colon/period/space after the marker is
+// consumed so "trading as: X" yields "X", not ": X".
+const OPERATING_MARK = /\b(?:o\/a|operating\s+as|trading\s+as|d\.b\.a\.?|c\.o\.b\.?(?:\s+as)?)[\s:.]+/i;
 
 /**
  * A numbered company's operating / trade name, taken from a name variant carrying an
- * "o/a" / "operating as" / "c.o.b." / "d.b.a." marker (e.g. "614128 Ontario Ltd, O/A
- * Trisan Construction" → "Trisan Construction"), so a reader can see who actually
- * received the money. Null when no variant carries such a marker.
+ * "o/a" / "operating as" / "trading as" / "d.b.a." / "c.o.b." marker (e.g. "614128
+ * Ontario Ltd, O/A Trisan Construction" → "Trisan Construction"), so a reader can see
+ * who actually received the money. Trailing footnote artifacts (a scraped "*") are
+ * stripped. Null when no variant carries such a marker.
  */
 export function operatingName(variants: string[]): string | null {
   for (const v of variants) {
     const parts = v.split(OPERATING_MARK);
-    if (parts.length > 1 && parts[1].trim()) return parts[1].trim();
+    if (parts.length > 1) {
+      const name = parts[1].replace(/[\s*]+$/, '').trim();
+      if (name) return name;
+    }
   }
   return null;
 }

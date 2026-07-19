@@ -18,6 +18,11 @@ export async function getStaticPaths() {
 const { rollup } = Astro.props as { rollup: SupplierRollup };
 const p = await getPrepared();
 const s = rollup.supplier;
+// A numbered company's legal display name buries the human-readable trade name
+// (e.g. "2489960 ONTARIO INC., O/A Kore Infrastructure Group"). Surface the clean
+// trade name as a prominent callout so a reader can see who received the money
+// (#13). Shown even when the legal h1 already contains it — the point is to pull the
+// clean name out of the messy legal string, not to hide it.
 const tradeName = operatingName(s.variants);
 
 function totalLine(t: SumResult): string {

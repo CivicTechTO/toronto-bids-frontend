@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { loadPage } from './helpers';
 import { supplierSlug } from '../../src/prepare/slugs';
+import { operatingName } from '../../src/prepare/titles';
 import { dedupeAwards } from '../../src/prepare/awards';
 import { prepare } from '../../src/prepare/prepare';
 import { validateExport } from '../../src/prepare/validate';
@@ -145,11 +146,22 @@ describe('/suppliers/ index (island browse page)', () => {
 });
 
 describe('/suppliers/{slug}/ profile page', () => {
-  it('surfaces the operating (trade) name for a numbered company (#13)', () => {
-    const oa = fx.suppliers.find((s) => s.variants.some((v) => /\bo\/a\b/i.test(v)))!;
-    expect(oa, 'fixture needs a supplier with an o/a variant').toBeDefined();
-    const $ = loadPage(`suppliers/${supplierSlug(oa.supplier_key)}`);
-    expect($('.trade-name').text()).toContain('Trading as');
+  it('surfaces the extracted operating (trade) name atop a numbered company (#13)', () => {
+    const oaSuppliers = fx.suppliers.filter((s) =>
+      s.variants.some((v) => /\bo\/a\b/i.test(v)),
+    );
+    expect(
+      oaSuppliers.length,
+      'fixture needs a supplier with an o/a variant',
+    ).toBeGreaterThan(0);
+    for (const s of oaSuppliers) {
+      const trade = operatingName(s.variants);
+      expect(trade, `should extract a trade name from ${s.supplier_key}`).not.toBeNull();
+      const $ = loadPage(`suppliers/${supplierSlug(s.supplier_key)}`);
+      // Non-vacuous: the extracted trade name itself must render, not merely the
+      // static "Trading as" label the template always emits.
+      expect($('.trade-name').text()).toContain(trade!);
+    }
   });
 
   it('builds a page for every supplier, slugged from supplier_key, with a single h1', () => {

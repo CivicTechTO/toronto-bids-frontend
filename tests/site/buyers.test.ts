@@ -17,9 +17,12 @@ const confidentialAward = partnered.awards.find(
 describe('/buyers/ index', () => {
   it('clarifies City divisions live under Solicitations/Suppliers, not here (#13)', () => {
     const $ = loadPage('buyers');
-    expect($('body').text()).toContain('divisions');
-    expect($('a[href="/solicitations/"]').length).toBeGreaterThanOrEqual(1);
-    expect($('a[href="/suppliers/"]').length).toBeGreaterThanOrEqual(1);
+    // Scope to the intro paragraph — the Base header nav links to these routes on
+    // every page, so a document-wide selector would pass without the clarification.
+    const intro = $('p:contains("divisions")');
+    expect(intro.length).toBeGreaterThanOrEqual(1);
+    expect(intro.find('a[href="/solicitations/"]').length).toBeGreaterThanOrEqual(1);
+    expect(intro.find('a[href="/suppliers/"]').length).toBeGreaterThanOrEqual(1);
   });
 
   it('lists every buyer with a partnered marker and keyspace separation note', () => {

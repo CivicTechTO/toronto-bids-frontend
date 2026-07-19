@@ -98,6 +98,18 @@ describe('operatingName', () => {
     expect(operatingName(['456 Ontario Inc trading as BuildCo'])).toBe('BuildCo');
   });
 
+  it('strips trailing footnote artifacts from the extracted name', () => {
+    expect(operatingName(['614128 Ontario Ltd. O/A Trisan Construction*'])).toBe(
+      'Trisan Construction',
+    );
+  });
+
+  it('does NOT treat a bare "DBA"/"COB" token (no dots) as a marker', () => {
+    // A real company literally named this way must not get a fabricated trade name.
+    expect(operatingName(['DBA Software Inc'])).toBeNull();
+    expect(operatingName(['COB Consulting Ltd'])).toBeNull();
+  });
+
   it('returns null when no variant carries a trade-name marker', () => {
     expect(operatingName(['Compugen Inc.', 'Compugen Incorporated'])).toBeNull();
   });
