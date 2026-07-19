@@ -1,0 +1,130 @@
+import { describe, expect, it } from 'vitest';
+import { loadFixture, loadPage } from './helpers';
+import { dedupeAwards } from '../../src/prepare/awards';
+import { formatCAD } from '../../src/prepare/amounts';
+import { TITLE_SOURCE_LABELS } from '../../src/prepare/titles';
+
+const fixture = loadFixture();
+
+describe('untitled solicitation', () => {
+  const sol = fixture.solicitations.find((s) => s.title === null)!;
+  it('is present in the fixture', () => {
+    expect(sol).toBeDefined();
+  });
+  it('constructs a "Doc <n>" heading and shows the no-title-published marker', () => {
+    const $ = loadPage(`solicitations/${sol.document_number}`);
+    expect($('h1').text()).toContain(`Doc ${sol.document_number}`);
+    expect($('.untitled-marker').text().toLowerCase()).toContain('no title published');
+  });
+});
+
+describe('recovered-title provenance badge', () => {
+  const sol = fixture.solicitations.find((s) => s.title !== null && s.title_source !== null)!;
+  it('shows the title_source label', () => {
+    const $ = loadPage(`solicitations/${sol.document_number}`);
+    const expected = TITLE_SOURCE_LABELS[sol.title_source!] ?? sol.title_source!;
+    expect($('.provenance-badge').text()).toContain(expected);
+  });
+});
+
+describe('deduped awards with raw AND numeric amounts', () => {
+  const sol = fixture.solicitations.find(
+    (s) => s.awards.some((a) => a.source === 'odata') && s.awards.some((a) => a.source === 'ckan_awarded'),
+  )!;
+  const deduped = dedupeAwards(sol.awards);
+  it('renders exactly one row per deduped award line (not one per source row)', () => {
+    const $ = loadPage(`solicitations/${sol.document_number}`);
+    expect(deduped.length).toBeLessThan(sol.awards.length);
+    expect($('.awards-table tbody tr').length).toBe(deduped.length);
+  });
+  it('shows raw verbatim and formatted numeric side by side', () => {
+    const $ = loadPage(`solicitations/${sol.document_number}`);
+    const withNumeric = deduped.find((a) => a.award_amount_numeric !== null);
+    if (withNumeric) {
+      expect($('.awards-table').text()).toContain(withNumeric.award_amount ?? '');
+      expect($('.awards-table').text()).toContain(formatCAD(withNumeric.award_amount_numeric!));
+    }
+    expect($('.awards-table .amount-raw').length).toBe(deduped.length);
+  });
+  it('shows a sources badge listing both feeds, odata first', () => {
+    const $ = loadPage(`solicitations/${sol.document_number}`);
+    const badges = $('.sources-badge')
+      .map((_, el) => $(el).text())
+      .get();
+    expect(badges).toContain('odata + ckan_awarded');
+  });
+});
+
+describe('bids table', () => {
+  it('renders council-bridged bids with an HST basis column', () => {
+    const council = fixture.council_items.find((c) =>
+      c.bids.some(
+        (b) =>
+          b.document_number !== null &&
+          fixture.solicitations.some((s) => s.document_number === b.document_number),
+      ),
+    )!;
+    const bid = council.bids.find(
+      (b) =>
+        b.document_number !== null &&
+        fixture.solicitations.some((s) => s.document_number === b.document_number),
+    )!;
+    const $ = loadPage(`solicitations/${bid.document_number}`);
+    expect($('.bids-table thead').text()).toContain('HST basis');
+    expect($('.bids-table tbody').text()).toContain(bid.bidder_name_raw);
+  });
+  it('renders solicitation-nested (award_summary) bids', () => {
+    const sol = fixture.solicitations.find((s) => s.bids.length > 0)!;
+    const $ = loadPage(`solicitations/${sol.document_number}`);
+    expect($('.bids-table tbody').text()).toContain(sol.bids[0].bidder_name_raw);
+  });
+  it('renders a Result column only when the record has named award winners', () => {
+    // Fixture-safe: each branch runs only if the fixture has a matching record.
+    const withWinners = fixture.solicitations.find(
+      (s) => s.bids.length > 0 && dedupeAwards(s.awards).some((a) => a.supplier_name_raw !== null),
+    );
+    if (withWinners) {
+      const $ = loadPage(`solicitations/${withWinners.document_number}`);
+      expect($('.bids-table thead').text()).toContain('Result');
+    }
+    const withoutAwards = fixture.solicitations.find((s) => s.bids.length > 0 && s.awards.length === 0);
+    if (withoutAwards) {
+      const $ = loadPage(`solicitations/${withoutAwards.document_number}`);
+      expect($('.bids-table thead').text()).not.toContain('Result');
+      expect($('.bids-table').text()).not.toContain('Winner');
+    }
+    expect(withWinners ?? withoutAwards, 'fixture has no solicitation with bids').toBeDefined();
+  });
+});
+
+describe('documents list', () => {
+  const solWithAriba = fixture.solicitations.find((s) =>
+    s.documents.some((d) => d.source === 'ariba_attachment'),
+  )!;
+  const solWithUrl = fixture.solicitations.find((s) =>
+    s.documents.some((d) => d.source === 'award_summary' || d.source === 'staff_report'),
+  )!;
+  it('renders ariba_attachment entries with NO anchor and an indexed-not-downloadable note', () => {
+    const $ = loadPage(`solicitations/${solWithAriba.document_number}`);
+    expect($('.doc-ariba_attachment').length).toBeGreaterThan(0);
+    $('.doc-ariba_attachment').each((_, el) => {
+      expect($(el).find('a').length).toBe(0);
+      expect($(el).text()).toContain('indexed, not downloadable');
+    });
+  });
+  it('links staff_report / award_summary entries to their City URL', () => {
+    const doc = solWithUrl.documents.find(
+      (d) => d.source === 'award_summary' || d.source === 'staff_report',
+    )!;
+    const $ = loadPage(`solicitations/${solWithUrl.document_number}`);
+    expect($(`.doc-${doc.source} a[href="${doc.url}"]`).length).toBeGreaterThan(0);
+  });
+  it('renders nested zip-in-zip paths verbatim', () => {
+    const nested = fixture.solicitations
+      .flatMap((s) => s.documents.map((d) => ({ s, d })))
+      .find(({ d }) => d.source === 'ariba_attachment' && d.path.includes('/'))!;
+    const $ = loadPage(`solicitations/${nested.s.document_number}`);
+    const paths = $('.doc-path').map((_, el) => $(el).text()).get();
+    expect(paths).toContain(nested.d.path);
+  });
+});
