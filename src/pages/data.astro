@@ -5,8 +5,12 @@ import { getPrepared } from '../prepare/prepare';
 const p = await getPrepared();
 const RELEASES = 'https://github.com/CivicTechTO/toronto-bids-data/releases';
 const LATEST = `${RELEASES}/download/latest`;
-const DATASETTE =
-  'https://lite.datasette.io/?url=https://github.com/CivicTechTO/toronto-bids-data/releases/download/latest/bids.sqlite';
+// Datasette-Lite fetches the database in the browser, so it must load from a
+// CORS-enabled host. GitHub release assets no longer send Access-Control-Allow-Origin
+// (toronto-bids#155), so the sqlite is mirrored to a public R2 bucket for this one
+// path — the downloads above stay on the canonical, snapshotted release.
+const DATASETTE_SQLITE = 'https://pub-99a890c186c743c19ef7bcd00024dca8.r2.dev/bids.sqlite';
+const DATASETTE = `https://lite.datasette.io/?url=${DATASETTE_SQLITE}`;
 ---
 
 <Base

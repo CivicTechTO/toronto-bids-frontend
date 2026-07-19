@@ -1,8 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import { loadFixture, loadPage } from './helpers';
 
+// Datasette-Lite loads the sqlite in-browser from a CORS-enabled R2 bucket, not the
+// release asset (which no longer sends ACAO — toronto-bids#155). Downloads stay on the release.
 const DATASETTE =
-  'https://lite.datasette.io/?url=https://github.com/CivicTechTO/toronto-bids-data/releases/download/latest/bids.sqlite';
+  'https://lite.datasette.io/?url=https://pub-99a890c186c743c19ef7bcd00024dca8.r2.dev/bids.sqlite';
 const LATEST = 'https://github.com/CivicTechTO/toronto-bids-data/releases/download/latest';
 
 describe('/data/ page', () => {
