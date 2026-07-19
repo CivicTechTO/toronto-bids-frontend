@@ -1,0 +1,49 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getPrepared } from '../../prepare/prepare';
+import { href } from '../../lib/url';
+
+const p = await getPrepared();
+const buyers = [...p.doc.buyers].sort((a, b) => a.name.localeCompare(b.name));
+---
+<Base
+  title="Agencies and boards"
+  description="Procurement records from partner agency (buyer) portals, kept separate from City headline numbers."
+>
+  <p>
+    Records captured from agency procurement portals. Agency data lives in its
+    own keyspace and is never merged into City headline numbers.
+  </p>
+  {buyers.length === 0 ? (
+    <p>
+      No agency portals captured yet. The agency expansion (TTC, Police, TCHC,
+      Waterfront Toronto, Exhibition Place, TPL) is in progress; buyer pages
+      appear here as portals come online.
+    </p>
+  ) : (
+    <table>
+      <thead>
+        <tr>
+          <th>Buyer</th>
+          <th>Kind</th>
+          <th>Partnered</th>
+          <th>Solicitations</th>
+          <th>Awards</th>
+          <th>Bids</th>
+        </tr>
+      </thead>
+      <tbody>
+        {buyers.map((b) => (
+          <tr>
+            <td><a href={href(`/buyers/${b.slug}/`)}>{b.name}</a></td>
+            <td>{b.kind}</td>
+            <td>{b.partnered === 1 ? 'Partnered' : '—'}</td>
+            <td>{b.solicitations.length}</td>
+            <td>{b.awards.length}</td>
+            <td>{b.bids.length}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  )}
+</Base>

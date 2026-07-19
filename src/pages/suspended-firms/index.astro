@@ -1,0 +1,62 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getPrepared } from '../../prepare/prepare';
+import { href } from '../../lib/url';
+
+const p = await getPrepared();
+const firms = p.doc.suspended_firms;
+---
+<Base
+  title="Suspended firms"
+  description="Firms suspended from City procurement, with council authority."
+>
+  <p>{firms.length} firms suspended from bidding on City procurement.</p>
+  <table>
+    <thead>
+      <tr>
+        <th>Firm</th>
+        <th>Status</th>
+        <th>Type</th>
+        <th>Start</th>
+        <th>End</th>
+        <th>Council authority</th>
+      </tr>
+    </thead>
+    <tbody>
+      {firms.map((f) => {
+        const slug =
+          f.supplier_id !== null
+            ? (p.supplierSlugById.get(f.supplier_id) ?? null)
+            : null;
+        return (
+          <tr>
+            <td>
+              {slug ? (
+                <a href={href(`/suppliers/${slug}/`)}>{f.supplier_name_raw}</a>
+              ) : (
+                f.supplier_name_raw
+              )}
+            </td>
+            <td>{f.status ?? '—'}</td>
+            <td>{f.suspension_type ?? '—'}</td>
+            <td>{f.start_date ?? '—'}</td>
+            <td>{f.end_date ?? '—'}</td>
+            <td>
+              {f.council_authority ? (
+                p.councilByRef.has(f.council_authority) ? (
+                  <a href={href(`/council/${f.council_authority}/`)}>
+                    {f.council_authority}
+                  </a>
+                ) : (
+                  f.council_authority
+                )
+              ) : (
+                '—'
+              )}
+            </td>
+          </tr>
+        );
+      })}
+    </tbody>
+  </table>
+</Base>
