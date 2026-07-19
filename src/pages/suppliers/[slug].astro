@@ -111,7 +111,7 @@ const soleBids = rollup.bids.filter(isSoleBidder);
   <section>
     <h2>Awards won</h2>
     <p>
-      Totals are per keyspace and never merged; each sums only
+      Totals are kept separate by record type and never merged; each sums only
       machine-parseable amounts.
     </p>
 
@@ -181,7 +181,7 @@ const soleBids = rollup.bids.filter(isSoleBidder);
         </table>
       </>
     ) : (
-      <p>No composite award lines (the 2009–2012 keyspace).</p>
+      <p>No composite award lines (the 2009–2012 record type).</p>
     )}
 
     <h3>Non-competitive contracts ({rollup.noncompetitive.length})</h3>

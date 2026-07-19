@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import Term from '../../components/Term.astro';
 import { getPrepared } from '../../prepare/prepare';
 import { href } from '../../lib/url';
 
@@ -11,12 +12,12 @@ const buyers = [...p.doc.buyers].sort((a, b) => a.name.localeCompare(b.name));
   description="Procurement records from partner agency (buyer) portals, kept separate from City headline numbers."
 >
   <p>
-    Records captured from agency procurement portals — City agencies, boards, and
-    corporations (TTC, Police, TCHC, TRCA, the Zoo, and others) that buy outside the
-    City's central Purchasing &amp; Materials Management Division (PMMD).
-    Agency data lives in its own keyspace and is never merged into City headline numbers.
-    The City's own <strong>divisions</strong> (Transportation, Toronto Water, Parks, and
-    the rest) are under <a href={href('/solicitations/')}>Solicitations</a> and
+    Records captured from <Term id="buyer">agency (buyer)</Term> procurement portals — City
+    agencies, boards, and corporations (TTC, Police, TCHC, TRCA, the Zoo, and others) that
+    buy outside the City's central Purchasing &amp; Materials Management Division (PMMD).
+    Agency data is kept as its own set of records and is never merged into City headline numbers.
+    The City's own <strong>divisions</strong> (Transportation, Toronto Water,
+    Parks, and the rest) are under <a href={href('/solicitations/')}>Solicitations</a> and
     <a href={href('/suppliers/')}>Suppliers</a>, not here.
   </p>
   {buyers.length === 0 ? (

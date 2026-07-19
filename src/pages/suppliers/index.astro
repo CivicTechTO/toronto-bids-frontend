@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import BrowseTable from '../../islands/BrowseTable';
+import Term from '../../components/Term.astro';
 import { getPrepared } from '../../prepare/prepare';
 import { buildSupplierIndex } from '../../prepare/indexes';
 import { formatCAD } from '../../prepare/amounts';
@@ -17,8 +18,8 @@ const first = rows.slice(0, 50);
 >
   <p>
     {rows.length.toLocaleString('en-CA')} suppliers. Award totals sum machine-parseable
-    City award amounts only (undercounts) and never merge keyspaces. Filters and
-    sorting are reflected in the URL.
+    City <Term id="award">award</Term> amounts only (undercounts) and are never added across
+    the different record types. Filters and sorting are reflected in the URL.
   </p>
   <BrowseTable
     client:load

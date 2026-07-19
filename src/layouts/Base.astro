@@ -2,6 +2,7 @@
 // src/layouts/Base.astro
 import { href } from '../lib/url';
 import { getPrepared } from '../prepare/prepare';
+import { TORONTO_BIDS_PORTAL } from '../lib/sources';
 import '../styles/global.css';
 
 interface Props {
@@ -32,6 +33,12 @@ const asOfLabel = new Date(p.generatedAt).toLocaleString('en-CA', {
     {description && <meta name="description" content={description} />}
   </head>
   <body class="max-w-4xl mx-auto px-4">
+    <aside class="archive-banner" role="note">
+      <strong>Historical research archive — not a live tenders board.</strong>{' '}
+      Everything here is a past snapshot, and any “Open” status may already be closed. For
+      current opportunities to bid on, use the City's{' '}
+      <a href={TORONTO_BIDS_PORTAL} rel="external">Toronto Bids Portal</a>.
+    </aside>
     <header class="py-3 border-b mb-4">
       <a href={href('/')} class="font-bold">Toronto Bids Archive</a>
       <nav class="inline-block ml-4 text-sm">
@@ -43,6 +50,7 @@ const asOfLabel = new Date(p.generatedAt).toLocaleString('en-CA', {
         · <a href={href('/suppliers/')}>Suppliers</a>
         · <a href={href('/buyers/')}>Buyers</a>
         · <a href={href('/data/')}>Data</a>
+        · <a href={href('/glossary/')}>Glossary</a>
         · <a href={href('/about/')}>About</a>
       </nav>
     </header>
@@ -55,7 +63,7 @@ const asOfLabel = new Date(p.generatedAt).toLocaleString('en-CA', {
       <slot />
     </main>
     <footer class="mt-8 py-3 border-t text-sm text-gray-600">
-      Data as of <time datetime={p.generatedAt}>{asOfLabel}</time> · <a href={href('/data/')}>Data &amp; downloads</a>
+      Data as of <time datetime={p.generatedAt}>{asOfLabel}</time> · <a href={href('/data/')}>Data &amp; downloads</a> · <a href={href('/glossary/')}>Glossary</a>
     </footer>
   </body>
 </html>

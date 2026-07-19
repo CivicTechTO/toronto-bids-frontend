@@ -1,0 +1,27 @@
+---
+import Base from '../layouts/Base.astro';
+import { href } from '../lib/url';
+import { GLOSSARY } from '../lib/glossary';
+---
+<Base
+  title="Glossary"
+  description="Plain-language definitions of the City of Toronto procurement terms used across the archive."
+>
+  <p>
+    Plain-language definitions of the procurement terms used across this archive. New to
+    City contracting? This page and the <a href={href('/')}>Start here</a> examples on the
+    home page are the gentlest way in.
+  </p>
+  <dl class="glossary">
+    {GLOSSARY.map((e) => (
+      <div id={e.id}>
+        <dt>{e.term}</dt>
+        <dd>{e.full ?? e.short}</dd>
+      </div>
+    ))}
+  </dl>
+  <p>
+    For the exact data rules — how the record-numbering systems work and why totals
+    are never added across them — see <a href={href('/data/')}>the Data page</a>.
+  </p>
+</Base>

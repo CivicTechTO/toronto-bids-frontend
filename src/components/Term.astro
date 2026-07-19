@@ -1,0 +1,14 @@
+---
+// A glossary-linked term (#11). Renders its slot text as a subtle link to the
+// /glossary/ anchor, with the plain definition as a hover tooltip — zero JavaScript.
+// Use on the FIRST mention of a term in a page's prose, e.g.
+//   <Term id="solicitation">solicitations</Term>
+import { href } from '../lib/url';
+import { GLOSSARY_BY_ID } from '../lib/glossary';
+
+interface Props { id: string }
+const { id } = Astro.props;
+const entry = GLOSSARY_BY_ID[id];
+if (!entry) throw new Error(`<Term>: unknown glossary id "${id}"`);
+---
+<a class="term" href={href(`/glossary/#${entry.id}`)} title={entry.short}><slot /></a>

@@ -1,6 +1,7 @@
 ---
 // src/pages/calls/index.astro
 import Base from '../../layouts/Base.astro';
+import Term from '../../components/Term.astro';
 import { formatCAD } from '../../prepare/amounts';
 import { getPrepared } from '../../prepare/prepare';
 import { href } from '../../lib/url';
@@ -9,8 +10,9 @@ const p = await getPrepared();
 ---
 <Base title="Composite award calls (2009–2012)">
   <p class="lede">
-    For 2009–2011 the City published no solicitation records; these composite award lines
-    ARE the award record for those years. Values reflect the initial contract term only.
+    For 2009–2011 the City published no solicitation records; these
+    <Term id="composite-award">composite award</Term> lines ARE the award record for those
+    years. Values reflect the initial contract term only.
   </p>
   <table class="calls-index">
     <thead>
@@ -28,7 +30,8 @@ const p = await getPrepared();
     </tbody>
   </table>
   <p class="stats-caveat">
-    Totals sum machine-parseable amounts only and undercount the true totals. Call numbers
-    are their own identifier keyspace — they never join to document or workspace numbers.
+    Totals sum machine-parseable amounts only and undercount the true totals. These
+    2009–2012 call records are counted on their own and are never added together with the
+    other kinds of record.
   </p>
 </Base>

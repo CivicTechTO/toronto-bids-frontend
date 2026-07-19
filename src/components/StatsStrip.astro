@@ -17,13 +17,15 @@ const outliers = headline.outlierAwardCount;
     </div>
   )}
   <div><dt>Non-competitive (machine-parseable)</dt><dd>{formatCAD(headline.noncompetitiveTotal.total)}</dd></div>
-  <div><dt>Open solicitations</dt><dd>{headline.openCount.toLocaleString('en-CA')}</dd></div>
+  <div><dt>Last recorded as Open</dt><dd>{headline.openCount.toLocaleString('en-CA')}</dd></div>
   <div><dt>Bids on record</dt><dd>{headline.bidCount.toLocaleString('en-CA')}</dd></div>
   <div><dt>Suppliers</dt><dd>{headline.supplierCount.toLocaleString('en-CA')}</dd></div>
 </dl>
 <p class="stats-caveat">
   City records only — agency (buyer) data is listed separately per buyer. Dollar totals sum
-  machine-parseable amounts only and therefore undercount the true totals.{' '}
+  machine-parseable amounts only and therefore undercount the true totals.
+  “Last recorded as Open” counts solicitations whose final captured status was Open; it is a
+  historical snapshot, not a count of opportunities you can bid on today.{' '}
   {outliers > 0 && (
     <>The raw awarded total also includes {outliers} award{outliers === 1 ? '' : 's'} over {formatCAD(IMPLAUSIBLE_AWARD_THRESHOLD)} that the
     City published but that are implausible for a single award (e.g. ~$9B to an individual); the
