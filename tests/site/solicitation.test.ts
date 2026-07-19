@@ -3,8 +3,11 @@ import { loadFixture, loadPage } from './helpers';
 import { dedupeAwards } from '../../src/prepare/awards';
 import { formatCAD } from '../../src/prepare/amounts';
 import { TITLE_SOURCE_LABELS } from '../../src/prepare/titles';
+import { prepare } from '../../src/prepare/prepare';
+import { validateExport } from '../../src/prepare/validate';
 
 const fixture = loadFixture();
+const p = prepare(validateExport(fixture));
 
 describe('untitled solicitation', () => {
   const sol = fixture.solicitations.find((s) => s.title === null)!;
@@ -78,10 +81,24 @@ describe('bids table', () => {
     const $ = loadPage(`solicitations/${sol.document_number}`);
     expect($('.bids-table tbody').text()).toContain(sol.bids[0].bidder_name_raw);
   });
-  it('shows the bid count in the Bids heading', () => {
-    const sol = fixture.solicitations.find((s) => s.bids.length > 0)!;
-    const $ = loadPage(`solicitations/${sol.document_number}`);
-    expect($('h2:contains("Bids")').first().text()).toContain(`(${sol.bids.length})`);
+  it('the Bids heading counts direct AND bridged bids (not just direct)', () => {
+    // Pick a solicitation reached ONLY via the council bridge (0 direct bids), so the
+    // heading count must reflect bridged bids. Mirror the page's own allBids computation.
+    const doc = fixture.solicitations.find((s) => {
+      const refs = p.bridge.docToRefs.get(s.document_number) ?? [];
+      const bridged = refs.flatMap((ref) =>
+        (p.councilByRef.get(ref)?.bids ?? []).filter((b) => b.document_number === s.document_number),
+      );
+      return s.bids.length === 0 && bridged.length > 0;
+    });
+    expect(doc, 'fixture needs a bridged-only solicitation').toBeDefined();
+    const refs = p.bridge.docToRefs.get(doc!.document_number) ?? [];
+    const total = refs.flatMap((ref) =>
+      (p.councilByRef.get(ref)?.bids ?? []).filter((b) => b.document_number === doc!.document_number),
+    ).length; // = direct (0) + bridged
+    const $ = loadPage(`solicitations/${doc!.document_number}`);
+    // If the heading wrongly used sol.bids.length it would show (0) and fail.
+    expect($('h2:contains("Bids")').first().text()).toContain(`(${total})`);
   });
   it('reworded empty state does not read as "uncompetitive"', () => {
     // An awarded record with no captured bids (direct or bridged).
