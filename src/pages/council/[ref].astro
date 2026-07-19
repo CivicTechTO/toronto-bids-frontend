@@ -3,6 +3,7 @@ import Base from '../../layouts/Base.astro';
 import BidsTable from '../../components/BidsTable.astro';
 import { getPrepared } from '../../prepare/prepare';
 import { href } from '../../lib/url';
+import { tmmisUrl } from '../../lib/sources';
 import { displayTitle } from '../../prepare/titles';
 import type { CouncilItem } from '../../prepare/types';
 
@@ -49,7 +50,10 @@ const decisionParas = (item.decision_text ?? '')
     ...(year ? { year } : {}),
   }}
 >
-  <p><strong>Council reference:</strong> {item.reference}</p>
+  <p>
+    <strong>Council reference:</strong> {item.reference} ·{' '}
+    <a href={tmmisUrl(item.reference)}>View the decision on TMMIS (City source) ↗</a>
+  </p>
 
   {linkedSol && (
     <p>

@@ -74,6 +74,12 @@ const category = normalizeCategory(sol.category);
     {sol.division && <div><dt>Division</dt><dd>{sol.division}</dd></div>}
     {sol.buyer_name && <div><dt>Buyer</dt><dd>{sol.buyer_name}</dd></div>}
     {sol.wards && <div><dt>Wards</dt><dd>{sol.wards}</dd></div>}
+    {sol.ariba_posting_link && (
+      <div>
+        <dt>Original posting</dt>
+        <dd><a href={sol.ariba_posting_link}>View the original posting ↗</a></dd>
+      </div>
+    )}
   </dl>
 
   {sol.description && (

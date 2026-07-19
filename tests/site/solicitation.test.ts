@@ -162,3 +162,12 @@ describe('documents list', () => {
     expect(paths).toContain(nested.d.path);
   });
 });
+
+describe('primary-source links (#8)', () => {
+  it('surfaces the City original-posting link when present', () => {
+    const sol = fixture.solicitations.find((s) => s.ariba_posting_link)!;
+    expect(sol, 'fixture needs a solicitation with ariba_posting_link').toBeDefined();
+    const $ = loadPage(`solicitations/${sol.document_number}`);
+    expect($(`a[href="${sol.ariba_posting_link}"]`).length).toBeGreaterThan(0);
+  });
+});

@@ -130,4 +130,12 @@ describe('/council/{reference}/ record page', () => {
       }
     },
   );
+
+  it('links the council reference out to the City TMMIS record (#8)', () => {
+    const item = fx.council_items[0];
+    const $ = loadPage(`council/${item.reference}`);
+    expect(
+      $(`a[href="https://secure.toronto.ca/council/agenda-item.do?item=${item.reference}"]`).length,
+    ).toBe(1);
+  });
 });

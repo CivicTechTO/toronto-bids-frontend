@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { loadPage } from './helpers';
 import { supplierSlug } from '../../src/prepare/slugs';
+import { tmmisUrl } from '../../src/lib/sources';
 import type { ExportDoc } from '../../src/prepare/types';
 
 const fx = JSON.parse(
@@ -37,12 +38,17 @@ describe('/suspended-firms/', () => {
       ).toBeGreaterThan(0);
     }
     for (const f of fx.suspended_firms) {
-      if (
-        f.council_authority &&
-        fx.council_items.some((ci) => ci.reference === f.council_authority)
-      ) {
+      if (!f.council_authority) continue;
+      if (fx.council_items.some((ci) => ci.reference === f.council_authority)) {
         expect(
           $(`a[href$="/council/${f.council_authority}/"]`).length,
+        ).toBeGreaterThan(0);
+      } else {
+        // Archive-absent authority → link out to the City's TMMIS record (#8).
+        // Exact-match the URL so one firm's ref can't accidentally match another's link.
+        expect(
+          $(`a[href="${tmmisUrl(f.council_authority)}"]`).length,
+          f.council_authority,
         ).toBeGreaterThan(0);
       }
     }
