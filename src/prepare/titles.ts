@@ -15,3 +15,24 @@ export function displayTitle(
   const suffix = parts.length > 0 ? ` — ${parts.join(', ')}` : '';
   return { text: `Doc ${sol.document_number}${suffix}`, untitled: true };
 }
+
+/**
+ * Data rule 6: the City published both 'Goods & Services' (91 rows) and
+ * 'Goods and Services' (2,364 rows). Facets and indexes fold the former
+ * into the latter; record pages still show the raw value.
+ */
+export function normalizeCategory(category: string | null): string | null {
+  if (category === 'Goods & Services') return 'Goods and Services';
+  return category;
+}
+
+/**
+ * Badge text for recovered titles (`title_source` non-null, data rule 5).
+ * Rendered by ProvenanceBadge.astro next to the display title.
+ */
+export const TITLE_SOURCE_LABELS: Record<string, string> = {
+  bid_award_panel: 'Title from Bid Award Panel records',
+  council_pre_ariba: 'Title from council agenda (pre-Ariba)',
+  council_composite: 'Title from council composite award records',
+  legacy_ariba_html: 'Title from legacy Ariba HTML',
+};
