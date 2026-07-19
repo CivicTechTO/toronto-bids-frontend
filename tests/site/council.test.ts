@@ -38,17 +38,27 @@ const profileBidder = bridged.bids
   )
   .find((s) => s !== undefined);
 
-describe('/council/ index', () => {
-  it('lists every council item, grouped by year, as plain HTML (no island)', () => {
+describe('/council/ index (island browse page)', () => {
+  it('mounts the BrowseTable island pointing at the council index', () => {
     const $ = loadPage('council');
-    for (const ci of fx.council_items) {
-      expect($(`a[href$="/council/${ci.reference}/"]`).length).toBe(1);
+    const island = $('astro-island[client="load"]');
+    expect(island.length).toBeGreaterThanOrEqual(1);
+    expect(island.attr('props') ?? '').toContain('indexes/council.json');
+    expect($('h1').length).toBe(1); // Base renders the only h1
+    expect($('body').text()).toContain(
+      `${fx.council_items.length.toLocaleString('en-CA')} council items`,
+    );
+  });
+
+  it('renders a noscript first-50 static table linking council items', () => {
+    const raw = readFileSync('dist/council/index.html', 'utf8');
+    const noscripts = raw.match(/<noscript>[\s\S]*?<\/noscript>/g)?.join('') ?? '';
+    expect(noscripts).toContain('<table');
+    // buildCouncilIndex preserves doc order, so the noscript table shows the
+    // first 50 council items; the fixture has fewer than 50.
+    for (const ci of fx.council_items.slice(0, 50)) {
+      expect(noscripts).toContain(`/council/${ci.reference}/`);
     }
-    const years = $('h2')
-      .toArray()
-      .map((el) => $(el).text());
-    expect(years).toContain(bridged.reference.slice(0, 4));
-    expect($('astro-island').length).toBe(0);
   });
 });
 

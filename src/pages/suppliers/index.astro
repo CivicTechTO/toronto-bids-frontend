@@ -1,50 +1,50 @@
 ---
 import Base from '../../layouts/Base.astro';
+import BrowseTable from '../../islands/BrowseTable';
 import { getPrepared } from '../../prepare/prepare';
-import { href } from '../../lib/url';
+import { buildSupplierIndex } from '../../prepare/indexes';
 import { formatCAD } from '../../prepare/amounts';
+import { href } from '../../lib/url';
 
 const p = await getPrepared();
-const rollups = [...p.rollupsBySlug.values()];
-const top = rollups
-  .filter((r) => r.totals.cityAwards.counted > 0)
-  .sort((a, b) => b.totals.cityAwards.total - a.totals.cityAwards.total)
-  .slice(0, 100);
+const rows = buildSupplierIndex(p);
+const first = rows.slice(0, 50);
 ---
+
 <Base
   title="Suppliers"
-  description="Supplier profiles: awards won, bids lost, name variants, suspensions."
+  description="Browse all suppliers: awards won, bids lost, suspensions, name variants."
 >
   <p>
-    {rollups.length} supplier profiles. Below: the top {top.length} by City
-    award total (machine-parseable amounts only — an undercount). Every
-    supplier has a profile page; use
-    <a href={href('/search/')}>search</a> to find any supplier by name or raw
-    variant. A filterable browse table over all suppliers follows in the
-    browse section.
+    {rows.length.toLocaleString('en-CA')} suppliers. Award totals sum machine-parseable
+    City award amounts only (undercounts) and never merge keyspaces. Filters and
+    sorting are reflected in the URL.
   </p>
-  <table>
-    <thead>
-      <tr>
-        <th>Supplier</th>
-        <th>City award lines</th>
-        <th>Bids</th>
-        <th>City award total (parseable only)</th>
-      </tr>
-    </thead>
-    <tbody>
-      {top.map((r) => (
-        <tr>
-          <td>
-            <a href={href(`/suppliers/${r.slug}/`)}>
-              {r.supplier.display_name}
-            </a>
-          </td>
-          <td>{r.awards.length}</td>
-          <td>{r.bids.length}</td>
-          <td>{formatCAD(r.totals.cityAwards.total)}</td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
+  <BrowseTable
+    client:load
+    entity="suppliers"
+    indexUrl={href('/indexes/suppliers.json')}
+    base={import.meta.env.BASE_URL}
+  />
+  <noscript>
+    <p>
+      JavaScript is off — showing the first 50 of {rows.length.toLocaleString('en-CA')}
+      rows. Sorting and filtering need JavaScript.
+    </p>
+    <table>
+      <thead>
+        <tr><th>Supplier</th><th>Award lines</th><th>Bids</th><th>City awards (parsed)</th></tr>
+      </thead>
+      <tbody>
+        {first.map((r) => (
+          <tr>
+            <td><a href={href(`/suppliers/${r.g}/`)}>{r.n}</a></td>
+            <td>{r.na}</td>
+            <td>{r.nb}</td>
+            <td>{r.a === null ? '—' : formatCAD(r.a)}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </noscript>
 </Base>

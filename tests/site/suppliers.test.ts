@@ -116,16 +116,31 @@ const unlinkedAwardSupplier = fx.suppliers.find((s) =>
   fx.unlinked_awards.some((a) => a.supplier_id === s.supplier_id),
 );
 
-describe('/suppliers/ index', () => {
-  it('renders a plain top-by-award-total table with a search note, no island', () => {
+describe('/suppliers/ index (island browse page)', () => {
+  it('mounts the BrowseTable island pointing at the suppliers index', () => {
     const $ = loadPage('suppliers');
-    expect($('h1').first().text()).toBe('Suppliers');
+    const island = $('astro-island[client="load"]');
+    expect(island.length).toBeGreaterThanOrEqual(1);
+    expect(island.attr('props') ?? '').toContain('indexes/suppliers.json');
+    expect($('h1').length).toBe(1); // Base renders the only h1
     expect($('body').text()).toContain(
-      `${fx.suppliers.length} supplier profiles`,
+      `${fx.suppliers.length.toLocaleString('en-CA')} suppliers`,
     );
     expect($('body').text()).toContain('undercount');
-    expect($('astro-island').length).toBe(0);
-    expect($('a[href$="/search/"]').length).toBeGreaterThan(0);
+  });
+
+  it('renders a noscript first-50 static table linking supplier profiles', () => {
+    const raw = readFileSync('dist/suppliers/index.html', 'utf8');
+    const noscripts = raw.match(/<noscript>[\s\S]*?<\/noscript>/g)?.join('') ?? '';
+    expect(noscripts).toContain('<table');
+    // buildSupplierIndex sorts by display_name (en-CA), tiebreak slug — mirror it.
+    const first = fx.suppliers
+      .map((s) => ({ n: s.display_name, g: supplierSlug(s.supplier_key) }))
+      .sort((a, b) => a.n.localeCompare(b.n, 'en-CA') || a.g.localeCompare(b.g, 'en-CA'))
+      .slice(0, 50);
+    for (const s of first) {
+      expect(noscripts).toContain(`/suppliers/${s.g}/`);
+    }
   });
 });
 
