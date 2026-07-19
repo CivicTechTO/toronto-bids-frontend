@@ -1,0 +1,50 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getPrepared } from '../../prepare/prepare';
+import { href } from '../../lib/url';
+import { formatCAD } from '../../prepare/amounts';
+
+const p = await getPrepared();
+const rollups = [...p.rollupsBySlug.values()];
+const top = rollups
+  .filter((r) => r.totals.cityAwards.counted > 0)
+  .sort((a, b) => b.totals.cityAwards.total - a.totals.cityAwards.total)
+  .slice(0, 100);
+---
+<Base
+  title="Suppliers"
+  description="Supplier profiles: awards won, bids lost, name variants, suspensions."
+>
+  <p>
+    {rollups.length} supplier profiles. Below: the top {top.length} by City
+    award total (machine-parseable amounts only — an undercount). Every
+    supplier has a profile page; use
+    <a href={href('/search/')}>search</a> to find any supplier by name or raw
+    variant. A filterable browse table over all suppliers follows in the
+    browse section.
+  </p>
+  <table>
+    <thead>
+      <tr>
+        <th>Supplier</th>
+        <th>City award lines</th>
+        <th>Bids</th>
+        <th>City award total (parseable only)</th>
+      </tr>
+    </thead>
+    <tbody>
+      {top.map((r) => (
+        <tr>
+          <td>
+            <a href={href(`/suppliers/${r.slug}/`)}>
+              {r.supplier.display_name}
+            </a>
+          </td>
+          <td>{r.awards.length}</td>
+          <td>{r.bids.length}</td>
+          <td>{formatCAD(r.totals.cityAwards.total)}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</Base>
