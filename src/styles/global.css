@@ -1,5 +1,19 @@
 @import "tailwindcss";
 
+/* Link affordance. Tailwind's Preflight resets anchors to `color: inherit` with no
+   underline, so links across the site rendered as plain text — it was not obvious what
+   was clickable. Restore a clear, accessible clickable style site-wide. */
+a { color: #0b5cab; text-decoration: underline; text-underline-offset: 0.15em; }
+a:hover { color: #08417a; }
+a:focus-visible { outline: 2px solid #0b5cab; outline-offset: 2px; border-radius: 2px; }
+/* Chrome navigation (header + footer): the link colour carries the affordance; reserve
+   the underline for hover so the grouped nav stays clean. */
+header nav a, footer a { text-decoration: none; }
+header nav a:hover, footer a:hover { text-decoration: underline; }
+/* The wordmark is a title, not a body link. */
+header > a { color: inherit; text-decoration: none; }
+header > a:hover { text-decoration: underline; }
+
 .spine div { display: flex; gap: 0.5rem; }
 .spine dt { font-weight: 600; min-width: 11rem; }
 table { border-collapse: collapse; width: 100%; margin: 0.5rem 0; }
@@ -34,3 +48,45 @@ th, td { text-align: left; padding: 0.35rem 0.6rem; border-bottom: 1px solid #dd
 /* Collapsible coded-value domains on the data dictionary (#12). */
 .coded-column { margin: 0.4rem 0; }
 .coded-column summary { cursor: pointer; }
+
+/* ===================================================================
+   Visual pass — Preflight strips heading sizes and element margins, so
+   restore typographic hierarchy and vertical rhythm, and give the data
+   tables enough structure to scan. Kept deliberately lean and serious.
+   =================================================================== */
+
+/* Headings: Preflight flattens h2–h4 to body text — restore the scale. */
+main h2 { font-size: 1.4rem; font-weight: 700; line-height: 1.25; margin: 2rem 0 0.6rem; }
+main h3 { font-size: 1.15rem; font-weight: 700; line-height: 1.3; margin: 1.5rem 0 0.5rem; }
+main h4 { font-size: 1rem; font-weight: 700; margin: 1.25rem 0 0.4rem; }
+
+/* Prose rhythm (Preflight zeroes margins). */
+main p { margin: 0 0 0.75rem; line-height: 1.55; }
+main > section { margin-bottom: 1.75rem; }
+main ul, main ol { margin: 0 0 0.85rem; padding-left: 1.4rem; }
+main ul { list-style: disc; }
+main ol { list-style: decimal; }
+main li { margin: 0.15rem 0; }
+main li > ul, main li > ol { margin-bottom: 0; }
+/* Navigation lists are not prose — no bullets or indent. */
+main nav ul { list-style: none; padding-left: 0; margin: 0; }
+
+/* Record-page spine: a touch more room between rows. */
+.spine div { padding: 0.12rem 0; }
+
+/* Tables: softer borders, a header band, zebra rows, and a hover highlight so
+   long result lists are scannable. Wrapped tables stay horizontally scrollable. */
+th, td { border-bottom: 1px solid #e6e8ec; }
+thead th { background: #f2f4f7; border-bottom: 2px solid #d7dbe2; }
+tbody tr:nth-child(even) { background: #f8f9fb; }
+tbody tr:hover { background: #eef3fb; }
+
+/* Headline stats as cards. */
+.stats-strip { gap: 0.75rem; }
+.stats-strip > div { background: #f7f8fa; border: 1px solid #e6e8ec; border-radius: 8px; padding: 0.55rem 0.9rem; min-width: 8.5rem; }
+
+/* Form controls: consistent, rounded, with a visible focus ring. */
+input[type="search"], input[type="text"], select { border: 1px solid #c4c8d0; border-radius: 6px; padding: 0.3rem 0.5rem; }
+input:focus-visible, select:focus-visible, button:focus-visible { outline: 2px solid #0b5cab; outline-offset: 1px; }
+form[role="search"] button { border-radius: 6px; background: #0b5cab; color: #fff; border: 1px solid #0b5cab; cursor: pointer; }
+form[role="search"] button:hover { background: #08417a; border-color: #08417a; }

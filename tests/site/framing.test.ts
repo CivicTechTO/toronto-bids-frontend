@@ -15,11 +15,12 @@ describe('archive framing (#10)', () => {
     });
   }
 
-  it('relabels the Open stat as a historical snapshot, not live opportunities', () => {
+  it('relabels the Open stat so it does not read as live opportunities', () => {
     const $ = loadPage('');
+    // The "historical, not live" framing lives in the site-wide banner (tested above)
+    // and the stat label itself — the stat is no longer captioned "Open solicitations".
     expect($('.stats-strip').text()).toContain('Last recorded as Open');
     expect($('.stats-strip').text()).not.toContain('Open solicitations');
-    expect($('.stats-caveat').text()).toContain('historical snapshot');
   });
 
   it('flags a record still marked Open whose deadline has passed', () => {
