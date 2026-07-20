@@ -2,7 +2,6 @@
 // src/pages/index.astro
 import Base from '../layouts/Base.astro';
 import StatsStrip from '../components/StatsStrip.astro';
-import Term from '../components/Term.astro';
 import { getPrepared } from '../prepare/prepare';
 import { href } from '../lib/url';
 
@@ -14,15 +13,8 @@ const p = await getPrepared();
 >
   <p class="lede">
     A public record of how the City of Toronto buys goods and services — who bid, who won,
-    and for how much. It's a research archive with stable, citable URLs and an honest
-    account of the data's limits, built for journalists and researchers but open to anyone.
-  </p>
-  <p>
-    It covers competitive <Term id="solicitation">solicitations</Term>,
-    <Term id="award">awards</Term>, <Term id="bid">bids</Term> (including losing bidders),
-    <Term id="non-competitive">non-competitive contracts</Term>, council decisions, and
-    suppliers. Documents are indexed thoroughly; where the City hosts a file publicly, we
-    link out to it.
+    and for how much. Built for journalists, researchers, and anyone curious where the money
+    goes, with citable URLs and an honest account of the data's limits.
   </p>
   <form action={href('/search/')} method="get" role="search" class="my-4">
     <input

@@ -22,13 +22,11 @@ const outliers = headline.outlierAwardCount;
   <div><dt>Suppliers</dt><dd>{headline.supplierCount.toLocaleString('en-CA')}</dd></div>
 </dl>
 <p class="stats-caveat">
-  City records only — agency (buyer) data is listed separately per buyer. Dollar totals sum
-  machine-parseable amounts only and therefore undercount the true totals.
-  “Last recorded as Open” counts solicitations whose final captured status was Open; it is a
-  historical snapshot, not a count of opportunities you can bid on today.{' '}
+  City records only — agencies are listed separately. Dollar totals sum only
+  machine-parseable amounts, so they undercount.{' '}
   {outliers > 0 && (
-    <>The raw awarded total also includes {outliers} award{outliers === 1 ? '' : 's'} over {formatCAD(IMPLAUSIBLE_AWARD_THRESHOLD)} that the
-    City published but that are implausible for a single award (e.g. ~$9B to an individual); the
-    figure beside it excludes {outliers === 1 ? 'it' : 'them'}.</>
+    <>The raw awarded figure also includes {outliers} implausible City-published
+    award{outliers === 1 ? '' : 's'} over {formatCAD(IMPLAUSIBLE_AWARD_THRESHOLD)} (e.g. ~$9B to an
+    individual); the figure beside it excludes {outliers === 1 ? 'it' : 'them'}.</>
   )}
 </p>
