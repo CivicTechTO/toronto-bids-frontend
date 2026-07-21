@@ -1,6 +1,7 @@
 ---
 // src/components/DocumentsList.astro — documents index. City-hosted PDFs link out;
-// ariba_attachment entries NEVER get an anchor (indexed, not downloadable).
+// ariba_attachment entries NEVER get an anchor (indexed, not downloadable — explained
+// once via the legend below the list rather than repeated on every row).
 import type { DocumentEntry } from '../prepare/types';
 
 interface Props { documents: DocumentEntry[] }
@@ -10,21 +11,27 @@ const sizeLabel = (n: number) => (n >= 1048576 ? `${(n / 1048576).toFixed(1)} MB
 {documents.length === 0 ? (
   <p>No documents indexed for this record.</p>
 ) : (
-  <ul class="documents-list">
-    {documents.map((d) => (
-      <li class={`doc doc-${d.source}`}>
-        {d.url && d.source !== 'ariba_attachment' ? (
-          <a href={d.url}>{d.name}</a>
-        ) : (
-          <span class="doc-name">{d.name}</span>
-        )}
-        <span class="doc-path">{d.path}</span>
-        {d.type && <span class="doc-type">{d.type}</span>}
-        {d.size_bytes !== null && <span class="doc-size">{sizeLabel(d.size_bytes)}</span>}
-        {d.source === 'ariba_attachment' && (
-          <span class="doc-note">indexed, not downloadable — the file bytes are archived but not served here</span>
-        )}
-      </li>
-    ))}
-  </ul>
+  <>
+    <ul class="documents-list">
+      {documents.map((d) => (
+        <li class={`doc doc-${d.source}`}>
+          {d.url && d.source !== 'ariba_attachment' ? (
+            <a href={d.url}>{d.name}</a>
+          ) : (
+            <span class="doc-name">{d.name}</span>
+          )}
+          <div class="doc-meta">
+            {d.path !== d.name && <span class="doc-path">{d.path}</span>}
+            {d.type && <span class="doc-type">{d.type}</span>}
+            {d.size_bytes !== null && <span class="doc-size">{sizeLabel(d.size_bytes)}</span>}
+          </div>
+        </li>
+      ))}
+    </ul>
+    {documents.some((d) => d.source === 'ariba_attachment') && (
+      <p class="doc-note-legend">
+        Documents without a link here were catalogued from the City's archive — the file bytes aren't re-hosted on this site.
+      </p>
+    )}
+  </>
 )}

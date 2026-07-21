@@ -138,13 +138,13 @@ describe('documents list', () => {
   const solWithUrl = fixture.solicitations.find((s) =>
     s.documents.some((d) => d.source === 'award_summary' || d.source === 'staff_report'),
   )!;
-  it('renders ariba_attachment entries with NO anchor and an indexed-not-downloadable note', () => {
+  it('renders ariba_attachment entries with NO anchor, explained once by a page-level note', () => {
     const $ = loadPage(`solicitations/${solWithAriba.document_number}`);
     expect($('.doc-ariba_attachment').length).toBeGreaterThan(0);
     $('.doc-ariba_attachment').each((_, el) => {
       expect($(el).find('a').length).toBe(0);
-      expect($(el).text()).toContain('indexed, not downloadable');
     });
+    expect($('.doc-note-legend').text()).toContain("aren't re-hosted");
   });
   it('links staff_report / award_summary entries to their City URL', () => {
     const doc = solWithUrl.documents.find(
