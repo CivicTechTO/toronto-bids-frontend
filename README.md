@@ -126,3 +126,22 @@ three amount tiers (only `*_numeric` is summed, labelled as undercounts), five
 disjoint keyspaces that never join, `hst_basis` shown with every bid price,
 null-title semantics, and `supplier_key`-slugged supplier permalinks. They are
 documented for readers on the live `/data/` page and in the design spec.
+
+## Agency portal and publication records
+
+Buyer pages show contract records, portal postings and published award claims as
+separate record kinds. Printed references may be reused across portal postings;
+published claims retain their source text, source labels and publication month.
+The publication month does not establish an award date. Original publication
+entries without a supported claim remain available on the buyer page. These
+records have separate counts in the buyer index, data dictionary and shrink guard;
+they do not enter City headline totals.
+
+The new buyer arrays are optional for older exports. Present malformed arrays or
+claims without matching publication evidence fail the build. To verify every
+exported buyer record against a full-data build, run:
+
+```bash
+TB_DATA_FILE=.data/bids.json BASE_PATH=/ npm run build
+TB_DATA_FILE=.data/bids.json BASE_PATH=/ npx vitest run -c vitest.site.config.ts tests/site/buyer-records.test.ts tests/site/links.test.ts
+```

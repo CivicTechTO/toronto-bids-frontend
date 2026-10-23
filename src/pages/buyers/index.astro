@@ -12,7 +12,7 @@ const buyers = [...p.doc.buyers].sort((a, b) => a.name.localeCompare(b.name));
   description="Procurement records from partner agency (buyer) portals, kept separate from City headline numbers."
 >
   <p>
-    Records captured from <Term id="buyer">agency (buyer)</Term> procurement portals — City
+    Records captured from <Term id="buyer">agency (buyer)</Term> procurement portals and award publications — City
     agencies, boards, and corporations (TTC, Police, TCHC, TRCA, the Zoo, and others) that
     buy outside the City's central Purchasing &amp; Materials Management Division (PMMD).
     Agency data is kept as its own set of records and is never merged into City headline numbers.
@@ -33,8 +33,10 @@ const buyers = [...p.doc.buyers].sort((a, b) => a.name.localeCompare(b.name));
           <th>Buyer</th>
           <th>Kind</th>
           <th>Partnered</th>
-          <th>Solicitations</th>
-          <th>Awards</th>
+          <th>Contract solicitations</th>
+          <th>Portal listings</th>
+          <th>Contract awards</th>
+          <th>Published awards</th>
           <th>Bids</th>
         </tr>
       </thead>
@@ -45,7 +47,9 @@ const buyers = [...p.doc.buyers].sort((a, b) => a.name.localeCompare(b.name));
             <td>{b.kind}</td>
             <td>{b.partnered === 1 ? 'Partnered' : '—'}</td>
             <td>{b.solicitations.length}</td>
+            <td>{b.portal_listings?.length ?? 0}</td>
             <td>{b.awards.length}</td>
+            <td>{b.published_awards?.length ?? 0}</td>
             <td>{b.bids.length}</td>
           </tr>
         ))}

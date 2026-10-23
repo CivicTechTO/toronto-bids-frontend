@@ -42,11 +42,11 @@ describe('/buyers/{slug}/ pages', () => {
     const text = $('body').text();
     expect($('h1').length).toBe(1);
     expect($('h1').first().text()).toBe(zoo.name);
-    expect(text).toContain('Portal captured since');
+    expect(text).toContain('Captured since');
     const sections: Array<[number, string]> = [
-      [zoo.solicitations.length, 'no solicitations posted yet'],
-      [zoo.awards.length, 'no awards published yet'],
-      [zoo.bids.length, 'no bids posted yet'],
+      [zoo.solicitations.length, 'No contract solicitations captured in this export'],
+      [zoo.awards.length, 'No contract awards captured in this export'],
+      [zoo.bids.length, 'No bids captured in this export'],
     ];
     for (const [count, msg] of sections) {
       if (count === 0) expect(text).toContain(msg);
@@ -67,5 +67,41 @@ describe('/buyers/{slug}/ pages', () => {
     const text = $('body').text();
     expect(text).toContain('value withheld (confidential attachment)');
     expect(text).toContain(confidentialAward.native_ref);
+  });
+});
+
+
+describe('portal-only and publication-only buyers', () => {
+  it('counts the new records separately from contract records on the buyer index', () => {
+    const $ = loadPage('buyers');
+    const library = $('tr').filter((_, row) => $(row).find('a[href$="/buyers/library-test/"]').length > 0);
+    expect(library.find('td').map((_, el) => $(el).text()).get().slice(3)).toEqual(['0', '2', '0', '0', '0']);
+    const waterfront = $('tr').filter((_, row) => $(row).find('a[href$="/buyers/waterfront-test/"]').length > 0);
+    expect(waterfront.find('td').map((_, el) => $(el).text()).get().slice(3)).toEqual(['0', '0', '0', '2', '0']);
+  });
+
+  it('renders distinct portal postings even when references repeat', () => {
+    const $ = loadPage('buyers/library-test');
+    const section = $('#portal-listings');
+    expect(section.find('tbody tr').length).toBe(2);
+    expect(section.find('a[href="https://example.org/opportunities/1"]').length).toBe(1);
+    expect(section.find('a[href="https://example.org/opportunities/2"]').length).toBe(1);
+    expect(section.text()).toContain('Library procurement 1');
+    expect($('body').text()).not.toContain('no solicitations posted yet');
+  });
+
+  it('shows published claims with their original evidence, month, labels and source links', () => {
+    const $ = loadPage('buyers/waterfront-test');
+    const section = $('#published-awards');
+    expect(section.find('tbody tr').length).toBe(2);
+    const text = section.text();
+    for (const expected of ['Published supplier 1', 'Published contract 1', '$123,456', '2026-09', 'Original source evidence 1', 'Non-competitive', 'Value not disclosed']) {
+      expect(text).toContain(expected);
+    }
+    expect(section.find('a[href="https://example.org/awarded-contracts"]').length).toBe(2);
+    expect(text).toContain('publication month');
+    expect($('body').text()).not.toContain('no awards published yet');
+    expect($('#award-publications tbody tr').length).toBe(3);
+    expect($('#award-publications').text()).toContain('Original source evidence 3');
   });
 });

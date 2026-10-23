@@ -14,6 +14,10 @@ export async function getStaticPaths() {
 
 const { buyer } = Astro.props as { buyer: Buyer };
 const capturedSince = buyer.first_seen.slice(0, 10);
+const listings = buyer.portal_listings ?? [];
+const publications = buyer.award_publications ?? [];
+const publishedAwards = buyer.published_awards ?? [];
+const publicationsByKey = new Map(publications.map((p) => [p.source_key, p]));
 ---
 <Base
   title={buyer.name}
@@ -29,12 +33,12 @@ const capturedSince = buyer.first_seen.slice(0, 10);
     {buyer.platform && <span> · Platform: {buyer.platform}</span>}
   </p>
   {buyer.notes && <p>{buyer.notes}</p>}
-  <p>Portal captured since {capturedSince}.</p>
+  <p>Captured since {capturedSince}.</p>
 
   <section>
-    <h2>Solicitations ({buyer.solicitations.length})</h2>
+    <h2>Contract solicitations ({buyer.solicitations.length})</h2>
     {buyer.solicitations.length === 0 ? (
-      <p>Portal captured since {capturedSince}; no solicitations posted yet.</p>
+      <p>No contract solicitations captured in this export.</p>
     ) : (
       <table>
         <thead>
@@ -70,9 +74,9 @@ const capturedSince = buyer.first_seen.slice(0, 10);
   </section>
 
   <section>
-    <h2>Awards ({buyer.awards.length})</h2>
+    <h2>Contract awards ({buyer.awards.length})</h2>
     {buyer.awards.length === 0 ? (
-      <p>Portal captured since {capturedSince}; no awards published yet.</p>
+      <p>No contract awards captured in this export.</p>
     ) : (
       <table>
         <thead>
@@ -114,10 +118,73 @@ const capturedSince = buyer.first_seen.slice(0, 10);
     )}
   </section>
 
+  {listings.length > 0 && (
+    <section id="portal-listings">
+      <h2>Portal listings ({listings.length})</h2>
+      <p>Captured portal postings. Separate postings can share a reference; these counts do not represent distinct contracts.</p>
+      <table>
+        <thead><tr><th>Ref</th><th>Title</th><th>Status</th><th>Posted</th><th>Closing</th><th>Portal</th></tr></thead>
+        <tbody>
+          {listings.map((s) => (
+            <tr>
+              <td>{s.native_ref}</td><td>{s.title ?? '(no title published)'}</td>
+              <td>{s.status ?? '—'}</td><td>{s.posted_date ?? '—'}</td><td>{s.closing_date ?? '—'}</td>
+              <td><a href={s.portal_url} rel="noopener">portal</a></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </section>
+  )}
+
+  {publishedAwards.length > 0 && (
+    <section id="published-awards">
+      <h2>Published awards ({publishedAwards.length})</h2>
+      <p>Award claims supported by the buyer's published text. The publication month is not an award date. Titles are extracted from that text; original evidence is available for each claim.</p>
+      <table>
+        <thead><tr><th>Publication month</th><th>Title (extracted)</th><th>Supplier</th><th>Amount</th><th>Evidence</th></tr></thead>
+        <tbody>
+          {publishedAwards.map((a) => {
+            const publication = publicationsByKey.get(a.publication_key)!;
+            return (
+              <tr>
+                <td>{publication.publication_month}</td><td>{a.title_extracted ?? '(no title extracted)'}</td>
+                <td>{a.supplier_name_raw}</td>
+                <td><AmountCell raw={a.award_amount} numeric={a.award_amount_numeric} /></td>
+                <td>
+                  <a href={publication.source_url} rel="noopener">source publication</a>
+                  <details><summary>Original published text</summary><p>{publication.raw_text}</p>
+                    {publication.labels.length > 0 && <p>{publication.labels.join(' · ')}</p>}
+                  </details>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </section>
+  )}
+
+  {publications.length > 0 && (
+    <section id="award-publications">
+      <h2>Award publication evidence ({publications.length})</h2>
+      <p>All captured source entries, including entries without a supported award claim. An absent claim does not mean no award was published.</p>
+      <details><summary>Browse original source entries</summary>
+        <table>
+          <thead><tr><th>Publication month</th><th>Published text</th><th>Labels</th><th>Source</th></tr></thead>
+          <tbody>{publications.map((p) => (
+            <tr><td>{p.publication_month}</td><td>{p.raw_text}</td><td>{p.labels.join(' · ') || '—'}</td>
+              <td><a href={p.source_url} rel="noopener">source publication</a></td></tr>
+          ))}</tbody>
+        </table>
+      </details>
+    </section>
+  )}
+
   <section>
     <h2>Bids ({buyer.bids.length})</h2>
     {buyer.bids.length === 0 ? (
-      <p>Portal captured since {capturedSince}; no bids posted yet.</p>
+      <p>No bids captured in this export.</p>
     ) : (
       <table>
         <thead>

@@ -125,6 +125,50 @@ export function validateExport(raw: unknown): ExportDoc {
       for (const nested of ['solicitations', 'awards', 'bids'] as const) {
         if (!Array.isArray(b[nested])) problems.push(`buyers[${i}].${nested}: missing or not an array`);
       }
+      // Older exports may omit the new kinds. A present malformed array must
+      // fail the build rather than turn into an apparently empty buyer page.
+      for (const nested of ['portal_listings', 'award_publications', 'published_awards'] as const) {
+        if (b[nested] !== undefined && !Array.isArray(b[nested])) problems.push(`buyers[${i}].${nested}: not an array`);
+      }
+      const publicationKeys = new Set<string>();
+      if (Array.isArray(b.award_publications)) {
+        b.award_publications.forEach((row: unknown, j: number) => {
+          const prefix = `buyers[${i}].award_publications[${j}]`;
+          if (!isRecord(row)) { problems.push(`${prefix}: not an object`); return; }
+          for (const key of ['source_key', 'publication_month', 'raw_text', 'source_url']) {
+            if (typeof row[key] !== 'string') problems.push(`${prefix}.${key}: missing or not a string`);
+          }
+          if (!Array.isArray(row.labels) || row.labels.some((label: unknown) => typeof label !== 'string')) {
+            problems.push(`${prefix}.labels: missing or not a string array`);
+          }
+          if (typeof row.source_key === 'string') {
+            if (publicationKeys.has(row.source_key)) problems.push(`${prefix}.source_key: duplicate publication`);
+            publicationKeys.add(row.source_key);
+          }
+        });
+      }
+      if (Array.isArray(b.portal_listings)) {
+        b.portal_listings.forEach((row: unknown, j: number) => {
+          const prefix = `buyers[${i}].portal_listings[${j}]`;
+          if (!isRecord(row)) { problems.push(`${prefix}: not an object`); return; }
+          for (const key of ['portal_url', 'native_ref']) {
+            if (typeof row[key] !== 'string') problems.push(`${prefix}.${key}: missing or not a string`);
+          }
+        });
+      }
+      if (Array.isArray(b.published_awards)) {
+        b.published_awards.forEach((row: unknown, j: number) => {
+          const prefix = `buyers[${i}].published_awards[${j}]`;
+          if (!isRecord(row)) { problems.push(`${prefix}: not an object`); return; }
+          for (const key of ['source_key', 'publication_key', 'supplier_name_raw']) {
+            if (typeof row[key] !== 'string') problems.push(`${prefix}.${key}: missing or not a string`);
+          }
+          if (!publicationKeys.has(String(row.publication_key))) problems.push(`${prefix}.publication_key: no matching award publication`);
+          if (row.award_amount_numeric !== null && (typeof row.award_amount_numeric !== 'number' || !Number.isFinite(row.award_amount_numeric))) {
+            problems.push(`${prefix}.award_amount_numeric: missing or not a finite number or null`);
+          }
+        });
+      }
     });
   }
 

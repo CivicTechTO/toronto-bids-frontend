@@ -139,3 +139,19 @@ describe('validateExport', () => {
     expect(() => validateExport(raw)).toThrow(/1 problem\(s\)/);
   });
 });
+
+
+it('rejects malformed optional buyer arrays instead of silently omitting them', () => {
+  for (const key of ['portal_listings', 'award_publications', 'published_awards']) {
+    const raw = makeValidDoc();
+    raw.buyers = [{ slug: 'buyer', solicitations: [], awards: [], bids: [], [key]: {} }];
+    expect(problemsOf(raw)).toContain(`buyers[0].${key}: not an array`);
+  }
+});
+
+it('refuses published claims whose publication evidence is missing', () => {
+  const raw = makeValidDoc();
+  raw.buyers = [{ slug: 'buyer', solicitations: [], awards: [], bids: [],
+    award_publications: [], published_awards: [{ source_key: 'claim', publication_key: 'missing' }] }];
+  expect(problemsOf(raw)).toContain('buyers[0].published_awards[0].publication_key: no matching award publication');
+});
