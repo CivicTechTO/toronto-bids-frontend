@@ -85,6 +85,9 @@ describe('countsOf', () => {
       suppliers: 2,
       council_items: 1,
       composite_awards: 3,
+      portal_listings: 0,
+      award_publications: 0,
+      published_awards: 0,
     });
   });
 });
@@ -119,4 +122,18 @@ describe('checkShrink', () => {
   it('reports every violated key', () => {
     expect(checkShrink({ bids: 100, awards: 100 }, { bids: 1, awards: 1 })).toHaveLength(2);
   });
+});
+
+
+it('guards portal listings and published awards separately from City headline counts', async () => {
+  const { readFileSync } = await import('node:fs');
+  const doc = JSON.parse(readFileSync('tests/fixtures/bids.fixture.json', 'utf8')) as ExportDoc;
+  const counts = countsOf(doc);
+  expect(counts.portal_listings).toBe(2);
+  expect(counts.published_awards).toBe(2);
+  expect(counts.award_publications).toBe(3);
+  const cityOnly = countsOf({ ...doc, buyers: [] });
+  expect(counts.awards).toBe(cityOnly.awards);
+  expect(counts.solicitations).toBe(cityOnly.solicitations);
+  expect(checkShrink({ portal_listings: 10, published_awards: 10 }, counts)).toHaveLength(2);
 });

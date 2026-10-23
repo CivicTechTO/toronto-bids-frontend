@@ -16,6 +16,10 @@ export function countsOf(doc: ExportDoc): Record<string, number> {
     suppliers: doc.suppliers.length,
     council_items: doc.council_items.length,
     composite_awards: doc.composite_awards.length,
+    // Separate agency record kinds; never add these to City headline counts.
+    portal_listings: doc.buyers.reduce((n, b) => n + (b.portal_listings?.length ?? 0), 0),
+    award_publications: doc.buyers.reduce((n, b) => n + (b.award_publications?.length ?? 0), 0),
+    published_awards: doc.buyers.reduce((n, b) => n + (b.published_awards?.length ?? 0), 0),
   };
 }
 

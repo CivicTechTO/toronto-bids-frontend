@@ -232,6 +232,9 @@ const buyers: Buyer[] = [
   },
 ];
 
+// Include publication-only and portal-only buyers even when the sampled City data has none.
+buyers.push(...JSON.parse(readFileSync('tests/fixtures/publication-buyers.json', 'utf8')) as Buyer[]);
+
 // --- Supplier closure: every supplier_id referenced by any included row ---
 const supplierIds = new Set<number>();
 function addId(id: number | null): void {
@@ -285,6 +288,9 @@ fixture.meta.counts = {
   composite_award: fixture.composite_awards.length,
   sync_run: fixture.meta.sources.length,
   buyer: fixture.buyers.length,
+  portal_listing: sum(fixture.buyers.map((b) => b.portal_listings?.length ?? 0)),
+  award_publication: sum(fixture.buyers.map((b) => b.award_publications?.length ?? 0)),
+  published_award: sum(fixture.buyers.map((b) => b.published_awards?.length ?? 0)),
   agency_solicitation: sum(fixture.buyers.map((b) => b.solicitations.length)),
   agency_award: sum(fixture.buyers.map((b) => b.awards.length)),
   agency_bid: sum(fixture.buyers.map((b) => b.bids.length)),

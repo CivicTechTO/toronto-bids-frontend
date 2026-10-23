@@ -1,0 +1,126 @@
+[
+  {
+    "slug": "library-test",
+    "name": "Library (synthetic test buyer)",
+    "kind": "agency",
+    "partnered": 0,
+    "funding_share": null,
+    "platform": "synthetic",
+    "notes": "Synthetic test data.",
+    "first_seen": "2026-10-22T00:00:00",
+    "last_seen": "2026-10-22T00:00:00",
+    "solicitations": [],
+    "awards": [],
+    "bids": [],
+    "portal_listings": [
+      {
+        "portal_url": "https://example.org/opportunities/1",
+        "native_ref": "REUSED-REF",
+        "title": "Library procurement 1",
+        "status": "Closed",
+        "posted_date": null,
+        "closing_date": "2026-10-21T16:00:00+00:00",
+        "source": "synthetic",
+        "procurement_id": 1,
+        "first_seen": "2026-10-22T00:00:00",
+        "last_seen": "2026-10-22T00:00:00"
+      },
+      {
+        "portal_url": "https://example.org/opportunities/2",
+        "native_ref": "REUSED-REF",
+        "title": "Library procurement 2",
+        "status": "Closed",
+        "posted_date": null,
+        "closing_date": "2026-10-21T16:00:00+00:00",
+        "source": "synthetic",
+        "procurement_id": 2,
+        "first_seen": "2026-10-22T00:00:00",
+        "last_seen": "2026-10-22T00:00:00"
+      }
+    ],
+    "published_awards": [],
+    "award_publications": []
+  },
+  {
+    "slug": "waterfront-test",
+    "name": "Waterfront (synthetic test buyer)",
+    "kind": "agency",
+    "partnered": 1,
+    "funding_share": null,
+    "platform": "synthetic",
+    "notes": "Synthetic test data.",
+    "first_seen": "2026-10-22T00:00:00",
+    "last_seen": "2026-10-22T00:00:00",
+    "solicitations": [],
+    "awards": [],
+    "bids": [],
+    "portal_listings": [],
+    "published_awards": [
+      {
+        "source_key": "claim-1",
+        "publication_key": "publication-1",
+        "supplier_name_raw": "Published supplier 1",
+        "supplier_id": null,
+        "award_amount": "$123,456",
+        "award_amount_numeric": 123456,
+        "title_extracted": "Published contract 1",
+        "extraction_sha256": "extraction",
+        "extractor_version": "test-version",
+        "procurement_id": 101,
+        "first_seen": "2026-10-22T00:00:00",
+        "last_seen": "2026-10-22T00:00:00"
+      },
+      {
+        "source_key": "claim-2",
+        "publication_key": "publication-2",
+        "supplier_name_raw": "Published supplier 2",
+        "supplier_id": null,
+        "award_amount": "Value not disclosed",
+        "award_amount_numeric": null,
+        "title_extracted": "Published contract 2",
+        "extraction_sha256": "extraction",
+        "extractor_version": "test-version",
+        "procurement_id": 102,
+        "first_seen": "2026-10-22T00:00:00",
+        "last_seen": "2026-10-22T00:00:00"
+      }
+    ],
+    "award_publications": [
+      {
+        "source_key": "publication-1",
+        "publication_month": "2026-09",
+        "raw_text": "Original source evidence 1",
+        "source_position": 1,
+        "labels": [],
+        "source_url": "https://example.org/awarded-contracts",
+        "snapshot_sha256": "snapshot",
+        "first_seen": "2026-10-22T00:00:00",
+        "last_seen": "2026-10-22T00:00:00"
+      },
+      {
+        "source_key": "publication-2",
+        "publication_month": "2026-09",
+        "raw_text": "Original source evidence 2",
+        "source_position": 2,
+        "labels": [
+          "Non-competitive"
+        ],
+        "source_url": "https://example.org/awarded-contracts",
+        "snapshot_sha256": "snapshot",
+        "first_seen": "2026-10-22T00:00:00",
+        "last_seen": "2026-10-22T00:00:00"
+      },
+      {
+        "source_key": "publication-3",
+        "publication_month": "2026-09",
+        "raw_text": "Original source evidence 3",
+        "source_position": 3,
+        "labels": [],
+        "source_url": "https://example.org/awarded-contracts",
+        "snapshot_sha256": "snapshot",
+        "first_seen": "2026-10-22T00:00:00",
+        "last_seen": "2026-10-22T00:00:00"
+      }
+    ]
+  }
+]
