@@ -155,3 +155,28 @@ it('refuses published claims whose publication evidence is missing', () => {
     award_publications: [], published_awards: [{ source_key: 'claim', publication_key: 'missing' }] }];
   expect(problemsOf(raw)).toContain('buyers[0].published_awards[0].publication_key: no matching award publication');
 });
+
+it('accepts undisclosed MERX references without discarding URL-identified listings', () => {
+  const raw = makeValidDoc();
+  raw.buyers = [{ slug: 'toronto-transit-commission', solicitations: [], awards: [], bids: [],
+    portal_listings: [
+      { portal_url: 'https://www.merx.com/ttc/solicitations/879704954', native_ref: null, source: 'merx' },
+      { portal_url: 'https://www.merx.com/ttc/solicitations/879704955', native_ref: null, source: 'merx' },
+    ] }];
+  const doc = validateExport(raw);
+  expect(doc.buyers[0].portal_listings).toEqual(raw.buyers[0].portal_listings);
+});
+
+it.each([undefined, 123, {}])('rejects a malformed printed reference: %s', (native_ref) => {
+  const raw = makeValidDoc();
+  raw.buyers = [{ slug: 'buyer', solicitations: [], awards: [], bids: [],
+    portal_listings: [{ portal_url: 'https://www.merx.com/notice', native_ref }] }];
+  expect(problemsOf(raw)).toContain('buyers[0].portal_listings[0].native_ref: missing or not a string or null');
+});
+
+it('requires portal URL identity even when the printed reference is undisclosed', () => {
+  const raw = makeValidDoc();
+  raw.buyers = [{ slug: 'buyer', solicitations: [], awards: [], bids: [],
+    portal_listings: [{ portal_url: null, native_ref: null }] }];
+  expect(problemsOf(raw)).toContain('buyers[0].portal_listings[0].portal_url: missing or not a string');
+});

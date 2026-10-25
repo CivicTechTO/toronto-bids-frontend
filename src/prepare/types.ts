@@ -23,7 +23,7 @@ export interface AgencyAward { native_ref: string; supplier_name_raw: string | n
 export interface AgencyBid { native_ref: string; bidder_name_raw: string; supplier_id: number | null; bid_price: string | null; bid_price_numeric: number | null; report_url: string | null; source: string; first_seen: string; last_seen: string }
 // Public postings and publication claims retain their own identities; a printed
 // reference alone cannot identify a contract or a unique portal posting.
-export interface PortalListing extends AgencySolicitation { portal_url: string; procurement_id: number | null }
+export interface PortalListing extends Omit<AgencySolicitation, 'native_ref'> { native_ref: string | null; portal_url: string; procurement_id: number | null }
 export interface AwardPublication { source_key: string; publication_month: string; raw_text: string; source_position: number; labels: string[]; source_url: string; snapshot_sha256: string; first_seen: string; last_seen: string }
 export interface PublishedAward { source_key: string; publication_key: string; supplier_name_raw: string; supplier_id: number | null; award_amount: string | null; award_amount_numeric: number | null; title_extracted: string | null; extraction_sha256: string; extractor_version: string; procurement_id: number; first_seen: string; last_seen: string }
 export interface Buyer { slug: string; name: string; kind: string; partnered: number; funding_share: number | null; platform: string | null; notes: string | null; first_seen: string; last_seen: string; solicitations: AgencySolicitation[]; awards: AgencyAward[]; bids: AgencyBid[]; portal_listings?: PortalListing[]; award_publications?: AwardPublication[]; published_awards?: PublishedAward[] }

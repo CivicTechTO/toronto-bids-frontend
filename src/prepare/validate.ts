@@ -151,8 +151,9 @@ export function validateExport(raw: unknown): ExportDoc {
         b.portal_listings.forEach((row: unknown, j: number) => {
           const prefix = `buyers[${i}].portal_listings[${j}]`;
           if (!isRecord(row)) { problems.push(`${prefix}: not an object`); return; }
-          for (const key of ['portal_url', 'native_ref']) {
-            if (typeof row[key] !== 'string') problems.push(`${prefix}.${key}: missing or not a string`);
+          if (typeof row.portal_url !== 'string') problems.push(`${prefix}.portal_url: missing or not a string`);
+          if (row.native_ref !== null && typeof row.native_ref !== 'string') {
+            problems.push(`${prefix}.native_ref: missing or not a string or null`);
           }
         });
       }
