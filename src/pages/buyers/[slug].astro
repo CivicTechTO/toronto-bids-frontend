@@ -127,7 +127,7 @@ const publicationsByKey = new Map(publications.map((p) => [p.source_key, p]));
         <tbody>
           {listings.map((s) => (
             <tr>
-              <td>{s.native_ref}</td><td>{s.title ?? '(no title published)'}</td>
+              <td>{s.native_ref ?? '(not published)'}</td><td>{s.title ?? '(no title published)'}</td>
               <td>{s.status ?? '—'}</td><td>{s.posted_date ?? '—'}</td><td>{s.closing_date ?? '—'}</td>
               <td><a href={s.portal_url} rel="noopener">portal</a></td>
             </tr>
