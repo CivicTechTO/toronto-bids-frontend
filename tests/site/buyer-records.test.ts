@@ -32,6 +32,9 @@ describe('exported buyer records reach built pages', () => {
         expect(text).toContain(claim.supplier_name_raw);
         expect(text).toContain(source.publication_month);
         expect(text).toContain(source.raw_text);
+        for (const proof of claim.evidence_json?.sources ?? []) {
+          expect($('#published-awards tbody tr').eq(i).find(`a[href="${proof.url}#page=${proof.page}"]`).length).toBe(1);
+        }
       });
     }
   });
