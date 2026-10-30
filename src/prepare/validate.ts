@@ -165,6 +165,14 @@ export function validateExport(raw: unknown): ExportDoc {
             if (typeof row[key] !== 'string') problems.push(`${prefix}.${key}: missing or not a string`);
           }
           if (!publicationKeys.has(String(row.publication_key))) problems.push(`${prefix}.publication_key: no matching award publication`);
+          if (row.evidence_json != null) {
+            const proof = row.evidence_json;
+            if (!isRecord(proof) || !Array.isArray(proof.sources) || proof.sources.length === 0 ||
+                proof.sources.some((source: unknown) => !isRecord(source) || typeof source.url !== 'string' ||
+                  !source.url.startsWith('https://') || !Number.isInteger(source.page) || Number(source.page) < 1)) {
+              problems.push(`${prefix}.evidence_json: invalid recipient sources`);
+            }
+          }
           if (row.award_amount_numeric !== null && (typeof row.award_amount_numeric !== 'number' || !Number.isFinite(row.award_amount_numeric))) {
             problems.push(`${prefix}.award_amount_numeric: missing or not a finite number or null`);
           }

@@ -180,3 +180,18 @@ it('requires portal URL identity even when the printed reference is undisclosed'
     portal_listings: [{ portal_url: null, native_ref: null }] }];
   expect(problemsOf(raw)).toContain('buyers[0].portal_listings[0].portal_url: missing or not a string');
 });
+
+it('accepts optional recipient proof and rejects malformed source links', () => {
+  const doc = makeValidDoc();
+  const award = { source_key: 'claim', publication_key: 'block', supplier_name_raw: 'WJ Groundwater', award_amount_numeric: 313750 } as any;
+  doc.buyers = [{ slug: 'waterfront-toronto', solicitations: [], awards: [], bids: [],
+    award_publications: [{ source_key: 'block', publication_month: '2023-03', raw_text: 'Published award', source_url: 'https://www.waterfrontoronto.ca/', labels: [] }],
+    published_awards: [award] }];
+  expect(() => validateExport(doc)).not.toThrow();
+  award.evidence_json = { sources: [{ url: 'https://www.waterfrontoronto.ca/committee.pdf', page: 27 }] };
+  expect(() => validateExport(doc)).not.toThrow();
+  for (const proof of [{}, { sources: [] }, { sources: [{ url: 'javascript:alert(1)', page: 27 }] }, { sources: [{ url: 'https://example.com', page: 0 }] }]) {
+    award.evidence_json = proof;
+    expect(problemsOf(doc)).toContain('buyers[0].published_awards[0].evidence_json: invalid recipient sources');
+  }
+});

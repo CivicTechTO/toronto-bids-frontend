@@ -153,6 +153,9 @@ const publicationsByKey = new Map(publications.map((p) => [p.source_key, p]));
                 <td><AmountCell raw={a.award_amount} numeric={a.award_amount_numeric} /></td>
                 <td>
                   <a href={publication.source_url} rel="noopener">source publication</a>
+                  {a.evidence_json?.sources.map((source) => (
+                    <span> · <a href={`${source.url}#page=${source.page}`} rel="noopener">recipient source (page {source.page})</a></span>
+                  ))}
                   <details><summary>Original published text</summary><p>{publication.raw_text}</p>
                     {publication.labels.length > 0 && <p>{publication.labels.join(' · ')}</p>}
                   </details>
