@@ -62,6 +62,13 @@ pickSol('award_summary/staff_report document with a live URL', true, (s) =>
 pickSol('Open with an Ariba posting', true, (s) => s.status === 'Open' && s.ariba_postings.length > 0);
 pickSol('solicitation-nested award_summary bids (#145)', true, (s) => s.bids.length > 0);
 pickSol('award row with a human verdict', false, (s) => s.awards.some((a) => a.award_amount_verdict != null));
+pickSol('scoped percentage discount', false, (s) => s.bid_scopes?.some((scope) => scope.responses.some((r) => r.prices.some((p) => p.value_kind === 'discount_percentage'))) ?? false);
+pickSol('scoped explicit No Bid and alternatives', false, (s) => (s.bid_scope_summary?.explicit_no_bid_cells ?? 0) > 0);
+pickSol('unscoped outcome', false, (s) => (s.bid_scope_summary?.unscoped_outcomes ?? 0) > 0);
+pickSol('scoped unresolved party', false, (s) => (s.bid_scope_summary?.unresolved_party_cells ?? 0) > 0);
+pickSol('scope outcome and conditional pricing', false, (s) => s.bid_scopes?.some((scope) => scope.scope_status !== null) ?? false);
+pickSol('regional scoped prices', false, (s) => s.bid_scopes?.some((scope) => scope.responses.some((r) => r.prices.some((p) => p.hst_basis === null))) ?? false);
+
 
 // --- Council items ---
 // Bridged item with mixed hst_basis: among qualifying items, take the one whose

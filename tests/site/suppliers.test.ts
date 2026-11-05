@@ -44,7 +44,7 @@ const withVariants = fx.suppliers.find((s) => s.variants.length > 0);
 const wonBidder = fx.suppliers.find((s) =>
   fx.solicitations.some(
     (sol) =>
-      sol.bids.some((b) => b.supplier_id === s.supplier_id) &&
+      !sol.bid_scopes?.length && sol.bids.some((b) => b.supplier_id === s.supplier_id) &&
       dedupeAwards(sol.awards).some((a) => a.supplier_id === s.supplier_id),
   ),
 );
@@ -68,6 +68,7 @@ function bidDocFor(entry: {
 const lostBidder = [...p.rollupsBySlug.values()].find((rollup) => {
   const awardDocs = new Set(rollup.awards.map((a) => a.document_number));
   return rollup.bids.some((entry) => {
+    if (entry.scoped) return false;
     const doc = bidDocFor(entry);
     if (doc === null || awardDocs.has(doc)) return false;
     return (p.dedupedAwardsByDoc.get(doc) ?? []).length > 0;

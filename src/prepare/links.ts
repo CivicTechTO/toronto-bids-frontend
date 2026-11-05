@@ -107,16 +107,20 @@ export function buildSupplierRollups(
     byId.get(nc.supplier_id)?.noncompetitive.push(nc);
   }
 
-  const addBid = (b: BidRow): void => {
+  const addBid = (b: BidRow, containingDocument?: string, scoped = false): void => {
     if (b.supplier_id === null) return;
     byId.get(b.supplier_id)?.bids.push({
       reference: b.reference,
-      document_number: b.document_number,
+      document_number: b.document_number ?? containingDocument ?? null,
       bid: b,
+      ...(scoped ? { scoped: true } : {}),
     });
   };
   for (const item of doc.council_items) for (const b of item.bids) addBid(b);
-  for (const s of doc.solicitations) for (const b of s.bids) addBid(b);
+  for (const s of doc.solicitations) for (const b of s.bids) {
+    const scoped = s.bid_scopes?.some((scope) => scope.reference === b.reference && scope.source === b.source) ?? false;
+    addBid(b, s.document_number, scoped);
+  }
   for (const b of doc.unlinked_bids) addBid(b);
 
   for (const f of doc.suspended_firms) {

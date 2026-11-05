@@ -1,0 +1,56 @@
+---
+import { href } from '../lib/url';
+import type { BidScope, BidScopeSummary, ScopedPrice, ScopedResponse } from '../prepare/types';
+interface Props { scopes: BidScope[]; summary: BidScopeSummary; participantSlugs?: Map<string, string> }
+const { scopes, summary, participantSlugs } = Astro.props;
+const slug = (r: ScopedResponse) => r.participating_firm ? participantSlugs?.get(r.participating_firm) : undefined;
+const kind = (r: ScopedResponse) => ({ submitted: 'Submitted response', no_bid: 'No Bid', unscoped_outcome: 'Outcome; scope not stated', unresolved: 'Unresolved source entry' }[r.response_kind]);
+const taxLabels: Record<string, string> = { including: 'Including HST', excluding: 'Excluding HST', net_of_HST: 'Net of HST', net_of_all_applicable_taxes: 'Net of all applicable taxes' };
+const tax = (p: ScopedPrice) => taxLabels[p.hst_basis ?? ''] ?? 'Tax basis not stated';
+---
+<div class="scoped-bids">
+  <p class="scope-counts">
+    {summary.participating_firms} identified participating firms;
+    {summary.response_observations} published response cells across the scopes below.
+    Each identified firm is counted once here. Scoped responses and alternatives remain separate.
+  </p>
+  {summary.explicit_no_bid_cells > 0 && <p>{summary.explicit_no_bid_cells} explicit “No Bid” cells record nonparticipation in those scopes.</p>}
+  {summary.unresolved_party_cells > 0 && <p class="scope-uncertainty">{summary.unresolved_party_cells} source party names remain unresolved and are excluded from the identified firm count. Their source entries are retained below.</p>}
+  {scopes.map((scope) => (
+    <details class="bid-scope" open={scopes.length === 1}>
+      <summary>{scope.scope_label ?? 'Scope not separately stated'} <span class="raw-note">— {scope.reference}</span></summary>
+      {scope.scope_status && <p class="scope-outcome">Scope outcome: {scope.scope_status}. Published responses are retained.</p>}
+      <div class="scope-table-wrap">
+        <table class="scoped-responses">
+          <thead><tr><th>Source party name</th><th>Alternative</th><th>Response / outcome</th><th>Quoted values and basis</th></tr></thead>
+          <tbody>{scope.responses.map((r) => (
+            <tr class={r.response_kind === 'no_bid' ? 'scope-no-bid' : undefined}>
+              <td>{slug(r) ? <a href={href(`/suppliers/${slug(r)}/`)}>{r.bidder_name_raw}</a> : r.bidder_name_raw}{r.identity_status === 'unresolved' && <small class="scope-uncertainty">Party identity unresolved</small>}</td>
+              <td>{r.alternative_label ?? '—'}</td>
+              <td>{kind(r)}{r.status && <small>{r.status}</small>}</td>
+              <td>{r.prices.length > 0 ? r.prices.map((p) => (
+                <div class="scoped-price">
+                  <span class="amount-raw">{p.value_raw}</span>
+                  {p.value_kind === 'discount_percentage' && <small>Percentage discount off MSRP</small>}
+                  <small>{p.price_header}</small>
+                  <small>{tax(p)}</small>
+                  {p.price_basis && p.price_basis !== p.price_header && <small class="scope-price-basis">{p.price_basis}</small>}
+                </div>
+              )) : r.response_kind === 'no_bid' ? '—' : 'No value published'}</td>
+            </tr>
+          ))}</tbody>
+        </table>
+      </div>
+    </details>
+  ))}
+  <p>Values and outcomes apply to the stated scope or alternative. Compare only offers with matching scopes, units, tax bases and qualifications.</p>
+</div>
+<style>
+  .bid-scope { margin: 1rem 0; }
+  summary { cursor: pointer; font-weight: 600; }
+  .scope-table-wrap { overflow-x: auto; }
+  small { display: block; margin-top: .25rem; font-size: .85em; }
+  .scoped-price + .scoped-price { margin-top: .75rem; }
+  .scope-uncertainty { font-weight: 600; }
+  .scope-no-bid { opacity: .8; }
+</style>

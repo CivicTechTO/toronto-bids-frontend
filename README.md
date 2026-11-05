@@ -22,6 +22,17 @@ GitHub Pages. Roughly 24,000 pages are generated from one nightly JSON export.
 5. `.github/workflows/deploy.yml` publishes `dist/` to GitHub Pages. A failed build
    leaves the last good site up; the archive never silently shrinks.
 
+## Scoped bid responses
+
+When an export includes `bid_scopes` and `bid_scope_summary`, solicitation pages show
+source scopes, alternatives, literal response cells and quoted values separately
+from the identified firm count. Explicit No Bid cells, unresolved party names,
+unknown tax bases, percentage discounts and scoped outcomes remain visible.
+Supplier participation links back to these responses without inferring a global
+win or loss. The fields are optional; older exports keep the existing bid view.
+
+Deploy this reader before publishing the companion backend's scoped recovery.
+
 ## Local development
 
 Requires Node >= 24 (scripts are plain `.ts`, run directly via type stripping) and npm.
