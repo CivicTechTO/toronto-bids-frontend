@@ -398,3 +398,17 @@ describe('buildSupplierRollups', () => {
     expect(merged.totals.cityAwards).toEqual({ total: 3000000, counted: 2, skipped: 0 });
   });
 });
+
+it('keeps a scoped participation linked to its containing proven document without changing the raw bid', () => {
+  const raw = bid({ document_number: null, bid_price: null, bid_price_numeric: null });
+  const scope = { id: 1, reference: raw.reference!, source: raw.source, scope_key: 'part-a', scope_kind: 'part' as const, scope_label: 'Part A', scope_status: null, responses: [] };
+  const doc = makeDoc({ suppliers: [supplier({})], solicitations: [sol({ bids: [raw], bid_scopes: [scope] })] });
+  const rollup = buildSupplierRollups(doc, new Map([[41, 'acme']]), new Map()).get('acme')!;
+  expect(rollup.bids).toHaveLength(1);
+  expect(rollup.bids[0]).toMatchObject({ document_number: '3524228095', scoped: true });
+  expect(raw.document_number).toBeNull();
+  // Another source on the same reference is not the scoped participation.
+  doc.solicitations[0].bids.push(bid({ source: 'independent', document_number: null }));
+  const other = buildSupplierRollups(doc, new Map([[41, 'acme']]), new Map()).get('acme')!.bids[1];
+  expect(other.scoped).toBeUndefined();
+});

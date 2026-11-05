@@ -3,6 +3,7 @@
 import Base from '../../layouts/Base.astro';
 import AmountCell from '../../components/AmountCell.astro';
 import BidsTable from '../../components/BidsTable.astro';
+import ScopedBids from '../../components/ScopedBids.astro';
 import DocumentsList from '../../components/DocumentsList.astro';
 import ProvenanceBadge from '../../components/ProvenanceBadge.astro';
 import { formatCAD, sumAwardNumeric } from '../../prepare/amounts';
@@ -30,9 +31,14 @@ const refs = p.bridge.docToRefs.get(sol.document_number) ?? [];
 const bridgedBids = refs.flatMap((ref) =>
   (p.councilByRef.get(ref)?.bids ?? []).filter((b) => b.document_number === sol.document_number),
 );
-// Direct bids are reference-null award_summary rows (backend issue #145); bridged bids
-// carry a council reference — the two sets are disjoint by construction.
+// The exporter keeps solicitation-nested and council-nested observations disjoint.
 const allBids = [...sol.bids, ...bridgedBids];
+const scopes = sol.bid_scopes ?? [];
+const participantSlugs = new Map(allBids.flatMap((b) => {
+  const slug = b.supplier_id === null ? undefined : p.supplierSlugById.get(b.supplier_id);
+  return slug ? [[b.bidder_name_raw, slug] as const] : [];
+}));
+const otherBids = allBids.filter((b) => !scopes.some((s) => s.reference === b.reference && s.source === b.source));
 const awardNames = awards.map((a) => a.supplier_name_raw).filter((n): n is string => n !== null);
 // BidsTable renders its Result column only when winners is a non-empty array —
 // pass undefined when there is no named award record so no winner claim is made.
@@ -150,8 +156,13 @@ const staleOpen = sol.status === 'Open' && deadlinePast;
   </section>
 
   <section>
-    <h2>Bids ({allBids.length})</h2>
-    {allBids.length === 0 ? (
+    <h2>{scopes.length > 0 ? 'Bids by scope' : `Bids (${allBids.length})`}</h2>
+    {scopes.length > 0 && sol.bid_scope_summary ? (
+      <>
+        <ScopedBids scopes={scopes} summary={sol.bid_scope_summary} participantSlugs={participantSlugs} />
+        {otherBids.length > 0 && <><h3>Other published bid observations</h3><BidsTable bids={otherBids} winners={winners} supplierSlugById={p.supplierSlugById} /></>}
+      </>
+    ) : allBids.length === 0 ? (
       <p>
         No bid record is captured for this solicitation. The City doesn't publish a bidder
         list for most awards, so this is <strong>not</strong> evidence the award was

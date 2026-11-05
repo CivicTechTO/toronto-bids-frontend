@@ -49,7 +49,8 @@ function bidDoc(entry: RollupBid): string | null {
 }
 
 /** Won/Lost is claimed only when the resolved document has a deduped award record. */
-function bidResult(entry: RollupBid): 'Won' | 'Lost' | '—' {
+function bidResult(entry: RollupBid): 'Won' | 'Lost' | '—' | 'Scoped responses' {
+  if (entry.scoped) return 'Scoped responses';
   const doc = bidDoc(entry);
   if (doc === null) return '—';
   if (awardDocs.has(doc)) return 'Won';
@@ -58,6 +59,7 @@ function bidResult(entry: RollupBid): 'Won' | 'Lost' | '—' {
 
 /** A single-bidder appearance: the containing bid table has exactly one bid. */
 function isSoleBidder(entry: RollupBid): boolean {
+  if (entry.scoped) return false;
   if (entry.reference !== null) {
     return p.councilByRef.get(entry.reference)?.bids.length === 1;
   }
@@ -235,7 +237,9 @@ const soleBids = rollup.bids.filter(isSoleBidder);
             {rollup.bids.map((entry) => (
               <tr>
                 <td>
-                  {entry.reference && p.councilByRef.has(entry.reference) ? (
+                  {entry.scoped && entry.document_number && p.solByDoc.has(entry.document_number) ? (
+                    <a href={href(`/solicitations/${entry.document_number}/`)}>View scoped responses</a>
+                  ) : entry.reference && p.councilByRef.has(entry.reference) ? (
                     <a href={href(`/council/${entry.reference}/`)}>
                       Council {entry.reference}
                     </a>
@@ -273,7 +277,7 @@ const soleBids = rollup.bids.filter(isSoleBidder);
         </table>
         <p>
           Won/Lost is determined from the linked record's deduped awards; "—"
-          means no award record exists to determine an outcome.
+          means no award record exists to determine an outcome. Scoped participation links to the source responses without claiming a procurement-wide win or loss.
         </p>
       </>
     ) : (

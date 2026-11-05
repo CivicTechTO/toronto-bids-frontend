@@ -1,15 +1,15 @@
 {
   "meta": {
-    "generated_at": "2026-09-01T05:30:42.435784+00:00",
+    "generated_at": "2026-11-05T22:23:40.608834+00:00",
     "counts": {
-      "solicitation": 7,
-      "award": 12,
+      "solicitation": 13,
+      "award": 36,
       "noncompetitive": 1,
       "ariba_posting": 3,
       "suspended_firm": 3,
-      "supplier": 23,
+      "supplier": 53,
       "capital_project": 3,
-      "bid": 12,
+      "bid": 37,
       "council_item": 2,
       "background_pdf": 2,
       "composite_award": 5,
@@ -677,6 +677,4366 @@
         }
       ],
       "bids": []
+    },
+    {
+      "document_number": "0902130156",
+      "status": "Awarded",
+      "rfx_type": "RFQ",
+      "noip_type": null,
+      "form_type": "Awarded Contracts",
+      "title": "Award of Request for Quotation No. 0902-13-0156 to Nunu Educational Products (Inc.) for the Supply, Delivery, Assembly, Disposal of Packaging and Warranty of Toys and Creative Supplies for the City of Toronto's Children's Services Division, As and When Required",
+      "description": null,
+      "issue_date": "2013-11-14",
+      "submission_deadline": "2013-11-29",
+      "category": "Goods and Services",
+      "division": "Children?s Services",
+      "buyer_name": "Justin Diptee",
+      "buyer_email": "supplychain@toronto.ca",
+      "buyer_phone": "416-397-4141",
+      "wards": null,
+      "ariba_posting_link": null,
+      "source": "odata",
+      "first_seen": "2026-07-16 02:08:20",
+      "last_seen": "2026-11-05 10:42:36",
+      "title_source": "council_pre_ariba",
+      "procurement_id": 449,
+      "publisher_identity_json": "{\"Awarded_Suppliers\":[{\"Award_Amount\":\"647593.57\",\"Successful_Bidder\":\"Nunu Educational Products Inc.\"}],\"Closing_Date\":\"2013-11-29\",\"Issue_Date\":\"2013-11-14\",\"Solicitation_Award_Details\":\"\",\"Solicitation_Document_Number\":\"0902130156\",\"Solicitation_Document_Type\":\"RFQ\",\"id\":\"5bda7970-3a4e-4a61-8179-9512dfc0877a\"}",
+      "awards": [
+        {
+          "supplier_name_raw": "Nunu Educational Products Inc.",
+          "supplier_id": 57676,
+          "award_amount": "647593.57",
+          "award_amount_numeric": 647593.57,
+          "award_date": "2014-02-10",
+          "source": "odata",
+          "first_seen": "2026-07-16 02:08:20",
+          "last_seen": "2026-11-05 10:42:16",
+          "award_amount_labelled": null,
+          "award_amount_verdict": null,
+          "procurement_id": 449
+        },
+        {
+          "supplier_name_raw": "Nunu Educational Products Inc.",
+          "supplier_id": 57676,
+          "award_amount": "647593.57",
+          "award_amount_numeric": 647593.57,
+          "award_date": "2014-02-10",
+          "source": "ckan_awarded",
+          "first_seen": "2026-07-16 02:08:35",
+          "last_seen": "2026-11-05 10:42:36",
+          "award_amount_labelled": null,
+          "award_amount_verdict": null,
+          "procurement_id": 449
+        }
+      ],
+      "ariba_postings": [],
+      "documents": [
+        {
+          "source": "staff_report",
+          "name": "backgroundfile-66394.pdf",
+          "path": "backgroundfile-66394.pdf",
+          "type": "pdf",
+          "size_bytes": null,
+          "url": "https://www.toronto.ca/legdocs/mmis/2014/bd/bgrd/backgroundfile-66394.pdf"
+        }
+      ],
+      "bids": [
+        {
+          "reference": "2014.BD163.6",
+          "bidder_name_raw": "Avron",
+          "supplier_id": 57686,
+          "bid_price": null,
+          "bid_price_numeric": null,
+          "hst_basis": null,
+          "price_header": null,
+          "source": "bd_report",
+          "first_seen": "2026-11-05 22:23:25",
+          "last_seen": "2026-11-05 22:23:41",
+          "status": null,
+          "procurement_id": 449
+        },
+        {
+          "reference": "2014.BD163.6",
+          "bidder_name_raw": "Five Star Enterprise of Canada",
+          "supplier_id": 57687,
+          "bid_price": null,
+          "bid_price_numeric": null,
+          "hst_basis": null,
+          "price_header": null,
+          "source": "bd_report",
+          "first_seen": "2026-11-05 22:23:25",
+          "last_seen": "2026-11-05 22:23:41",
+          "status": null,
+          "procurement_id": 449
+        },
+        {
+          "reference": "2014.BD163.6",
+          "bidder_name_raw": "Nunu Educational Products (Inc)",
+          "supplier_id": 57676,
+          "bid_price": null,
+          "bid_price_numeric": null,
+          "hst_basis": null,
+          "price_header": null,
+          "source": "bd_report",
+          "first_seen": "2026-11-05 22:23:25",
+          "last_seen": "2026-11-05 22:23:41",
+          "status": null,
+          "procurement_id": 449
+        },
+        {
+          "reference": "2014.BD163.6",
+          "bidder_name_raw": "Scholars Choice",
+          "supplier_id": 57688,
+          "bid_price": null,
+          "bid_price_numeric": null,
+          "hst_basis": null,
+          "price_header": null,
+          "source": "bd_report",
+          "first_seen": "2026-11-05 22:23:25",
+          "last_seen": "2026-11-05 22:23:41",
+          "status": null,
+          "procurement_id": 449
+        },
+        {
+          "reference": "2014.BD163.6",
+          "bidder_name_raw": "Sonsuh Educational Supplies Inc.",
+          "supplier_id": 57689,
+          "bid_price": null,
+          "bid_price_numeric": null,
+          "hst_basis": null,
+          "price_header": null,
+          "source": "bd_report",
+          "first_seen": "2026-11-05 22:23:25",
+          "last_seen": "2026-11-05 22:23:41",
+          "status": null,
+          "procurement_id": 449
+        },
+        {
+          "reference": "2014.BD163.6",
+          "bidder_name_raw": "Spectrum Educational Supplies",
+          "supplier_id": 57690,
+          "bid_price": null,
+          "bid_price_numeric": null,
+          "hst_basis": null,
+          "price_header": null,
+          "source": "bd_report",
+          "first_seen": "2026-11-05 22:23:25",
+          "last_seen": "2026-11-05 22:23:41",
+          "status": null,
+          "procurement_id": 449
+        },
+        {
+          "reference": "2014.BD163.6",
+          "bidder_name_raw": "TFH Canada",
+          "supplier_id": 57691,
+          "bid_price": null,
+          "bid_price_numeric": null,
+          "hst_basis": null,
+          "price_header": null,
+          "source": "bd_report",
+          "first_seen": "2026-11-05 22:23:25",
+          "last_seen": "2026-11-05 22:23:41",
+          "status": null,
+          "procurement_id": 449
+        }
+      ],
+      "bid_scopes": [
+        {
+          "id": 1,
+          "reference": "2014.BD163.6",
+          "document_number": "0902130156",
+          "source": "bd_report",
+          "scope_key": "category 1 (toys)",
+          "scope_kind": "category",
+          "scope_label": "Category 1 (Toys)",
+          "scope_status": null,
+          "proof_sha256": "9c1bc10cfd6343ba27d3e9666ba53931a193b079a4291bd03cc1d0cd9c1bc54c",
+          "procurement_id": 449,
+          "first_seen": "2026-11-05 22:11:29",
+          "last_seen": "2026-11-05 22:11:44",
+          "responses": [
+            {
+              "id": 1,
+              "scope_id": 1,
+              "response_key": "cell-001",
+              "bid_id": 384592,
+              "bidder_name_raw": "Nunu Educational Products (Inc)",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$ 339,937.14",
+              "first_seen": "2026-11-05 22:11:29",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Nunu Educational Products (Inc)",
+              "prices": [
+                {
+                  "id": 1,
+                  "response_id": 1,
+                  "price_key": "value-1",
+                  "value_raw": "$ 339,937.14",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 339937.14,
+                  "price_header": "Bid Price (incl. HST and 30% miscellaneous)",
+                  "price_basis": "Bid Price (incl. HST and 30% miscellaneous)",
+                  "hst_basis": "including",
+                  "quotation": "$ 339,937.14",
+                  "first_seen": "2026-11-05 22:11:29",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 2,
+              "scope_id": 1,
+              "response_key": "cell-002",
+              "bid_id": 384593,
+              "bidder_name_raw": "Spectrum Educational Supplies",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": "Non Compliant",
+              "row_quotation": "$369,792.80",
+              "first_seen": "2026-11-05 22:11:29",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Spectrum Educational Supplies",
+              "prices": [
+                {
+                  "id": 2,
+                  "response_id": 2,
+                  "price_key": "value-1",
+                  "value_raw": "$369,792.80",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 369792.8,
+                  "price_header": "Bid Price (incl. HST and 30% miscellaneous)",
+                  "price_basis": "Bid Price (incl. HST and 30% miscellaneous)",
+                  "hst_basis": "including",
+                  "quotation": "$369,792.80",
+                  "first_seen": "2026-11-05 22:11:29",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 3,
+              "scope_id": 1,
+              "response_key": "cell-003",
+              "bid_id": 384594,
+              "bidder_name_raw": "Scholars Choice",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$ 680,882.86",
+              "first_seen": "2026-11-05 22:11:29",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Scholars Choice",
+              "prices": [
+                {
+                  "id": 3,
+                  "response_id": 3,
+                  "price_key": "value-1",
+                  "value_raw": "$ 680,882.86",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 680882.86,
+                  "price_header": "Bid Price (incl. HST and 30% miscellaneous)",
+                  "price_basis": "Bid Price (incl. HST and 30% miscellaneous)",
+                  "hst_basis": "including",
+                  "quotation": "$ 680,882.86",
+                  "first_seen": "2026-11-05 22:11:29",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 4,
+              "scope_id": 1,
+              "response_key": "cell-004",
+              "bid_id": 384595,
+              "bidder_name_raw": "Avron",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$ 684,071.43",
+              "first_seen": "2026-11-05 22:11:29",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Avron",
+              "prices": [
+                {
+                  "id": 4,
+                  "response_id": 4,
+                  "price_key": "value-1",
+                  "value_raw": "$ 684,071.43",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 684071.43,
+                  "price_header": "Bid Price (incl. HST and 30% miscellaneous)",
+                  "price_basis": "Bid Price (incl. HST and 30% miscellaneous)",
+                  "hst_basis": "including",
+                  "quotation": "$ 684,071.43",
+                  "first_seen": "2026-11-05 22:11:29",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 5,
+              "scope_id": 1,
+              "response_key": "cell-005",
+              "bid_id": 384596,
+              "bidder_name_raw": "Sonsuh Educational Supplies Inc.",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$ 733,088.57",
+              "first_seen": "2026-11-05 22:11:29",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Sonsuh Educational Supplies Inc.",
+              "prices": [
+                {
+                  "id": 5,
+                  "response_id": 5,
+                  "price_key": "value-1",
+                  "value_raw": "$ 733,088.57",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 733088.57,
+                  "price_header": "Bid Price (incl. HST and 30% miscellaneous)",
+                  "price_basis": "Bid Price (incl. HST and 30% miscellaneous)",
+                  "hst_basis": "including",
+                  "quotation": "$ 733,088.57",
+                  "first_seen": "2026-11-05 22:11:29",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 6,
+              "scope_id": 1,
+              "response_key": "cell-006",
+              "bid_id": 384597,
+              "bidder_name_raw": "Five Star Enterprise of Canada",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$ 897,714.29",
+              "first_seen": "2026-11-05 22:11:29",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Five Star Enterprise of Canada",
+              "prices": [
+                {
+                  "id": 6,
+                  "response_id": 6,
+                  "price_key": "value-1",
+                  "value_raw": "$ 897,714.29",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 897714.29,
+                  "price_header": "Bid Price (incl. HST and 30% miscellaneous)",
+                  "price_basis": "Bid Price (incl. HST and 30% miscellaneous)",
+                  "hst_basis": "including",
+                  "quotation": "$ 897,714.29",
+                  "first_seen": "2026-11-05 22:11:29",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 7,
+              "scope_id": 1,
+              "response_key": "cell-007",
+              "bid_id": 384598,
+              "bidder_name_raw": "TFH Canada",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$ 927,028.57",
+              "first_seen": "2026-11-05 22:11:29",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "TFH Canada",
+              "prices": [
+                {
+                  "id": 7,
+                  "response_id": 7,
+                  "price_key": "value-1",
+                  "value_raw": "$ 927,028.57",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 927028.57,
+                  "price_header": "Bid Price (incl. HST and 30% miscellaneous)",
+                  "price_basis": "Bid Price (incl. HST and 30% miscellaneous)",
+                  "hst_basis": "including",
+                  "quotation": "$ 927,028.57",
+                  "first_seen": "2026-11-05 22:11:29",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "reference": "2014.BD163.6",
+          "document_number": "0902130156",
+          "source": "bd_report",
+          "scope_key": "category 2 (creative supplies)",
+          "scope_kind": "category",
+          "scope_label": "Category 2 (Creative Supplies)",
+          "scope_status": null,
+          "proof_sha256": "9c1bc10cfd6343ba27d3e9666ba53931a193b079a4291bd03cc1d0cd9c1bc54c",
+          "procurement_id": 449,
+          "first_seen": "2026-11-05 22:11:29",
+          "last_seen": "2026-11-05 22:11:44",
+          "responses": [
+            {
+              "id": 8,
+              "scope_id": 2,
+              "response_key": "cell-008",
+              "bid_id": 384593,
+              "bidder_name_raw": "Spectrum Educational Supplies",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": "Non-Compliant",
+              "row_quotation": "$ 243,950.07",
+              "first_seen": "2026-11-05 22:11:29",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Spectrum Educational Supplies",
+              "prices": [
+                {
+                  "id": 8,
+                  "response_id": 8,
+                  "price_key": "value-1",
+                  "value_raw": "$ 243,950.07",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 243950.07,
+                  "price_header": "Bid Price (incl. HST and 30% miscellaneous)",
+                  "price_basis": "Bid Price (incl. HST and 30% miscellaneous)",
+                  "hst_basis": "including",
+                  "quotation": "$ 243,950.07",
+                  "first_seen": "2026-11-05 22:11:29",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 9,
+              "scope_id": 2,
+              "response_key": "cell-009",
+              "bid_id": 384592,
+              "bidder_name_raw": "Nunu Educational Products (Inc)",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$ 307,656.43",
+              "first_seen": "2026-11-05 22:11:29",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Nunu Educational Products (Inc)",
+              "prices": [
+                {
+                  "id": 9,
+                  "response_id": 9,
+                  "price_key": "value-1",
+                  "value_raw": "$ 307,656.43",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 307656.43,
+                  "price_header": "Bid Price (incl. HST and 30% miscellaneous)",
+                  "price_basis": "Bid Price (incl. HST and 30% miscellaneous)",
+                  "hst_basis": "including",
+                  "quotation": "$ 307,656.43",
+                  "first_seen": "2026-11-05 22:11:29",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 10,
+              "scope_id": 2,
+              "response_key": "cell-010",
+              "bid_id": 384595,
+              "bidder_name_raw": "Avron",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$ 333,965.71",
+              "first_seen": "2026-11-05 22:11:29",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Avron",
+              "prices": [
+                {
+                  "id": 10,
+                  "response_id": 10,
+                  "price_key": "value-1",
+                  "value_raw": "$ 333,965.71",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 333965.71,
+                  "price_header": "Bid Price (incl. HST and 30% miscellaneous)",
+                  "price_basis": "Bid Price (incl. HST and 30% miscellaneous)",
+                  "hst_basis": "including",
+                  "quotation": "$ 333,965.71",
+                  "first_seen": "2026-11-05 22:11:29",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 11,
+              "scope_id": 2,
+              "response_key": "cell-011",
+              "bid_id": null,
+              "bidder_name_raw": "Five Start Enterprise of Canada",
+              "identity_status": "unresolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$ 429,532.14",
+              "first_seen": "2026-11-05 22:11:29",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": null,
+              "prices": [
+                {
+                  "id": 11,
+                  "response_id": 11,
+                  "price_key": "value-1",
+                  "value_raw": "$ 429,532.14",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 429532.14,
+                  "price_header": "Bid Price (incl. HST and 30% miscellaneous)",
+                  "price_basis": "Bid Price (incl. HST and 30% miscellaneous)",
+                  "hst_basis": "including",
+                  "quotation": "$ 429,532.14",
+                  "first_seen": "2026-11-05 22:11:29",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 12,
+              "scope_id": 2,
+              "response_key": "cell-012",
+              "bid_id": 384594,
+              "bidder_name_raw": "Scholars Choice",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$ 446,302.86",
+              "first_seen": "2026-11-05 22:11:29",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Scholars Choice",
+              "prices": [
+                {
+                  "id": 12,
+                  "response_id": 12,
+                  "price_key": "value-1",
+                  "value_raw": "$ 446,302.86",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 446302.86,
+                  "price_header": "Bid Price (incl. HST and 30% miscellaneous)",
+                  "price_basis": "Bid Price (incl. HST and 30% miscellaneous)",
+                  "hst_basis": "including",
+                  "quotation": "$ 446,302.86",
+                  "first_seen": "2026-11-05 22:11:29",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 13,
+              "scope_id": 2,
+              "response_key": "cell-013",
+              "bid_id": 384596,
+              "bidder_name_raw": "Sonsuh Educational Supplies Inc.",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$ 484,784.29",
+              "first_seen": "2026-11-05 22:11:29",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Sonsuh Educational Supplies Inc.",
+              "prices": [
+                {
+                  "id": 13,
+                  "response_id": 13,
+                  "price_key": "value-1",
+                  "value_raw": "$ 484,784.29",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 484784.29,
+                  "price_header": "Bid Price (incl. HST and 30% miscellaneous)",
+                  "price_basis": "Bid Price (incl. HST and 30% miscellaneous)",
+                  "hst_basis": "including",
+                  "quotation": "$ 484,784.29",
+                  "first_seen": "2026-11-05 22:11:29",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "bid_scope_summary": {
+        "participating_firms": 7,
+        "response_observations": 13,
+        "submitted_response_cells": 13,
+        "resolved_scoped_submissions": 12,
+        "explicit_no_bid_cells": 0,
+        "unscoped_outcomes": 0,
+        "unresolved_party_cells": 1,
+        "price_variants": 13
+      }
+    },
+    {
+      "document_number": "1002133108",
+      "status": "Awarded",
+      "rfx_type": "RFQ",
+      "noip_type": null,
+      "form_type": "Awarded Contracts",
+      "title": "Award of Request for Proposal No. 1002-13-3108 to SCI Interiors Ltd., for the non-exclusive supply, delivery, installation and warranty of various type chairs and tables",
+      "description": null,
+      "issue_date": "2013-07-04",
+      "submission_deadline": "2013-07-22",
+      "category": "Goods and Services",
+      "division": "Long-Term Care Homes & Services",
+      "buyer_name": "Justin Diptee",
+      "buyer_email": "supplychain@toronto.ca",
+      "buyer_phone": "416-397-4141",
+      "wards": null,
+      "ariba_posting_link": null,
+      "source": "odata",
+      "first_seen": "2026-07-16 02:08:20",
+      "last_seen": "2026-11-05 10:42:36",
+      "title_source": "council_pre_ariba",
+      "procurement_id": 339,
+      "publisher_identity_json": "{\"Awarded_Suppliers\":[{\"Award_Amount\":\"165002.75\",\"Successful_Bidder\":\"S C I Interiors Ltd\"},{\"Award_Amount\":\"17073.00\",\"Successful_Bidder\":\"Specialty Furniture\"},{\"Award_Amount\":\"3259.50\",\"Successful_Bidder\":\"Amovo Workplace Environment\"}],\"Closing_Date\":\"2013-07-22\",\"Issue_Date\":\"2013-07-04\",\"Solicitation_Award_Details\":\"\",\"Solicitation_Document_Number\":\"1002133108\",\"Solicitation_Document_Type\":\"RFQ\",\"id\":\"f8babe51-d7ae-42c9-bccf-b922073a0b63\"}",
+      "awards": [
+        {
+          "supplier_name_raw": "Specialty Furniture",
+          "supplier_id": 57677,
+          "award_amount": "17073.00",
+          "award_amount_numeric": 17073.0,
+          "award_date": "2013-08-30",
+          "source": "odata",
+          "first_seen": "2026-07-16 02:08:20",
+          "last_seen": "2026-11-05 10:42:16",
+          "award_amount_labelled": null,
+          "award_amount_verdict": null,
+          "procurement_id": 339
+        },
+        {
+          "supplier_name_raw": "Amovo Workplace Environment",
+          "supplier_id": 57678,
+          "award_amount": "3259.50",
+          "award_amount_numeric": 3259.5,
+          "award_date": "2013-08-30",
+          "source": "odata",
+          "first_seen": "2026-07-16 02:08:20",
+          "last_seen": "2026-11-05 10:42:16",
+          "award_amount_labelled": null,
+          "award_amount_verdict": null,
+          "procurement_id": 339
+        },
+        {
+          "supplier_name_raw": "S C I Interiors Ltd",
+          "supplier_id": 57679,
+          "award_amount": "165002.75",
+          "award_amount_numeric": 165002.75,
+          "award_date": "2013-08-30",
+          "source": "odata",
+          "first_seen": "2026-07-16 02:08:20",
+          "last_seen": "2026-11-05 10:42:16",
+          "award_amount_labelled": null,
+          "award_amount_verdict": null,
+          "procurement_id": 339
+        },
+        {
+          "supplier_name_raw": "Specialty Furniture",
+          "supplier_id": 57677,
+          "award_amount": "17073.00",
+          "award_amount_numeric": 17073.0,
+          "award_date": "2013-08-30",
+          "source": "ckan_awarded",
+          "first_seen": "2026-07-16 02:08:35",
+          "last_seen": "2026-11-05 10:42:36",
+          "award_amount_labelled": null,
+          "award_amount_verdict": null,
+          "procurement_id": 339
+        },
+        {
+          "supplier_name_raw": "Amovo Workplace Environment",
+          "supplier_id": 57678,
+          "award_amount": "3259.50",
+          "award_amount_numeric": 3259.5,
+          "award_date": "2013-08-30",
+          "source": "ckan_awarded",
+          "first_seen": "2026-07-16 02:08:35",
+          "last_seen": "2026-11-05 10:42:36",
+          "award_amount_labelled": null,
+          "award_amount_verdict": null,
+          "procurement_id": 339
+        },
+        {
+          "supplier_name_raw": "S C I Interiors Ltd",
+          "supplier_id": 57679,
+          "award_amount": "165002.75",
+          "award_amount_numeric": 165002.75,
+          "award_date": "2013-08-30",
+          "source": "ckan_awarded",
+          "first_seen": "2026-07-16 02:08:35",
+          "last_seen": "2026-11-05 10:42:36",
+          "award_amount_labelled": null,
+          "award_amount_verdict": null,
+          "procurement_id": 339
+        }
+      ],
+      "ariba_postings": [],
+      "documents": [
+        {
+          "source": "staff_report",
+          "name": "backgroundfile-60989.pdf",
+          "path": "backgroundfile-60989.pdf",
+          "type": "pdf",
+          "size_bytes": null,
+          "url": "https://www.toronto.ca/legdocs/mmis/2013/bd/bgrd/backgroundfile-60989.pdf"
+        }
+      ],
+      "bids": [
+        {
+          "reference": "2013.BD139.8",
+          "bidder_name_raw": "Amovo Workplace Environments",
+          "supplier_id": 57692,
+          "bid_price": null,
+          "bid_price_numeric": null,
+          "hst_basis": null,
+          "price_header": null,
+          "source": "bd_report",
+          "first_seen": "2026-11-05 22:23:25",
+          "last_seen": "2026-11-05 22:23:41",
+          "status": null,
+          "procurement_id": 339
+        },
+        {
+          "reference": "2013.BD139.8",
+          "bidder_name_raw": "Dor-Val Manufacturing Ltd.",
+          "supplier_id": 57693,
+          "bid_price": null,
+          "bid_price_numeric": null,
+          "hst_basis": null,
+          "price_header": null,
+          "source": "bd_report",
+          "first_seen": "2026-11-05 22:23:25",
+          "last_seen": "2026-11-05 22:23:41",
+          "status": null,
+          "procurement_id": 339
+        },
+        {
+          "reference": "2013.BD139.8",
+          "bidder_name_raw": "SCI Interiors Ltd.",
+          "supplier_id": 57694,
+          "bid_price": null,
+          "bid_price_numeric": null,
+          "hst_basis": null,
+          "price_header": null,
+          "source": "bd_report",
+          "first_seen": "2026-11-05 22:23:25",
+          "last_seen": "2026-11-05 22:23:41",
+          "status": null,
+          "procurement_id": 339
+        },
+        {
+          "reference": "2013.BD139.8",
+          "bidder_name_raw": "Specialty Furniture Inc.",
+          "supplier_id": 57695,
+          "bid_price": null,
+          "bid_price_numeric": null,
+          "hst_basis": null,
+          "price_header": null,
+          "source": "bd_report",
+          "first_seen": "2026-11-05 22:23:25",
+          "last_seen": "2026-11-05 22:23:41",
+          "status": null,
+          "procurement_id": 339
+        }
+      ],
+      "bid_scopes": [
+        {
+          "id": 42,
+          "reference": "2013.BD139.8",
+          "document_number": "1002133108",
+          "source": "bd_report",
+          "scope_key": "price table 1",
+          "scope_kind": "category",
+          "scope_label": "Price Table 1",
+          "scope_status": null,
+          "proof_sha256": "4a04fc7bc6010c897b220a3d4669e4c4012fab916b5f2ee9bd8bfd59dcf761bd",
+          "procurement_id": 339,
+          "first_seen": "2026-11-05 22:11:30",
+          "last_seen": "2026-11-05 22:11:44",
+          "responses": [
+            {
+              "id": 274,
+              "scope_id": 42,
+              "response_key": "cell-001",
+              "bid_id": 384610,
+              "bidder_name_raw": "SCI Interiors Ltd.",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$108,762.47",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "SCI Interiors Ltd.",
+              "prices": [
+                {
+                  "id": 77,
+                  "response_id": 274,
+                  "price_key": "value-1",
+                  "value_raw": "$108,762.47",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 108762.47,
+                  "price_header": "Initial year period, including HST and all applicable charges:",
+                  "price_basis": "Initial year period, including HST and all applicable charges:",
+                  "hst_basis": "including",
+                  "quotation": "$108,762.47",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 282,
+              "scope_id": 42,
+              "response_key": "cell-009",
+              "bid_id": 384611,
+              "bidder_name_raw": "Specialty Furniture Inc.",
+              "identity_status": "resolved",
+              "response_kind": "no_bid",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "No Bid",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Specialty Furniture Inc.",
+              "prices": []
+            },
+            {
+              "id": 290,
+              "scope_id": 42,
+              "response_key": "cell-017",
+              "bid_id": 384612,
+              "bidder_name_raw": "Amovo Workplace Environments",
+              "identity_status": "resolved",
+              "response_kind": "no_bid",
+              "alternative_label": "Option 1",
+              "status": null,
+              "row_quotation": "No Bid",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Amovo Workplace Environments",
+              "prices": []
+            },
+            {
+              "id": 298,
+              "scope_id": 42,
+              "response_key": "cell-025",
+              "bid_id": 384612,
+              "bidder_name_raw": "Amovo Workplace Environments",
+              "identity_status": "resolved",
+              "response_kind": "no_bid",
+              "alternative_label": "Option 2",
+              "status": null,
+              "row_quotation": "No Bid",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Amovo Workplace Environments",
+              "prices": []
+            },
+            {
+              "id": 306,
+              "scope_id": 42,
+              "response_key": "cell-033",
+              "bid_id": 384612,
+              "bidder_name_raw": "Amovo Workplace Environments",
+              "identity_status": "resolved",
+              "response_kind": "no_bid",
+              "alternative_label": "Option 3",
+              "status": null,
+              "row_quotation": "No Bid",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Amovo Workplace Environments",
+              "prices": []
+            },
+            {
+              "id": 314,
+              "scope_id": 42,
+              "response_key": "cell-041",
+              "bid_id": 384613,
+              "bidder_name_raw": "Dor-Val Manufacturing Ltd.",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$115,218.19",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Dor-Val Manufacturing Ltd.",
+              "prices": [
+                {
+                  "id": 101,
+                  "response_id": 314,
+                  "price_key": "value-1",
+                  "value_raw": "$115,218.19",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 115218.19,
+                  "price_header": "Initial year period, including HST and all applicable charges:",
+                  "price_basis": "Initial year period, including HST and all applicable charges:",
+                  "hst_basis": "including",
+                  "quotation": "$115,218.19",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": 43,
+          "reference": "2013.BD139.8",
+          "document_number": "1002133108",
+          "source": "bd_report",
+          "scope_key": "price table 2",
+          "scope_kind": "category",
+          "scope_label": "Price Table 2",
+          "scope_status": null,
+          "proof_sha256": "4a04fc7bc6010c897b220a3d4669e4c4012fab916b5f2ee9bd8bfd59dcf761bd",
+          "procurement_id": 339,
+          "first_seen": "2026-11-05 22:11:30",
+          "last_seen": "2026-11-05 22:11:44",
+          "responses": [
+            {
+              "id": 275,
+              "scope_id": 43,
+              "response_key": "cell-002",
+              "bid_id": 384610,
+              "bidder_name_raw": "SCI Interiors Ltd.",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$59,297.97",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "SCI Interiors Ltd.",
+              "prices": [
+                {
+                  "id": 78,
+                  "response_id": 275,
+                  "price_key": "value-1",
+                  "value_raw": "$59,297.97",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 59297.97,
+                  "price_header": "Initial year period, including HST and all applicable charges:",
+                  "price_basis": "Initial year period, including HST and all applicable charges:",
+                  "hst_basis": "including",
+                  "quotation": "$59,297.97",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 283,
+              "scope_id": 43,
+              "response_key": "cell-010",
+              "bid_id": 384611,
+              "bidder_name_raw": "Specialty Furniture Inc.",
+              "identity_status": "resolved",
+              "response_kind": "no_bid",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "No Bid",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Specialty Furniture Inc.",
+              "prices": []
+            },
+            {
+              "id": 291,
+              "scope_id": 43,
+              "response_key": "cell-018",
+              "bid_id": 384612,
+              "bidder_name_raw": "Amovo Workplace Environments",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": "Option 1",
+              "status": null,
+              "row_quotation": "$61,105.10",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Amovo Workplace Environments",
+              "prices": [
+                {
+                  "id": 86,
+                  "response_id": 291,
+                  "price_key": "value-1",
+                  "value_raw": "$61,105.10",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 61105.1,
+                  "price_header": "Initial year period, including HST and all applicable charges:",
+                  "price_basis": "Initial year period, including HST and all applicable charges:",
+                  "hst_basis": "including",
+                  "quotation": "$61,105.10",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 299,
+              "scope_id": 43,
+              "response_key": "cell-026",
+              "bid_id": 384612,
+              "bidder_name_raw": "Amovo Workplace Environments",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": "Option 2",
+              "status": null,
+              "row_quotation": "$68,558.41",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Amovo Workplace Environments",
+              "prices": [
+                {
+                  "id": 91,
+                  "response_id": 299,
+                  "price_key": "value-1",
+                  "value_raw": "$68,558.41",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 68558.41,
+                  "price_header": "Initial year period, including HST and all applicable charges:",
+                  "price_basis": "Initial year period, including HST and all applicable charges:",
+                  "hst_basis": "including",
+                  "quotation": "$68,558.41",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 307,
+              "scope_id": 43,
+              "response_key": "cell-034",
+              "bid_id": 384612,
+              "bidder_name_raw": "Amovo Workplace Environments",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": "Option 3",
+              "status": null,
+              "row_quotation": "$77,283.66",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Amovo Workplace Environments",
+              "prices": [
+                {
+                  "id": 96,
+                  "response_id": 307,
+                  "price_key": "value-1",
+                  "value_raw": "$77,283.66",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 77283.66,
+                  "price_header": "Initial year period, including HST and all applicable charges:",
+                  "price_basis": "Initial year period, including HST and all applicable charges:",
+                  "hst_basis": "including",
+                  "quotation": "$77,283.66",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 315,
+              "scope_id": 43,
+              "response_key": "cell-042",
+              "bid_id": 384613,
+              "bidder_name_raw": "Dor-Val Manufacturing Ltd.",
+              "identity_status": "resolved",
+              "response_kind": "no_bid",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "No Bid",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Dor-Val Manufacturing Ltd.",
+              "prices": []
+            }
+          ]
+        },
+        {
+          "id": 44,
+          "reference": "2013.BD139.8",
+          "document_number": "1002133108",
+          "source": "bd_report",
+          "scope_key": "price table 3",
+          "scope_kind": "category",
+          "scope_label": "Price Table 3",
+          "scope_status": null,
+          "proof_sha256": "4a04fc7bc6010c897b220a3d4669e4c4012fab916b5f2ee9bd8bfd59dcf761bd",
+          "procurement_id": 339,
+          "first_seen": "2026-11-05 22:11:30",
+          "last_seen": "2026-11-05 22:11:44",
+          "responses": [
+            {
+              "id": 276,
+              "scope_id": 44,
+              "response_key": "cell-003",
+              "bid_id": 384610,
+              "bidder_name_raw": "SCI Interiors Ltd.",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$24,489.26",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "SCI Interiors Ltd.",
+              "prices": [
+                {
+                  "id": 79,
+                  "response_id": 276,
+                  "price_key": "value-1",
+                  "value_raw": "$24,489.26",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 24489.26,
+                  "price_header": "Initial year period, including HST and all applicable charges:",
+                  "price_basis": "Initial year period, including HST and all applicable charges:",
+                  "hst_basis": "including",
+                  "quotation": "$24,489.26",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 284,
+              "scope_id": 44,
+              "response_key": "cell-011",
+              "bid_id": 384611,
+              "bidder_name_raw": "Specialty Furniture Inc.",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$19,292.49",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Specialty Furniture Inc.",
+              "prices": [
+                {
+                  "id": 85,
+                  "response_id": 284,
+                  "price_key": "value-1",
+                  "value_raw": "$19,292.49",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 19292.49,
+                  "price_header": "Initial year period, including HST and all applicable charges:",
+                  "price_basis": "Initial year period, including HST and all applicable charges:",
+                  "hst_basis": "including",
+                  "quotation": "$19,292.49",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 292,
+              "scope_id": 44,
+              "response_key": "cell-019",
+              "bid_id": 384612,
+              "bidder_name_raw": "Amovo Workplace Environments",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": "Option 1",
+              "status": null,
+              "row_quotation": "$24,389.43",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Amovo Workplace Environments",
+              "prices": [
+                {
+                  "id": 87,
+                  "response_id": 292,
+                  "price_key": "value-1",
+                  "value_raw": "$24,389.43",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 24389.43,
+                  "price_header": "Initial year period, including HST and all applicable charges:",
+                  "price_basis": "Initial year period, including HST and all applicable charges:",
+                  "hst_basis": "including",
+                  "quotation": "$24,389.43",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 300,
+              "scope_id": 44,
+              "response_key": "cell-027",
+              "bid_id": 384612,
+              "bidder_name_raw": "Amovo Workplace Environments",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": "Option 2",
+              "status": null,
+              "row_quotation": "$24,389.43",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Amovo Workplace Environments",
+              "prices": [
+                {
+                  "id": 92,
+                  "response_id": 300,
+                  "price_key": "value-1",
+                  "value_raw": "$24,389.43",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 24389.43,
+                  "price_header": "Initial year period, including HST and all applicable charges:",
+                  "price_basis": "Initial year period, including HST and all applicable charges:",
+                  "hst_basis": "including",
+                  "quotation": "$24,389.43",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 308,
+              "scope_id": 44,
+              "response_key": "cell-035",
+              "bid_id": 384612,
+              "bidder_name_raw": "Amovo Workplace Environments",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": "Option 3",
+              "status": null,
+              "row_quotation": "$24,389.43",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Amovo Workplace Environments",
+              "prices": [
+                {
+                  "id": 97,
+                  "response_id": 308,
+                  "price_key": "value-1",
+                  "value_raw": "$24,389.43",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 24389.43,
+                  "price_header": "Initial year period, including HST and all applicable charges:",
+                  "price_basis": "Initial year period, including HST and all applicable charges:",
+                  "hst_basis": "including",
+                  "quotation": "$24,389.43",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 316,
+              "scope_id": 44,
+              "response_key": "cell-043",
+              "bid_id": 384613,
+              "bidder_name_raw": "Dor-Val Manufacturing Ltd.",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$23,891.59",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Dor-Val Manufacturing Ltd.",
+              "prices": [
+                {
+                  "id": 102,
+                  "response_id": 316,
+                  "price_key": "value-1",
+                  "value_raw": "$23,891.59",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 23891.59,
+                  "price_header": "Initial year period, including HST and all applicable charges:",
+                  "price_basis": "Initial year period, including HST and all applicable charges:",
+                  "hst_basis": "including",
+                  "quotation": "$23,891.59",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": 45,
+          "reference": "2013.BD139.8",
+          "document_number": "1002133108",
+          "source": "bd_report",
+          "scope_key": "price table 4",
+          "scope_kind": "category",
+          "scope_label": "Price Table 4",
+          "scope_status": null,
+          "proof_sha256": "4a04fc7bc6010c897b220a3d4669e4c4012fab916b5f2ee9bd8bfd59dcf761bd",
+          "procurement_id": 339,
+          "first_seen": "2026-11-05 22:11:30",
+          "last_seen": "2026-11-05 22:11:44",
+          "responses": [
+            {
+              "id": 277,
+              "scope_id": 45,
+              "response_key": "cell-004",
+              "bid_id": 384610,
+              "bidder_name_raw": "SCI Interiors Ltd.",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$4,651.00",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "SCI Interiors Ltd.",
+              "prices": [
+                {
+                  "id": 80,
+                  "response_id": 277,
+                  "price_key": "value-1",
+                  "value_raw": "$4,651.00",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 4651.0,
+                  "price_header": "Initial year period, including HST and all applicable charges:",
+                  "price_basis": "Initial year period, including HST and all applicable charges:",
+                  "hst_basis": "including",
+                  "quotation": "$4,651.00",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 285,
+              "scope_id": 45,
+              "response_key": "cell-012",
+              "bid_id": 384611,
+              "bidder_name_raw": "Specialty Furniture Inc.",
+              "identity_status": "resolved",
+              "response_kind": "no_bid",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "No Bid",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Specialty Furniture Inc.",
+              "prices": []
+            },
+            {
+              "id": 293,
+              "scope_id": 45,
+              "response_key": "cell-020",
+              "bid_id": 384612,
+              "bidder_name_raw": "Amovo Workplace Environments",
+              "identity_status": "resolved",
+              "response_kind": "no_bid",
+              "alternative_label": "Option 1",
+              "status": null,
+              "row_quotation": "No Bid",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Amovo Workplace Environments",
+              "prices": []
+            },
+            {
+              "id": 301,
+              "scope_id": 45,
+              "response_key": "cell-028",
+              "bid_id": 384612,
+              "bidder_name_raw": "Amovo Workplace Environments",
+              "identity_status": "resolved",
+              "response_kind": "no_bid",
+              "alternative_label": "Option 2",
+              "status": null,
+              "row_quotation": "No Bid",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Amovo Workplace Environments",
+              "prices": []
+            },
+            {
+              "id": 309,
+              "scope_id": 45,
+              "response_key": "cell-036",
+              "bid_id": 384612,
+              "bidder_name_raw": "Amovo Workplace Environments",
+              "identity_status": "resolved",
+              "response_kind": "no_bid",
+              "alternative_label": "Option 3",
+              "status": null,
+              "row_quotation": "No bid",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Amovo Workplace Environments",
+              "prices": []
+            },
+            {
+              "id": 317,
+              "scope_id": 45,
+              "response_key": "cell-044",
+              "bid_id": 384613,
+              "bidder_name_raw": "Dor-Val Manufacturing Ltd.",
+              "identity_status": "resolved",
+              "response_kind": "no_bid",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "No Bid",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Dor-Val Manufacturing Ltd.",
+              "prices": []
+            }
+          ]
+        },
+        {
+          "id": 46,
+          "reference": "2013.BD139.8",
+          "document_number": "1002133108",
+          "source": "bd_report",
+          "scope_key": "price table 5",
+          "scope_kind": "category",
+          "scope_label": "Price Table 5",
+          "scope_status": null,
+          "proof_sha256": "4a04fc7bc6010c897b220a3d4669e4c4012fab916b5f2ee9bd8bfd59dcf761bd",
+          "procurement_id": 339,
+          "first_seen": "2026-11-05 22:11:30",
+          "last_seen": "2026-11-05 22:11:44",
+          "responses": [
+            {
+              "id": 278,
+              "scope_id": 46,
+              "response_key": "cell-005",
+              "bid_id": 384610,
+              "bidder_name_raw": "SCI Interiors Ltd.",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$3,691.38",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "SCI Interiors Ltd.",
+              "prices": [
+                {
+                  "id": 81,
+                  "response_id": 278,
+                  "price_key": "value-1",
+                  "value_raw": "$3,691.38",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 3691.38,
+                  "price_header": "Initial year period, including HST and all applicable charges:",
+                  "price_basis": "Initial year period, including HST and all applicable charges:",
+                  "hst_basis": "including",
+                  "quotation": "$3,691.38",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 286,
+              "scope_id": 46,
+              "response_key": "cell-013",
+              "bid_id": 384611,
+              "bidder_name_raw": "Specialty Furniture Inc.",
+              "identity_status": "resolved",
+              "response_kind": "no_bid",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "No Bid",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Specialty Furniture Inc.",
+              "prices": []
+            },
+            {
+              "id": 294,
+              "scope_id": 46,
+              "response_key": "cell-021",
+              "bid_id": 384612,
+              "bidder_name_raw": "Amovo Workplace Environments",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": "Option 1",
+              "status": null,
+              "row_quotation": "$3,683.24",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Amovo Workplace Environments",
+              "prices": [
+                {
+                  "id": 88,
+                  "response_id": 294,
+                  "price_key": "value-1",
+                  "value_raw": "$3,683.24",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 3683.24,
+                  "price_header": "Initial year period, including HST and all applicable charges:",
+                  "price_basis": "Initial year period, including HST and all applicable charges:",
+                  "hst_basis": "including",
+                  "quotation": "$3,683.24",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 302,
+              "scope_id": 46,
+              "response_key": "cell-029",
+              "bid_id": 384612,
+              "bidder_name_raw": "Amovo Workplace Environments",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": "Option 2",
+              "status": null,
+              "row_quotation": "$3,683.24",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Amovo Workplace Environments",
+              "prices": [
+                {
+                  "id": 93,
+                  "response_id": 302,
+                  "price_key": "value-1",
+                  "value_raw": "$3,683.24",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 3683.24,
+                  "price_header": "Initial year period, including HST and all applicable charges:",
+                  "price_basis": "Initial year period, including HST and all applicable charges:",
+                  "hst_basis": "including",
+                  "quotation": "$3,683.24",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 310,
+              "scope_id": 46,
+              "response_key": "cell-037",
+              "bid_id": 384612,
+              "bidder_name_raw": "Amovo Workplace Environments",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": "Option 3",
+              "status": null,
+              "row_quotation": "$3,683.24",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Amovo Workplace Environments",
+              "prices": [
+                {
+                  "id": 98,
+                  "response_id": 310,
+                  "price_key": "value-1",
+                  "value_raw": "$3,683.24",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 3683.24,
+                  "price_header": "Initial year period, including HST and all applicable charges:",
+                  "price_basis": "Initial year period, including HST and all applicable charges:",
+                  "hst_basis": "including",
+                  "quotation": "$3,683.24",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 318,
+              "scope_id": 46,
+              "response_key": "cell-045",
+              "bid_id": 384613,
+              "bidder_name_raw": "Dor-Val Manufacturing Ltd.",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$4,712.10",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Dor-Val Manufacturing Ltd.",
+              "prices": [
+                {
+                  "id": 103,
+                  "response_id": 318,
+                  "price_key": "value-1",
+                  "value_raw": "$4,712.10",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 4712.1,
+                  "price_header": "Initial year period, including HST and all applicable charges:",
+                  "price_basis": "Initial year period, including HST and all applicable charges:",
+                  "hst_basis": "including",
+                  "quotation": "$4,712.10",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": 47,
+          "reference": "2013.BD139.8",
+          "document_number": "1002133108",
+          "source": "bd_report",
+          "scope_key": "price table 6",
+          "scope_kind": "category",
+          "scope_label": "Price Table 6",
+          "scope_status": null,
+          "proof_sha256": "4a04fc7bc6010c897b220a3d4669e4c4012fab916b5f2ee9bd8bfd59dcf761bd",
+          "procurement_id": 339,
+          "first_seen": "2026-11-05 22:11:30",
+          "last_seen": "2026-11-05 22:11:44",
+          "responses": [
+            {
+              "id": 279,
+              "scope_id": 47,
+              "response_key": "cell-006",
+              "bid_id": 384610,
+              "bidder_name_raw": "SCI Interiors Ltd.",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$3,513.40",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "SCI Interiors Ltd.",
+              "prices": [
+                {
+                  "id": 82,
+                  "response_id": 279,
+                  "price_key": "value-1",
+                  "value_raw": "$3,513.40",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 3513.4,
+                  "price_header": "Initial year period, including HST and all applicable charges:",
+                  "price_basis": "Initial year period, including HST and all applicable charges:",
+                  "hst_basis": "including",
+                  "quotation": "$3,513.40",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 287,
+              "scope_id": 47,
+              "response_key": "cell-014",
+              "bid_id": 384611,
+              "bidder_name_raw": "Specialty Furniture Inc.",
+              "identity_status": "resolved",
+              "response_kind": "no_bid",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "No Bid",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Specialty Furniture Inc.",
+              "prices": []
+            },
+            {
+              "id": 295,
+              "scope_id": 47,
+              "response_key": "cell-022",
+              "bid_id": 384612,
+              "bidder_name_raw": "Amovo Workplace Environments",
+              "identity_status": "resolved",
+              "response_kind": "no_bid",
+              "alternative_label": "Option 1",
+              "status": null,
+              "row_quotation": "No Bid",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Amovo Workplace Environments",
+              "prices": []
+            },
+            {
+              "id": 303,
+              "scope_id": 47,
+              "response_key": "cell-030",
+              "bid_id": 384612,
+              "bidder_name_raw": "Amovo Workplace Environments",
+              "identity_status": "resolved",
+              "response_kind": "no_bid",
+              "alternative_label": "Option 2",
+              "status": null,
+              "row_quotation": "No Bid",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Amovo Workplace Environments",
+              "prices": []
+            },
+            {
+              "id": 311,
+              "scope_id": 47,
+              "response_key": "cell-038",
+              "bid_id": 384612,
+              "bidder_name_raw": "Amovo Workplace Environments",
+              "identity_status": "resolved",
+              "response_kind": "no_bid",
+              "alternative_label": "Option 3",
+              "status": null,
+              "row_quotation": "No Bid",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Amovo Workplace Environments",
+              "prices": []
+            },
+            {
+              "id": 319,
+              "scope_id": 47,
+              "response_key": "cell-046",
+              "bid_id": 384613,
+              "bidder_name_raw": "Dor-Val Manufacturing Ltd.",
+              "identity_status": "resolved",
+              "response_kind": "no_bid",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "No Bid",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Dor-Val Manufacturing Ltd.",
+              "prices": []
+            }
+          ]
+        },
+        {
+          "id": 48,
+          "reference": "2013.BD139.8",
+          "document_number": "1002133108",
+          "source": "bd_report",
+          "scope_key": "price table 7",
+          "scope_kind": "category",
+          "scope_label": "Price Table 7",
+          "scope_status": null,
+          "proof_sha256": "4a04fc7bc6010c897b220a3d4669e4c4012fab916b5f2ee9bd8bfd59dcf761bd",
+          "procurement_id": 339,
+          "first_seen": "2026-11-05 22:11:30",
+          "last_seen": "2026-11-05 22:11:44",
+          "responses": [
+            {
+              "id": 280,
+              "scope_id": 48,
+              "response_key": "cell-007",
+              "bid_id": 384610,
+              "bidder_name_raw": "SCI Interiors Ltd.",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$8,735.86",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "SCI Interiors Ltd.",
+              "prices": [
+                {
+                  "id": 83,
+                  "response_id": 280,
+                  "price_key": "value-1",
+                  "value_raw": "$8,735.86",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 8735.86,
+                  "price_header": "Initial year period, including HST and all applicable charges:",
+                  "price_basis": "Initial year period, including HST and all applicable charges:",
+                  "hst_basis": "including",
+                  "quotation": "$8,735.86",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 288,
+              "scope_id": 48,
+              "response_key": "cell-015",
+              "bid_id": 384611,
+              "bidder_name_raw": "Specialty Furniture Inc.",
+              "identity_status": "resolved",
+              "response_kind": "no_bid",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "No Bid",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Specialty Furniture Inc.",
+              "prices": []
+            },
+            {
+              "id": 296,
+              "scope_id": 48,
+              "response_key": "cell-023",
+              "bid_id": 384612,
+              "bidder_name_raw": "Amovo Workplace Environments",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": "Option 1",
+              "status": null,
+              "row_quotation": "$11,877.54",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Amovo Workplace Environments",
+              "prices": [
+                {
+                  "id": 89,
+                  "response_id": 296,
+                  "price_key": "value-1",
+                  "value_raw": "$11,877.54",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 11877.54,
+                  "price_header": "Initial year period, including HST and all applicable charges:",
+                  "price_basis": "Initial year period, including HST and all applicable charges:",
+                  "hst_basis": "including",
+                  "quotation": "$11,877.54",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 304,
+              "scope_id": 48,
+              "response_key": "cell-031",
+              "bid_id": 384612,
+              "bidder_name_raw": "Amovo Workplace Environments",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": "Option 2",
+              "status": null,
+              "row_quotation": "$11,877.54",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Amovo Workplace Environments",
+              "prices": [
+                {
+                  "id": 94,
+                  "response_id": 304,
+                  "price_key": "value-1",
+                  "value_raw": "$11,877.54",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 11877.54,
+                  "price_header": "Initial year period, including HST and all applicable charges:",
+                  "price_basis": "Initial year period, including HST and all applicable charges:",
+                  "hst_basis": "including",
+                  "quotation": "$11,877.54",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 312,
+              "scope_id": 48,
+              "response_key": "cell-039",
+              "bid_id": 384612,
+              "bidder_name_raw": "Amovo Workplace Environments",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": "Option 3",
+              "status": null,
+              "row_quotation": "$11,877.54",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Amovo Workplace Environments",
+              "prices": [
+                {
+                  "id": 99,
+                  "response_id": 312,
+                  "price_key": "value-1",
+                  "value_raw": "$11,877.54",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 11877.54,
+                  "price_header": "Initial year period, including HST and all applicable charges:",
+                  "price_basis": "Initial year period, including HST and all applicable charges:",
+                  "hst_basis": "including",
+                  "quotation": "$11,877.54",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 320,
+              "scope_id": 48,
+              "response_key": "cell-047",
+              "bid_id": 384613,
+              "bidder_name_raw": "Dor-Val Manufacturing Ltd.",
+              "identity_status": "resolved",
+              "response_kind": "no_bid",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "No bid",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Dor-Val Manufacturing Ltd.",
+              "prices": []
+            }
+          ]
+        },
+        {
+          "id": 49,
+          "reference": "2013.BD139.8",
+          "document_number": "1002133108",
+          "source": "bd_report",
+          "scope_key": "price table 8",
+          "scope_kind": "category",
+          "scope_label": "Price Table 8",
+          "scope_status": null,
+          "proof_sha256": "4a04fc7bc6010c897b220a3d4669e4c4012fab916b5f2ee9bd8bfd59dcf761bd",
+          "procurement_id": 339,
+          "first_seen": "2026-11-05 22:11:30",
+          "last_seen": "2026-11-05 22:11:44",
+          "responses": [
+            {
+              "id": 281,
+              "scope_id": 49,
+              "response_key": "cell-008",
+              "bid_id": 384610,
+              "bidder_name_raw": "SCI Interiors Ltd.",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$1,492.41",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "SCI Interiors Ltd.",
+              "prices": [
+                {
+                  "id": 84,
+                  "response_id": 281,
+                  "price_key": "value-1",
+                  "value_raw": "$1,492.41",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 1492.41,
+                  "price_header": "Initial year period, including HST and all applicable charges:",
+                  "price_basis": "Initial year period, including HST and all applicable charges:",
+                  "hst_basis": "including",
+                  "quotation": "$1,492.41",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 289,
+              "scope_id": 49,
+              "response_key": "cell-016",
+              "bid_id": 384611,
+              "bidder_name_raw": "Specialty Furniture Inc.",
+              "identity_status": "resolved",
+              "response_kind": "no_bid",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "No Bid",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Specialty Furniture Inc.",
+              "prices": []
+            },
+            {
+              "id": 297,
+              "scope_id": 49,
+              "response_key": "cell-024",
+              "bid_id": 384612,
+              "bidder_name_raw": "Amovo Workplace Environments",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": "Option 1",
+              "status": null,
+              "row_quotation": "$1,510.04",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Amovo Workplace Environments",
+              "prices": [
+                {
+                  "id": 90,
+                  "response_id": 297,
+                  "price_key": "value-1",
+                  "value_raw": "$1,510.04",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 1510.04,
+                  "price_header": "Initial year period, including HST and all applicable charges:",
+                  "price_basis": "Initial year period, including HST and all applicable charges:",
+                  "hst_basis": "including",
+                  "quotation": "$1,510.04",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 305,
+              "scope_id": 49,
+              "response_key": "cell-032",
+              "bid_id": 384612,
+              "bidder_name_raw": "Amovo Workplace Environments",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": "Option 2",
+              "status": null,
+              "row_quotation": "$1,510.04",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Amovo Workplace Environments",
+              "prices": [
+                {
+                  "id": 95,
+                  "response_id": 305,
+                  "price_key": "value-1",
+                  "value_raw": "$1,510.04",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 1510.04,
+                  "price_header": "Initial year period, including HST and all applicable charges:",
+                  "price_basis": "Initial year period, including HST and all applicable charges:",
+                  "hst_basis": "including",
+                  "quotation": "$1,510.04",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 313,
+              "scope_id": 49,
+              "response_key": "cell-040",
+              "bid_id": 384612,
+              "bidder_name_raw": "Amovo Workplace Environments",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": "Option 3",
+              "status": null,
+              "row_quotation": "$1,510.04",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Amovo Workplace Environments",
+              "prices": [
+                {
+                  "id": 100,
+                  "response_id": 313,
+                  "price_key": "value-1",
+                  "value_raw": "$1,510.04",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 1510.04,
+                  "price_header": "Initial year period, including HST and all applicable charges:",
+                  "price_basis": "Initial year period, including HST and all applicable charges:",
+                  "hst_basis": "including",
+                  "quotation": "$1,510.04",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 321,
+              "scope_id": 49,
+              "response_key": "cell-048",
+              "bid_id": 384613,
+              "bidder_name_raw": "Dor-Val Manufacturing Ltd.",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$2,791.10",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Dor-Val Manufacturing Ltd.",
+              "prices": [
+                {
+                  "id": 104,
+                  "response_id": 321,
+                  "price_key": "value-1",
+                  "value_raw": "$2,791.10",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 2791.1,
+                  "price_header": "Initial year period, including HST and all applicable charges:",
+                  "price_basis": "Initial year period, including HST and all applicable charges:",
+                  "hst_basis": "including",
+                  "quotation": "$2,791.10",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "bid_scope_summary": {
+        "participating_firms": 4,
+        "response_observations": 48,
+        "submitted_response_cells": 28,
+        "resolved_scoped_submissions": 28,
+        "explicit_no_bid_cells": 20,
+        "unscoped_outcomes": 0,
+        "unresolved_party_cells": 0,
+        "price_variants": 28
+      }
+    },
+    {
+      "document_number": "2104163095",
+      "status": "Awarded",
+      "rfx_type": "RFQ",
+      "noip_type": null,
+      "form_type": "Awarded Contracts",
+      "title": "Award of Request for Quotation 2104-16-3095 to Met-Scan Canada Ltd. for the Non-Exclusive Supply, Delivery, Corrective Maintenance, and Warranty of Access Control, Intercom, and Video Surveillance Equipment",
+      "description": null,
+      "issue_date": "2016-09-19",
+      "submission_deadline": "2016-10-07",
+      "category": "Goods and Services",
+      "division": "Facilities Operations",
+      "buyer_name": "Justin Diptee",
+      "buyer_email": "supplychain@toronto.ca",
+      "buyer_phone": "416-397-4141",
+      "wards": null,
+      "ariba_posting_link": null,
+      "source": "odata",
+      "first_seen": "2026-07-16 02:08:22",
+      "last_seen": "2026-11-05 10:42:36",
+      "title_source": "council_pre_ariba",
+      "procurement_id": 1354,
+      "publisher_identity_json": "{\"Awarded_Suppliers\":[{\"Award_Amount\":\"1800000.00\",\"Successful_Bidder\":\"Met-Scan Canada Ltd.\"},{\"Award_Amount\":\"358288.00\",\"Successful_Bidder\":\"Met-Scan Canada Ltd.\"}],\"Closing_Date\":\"2016-10-07\",\"Issue_Date\":\"2016-09-19\",\"Solicitation_Award_Details\":\"\",\"Solicitation_Document_Number\":\"2104163095\",\"Solicitation_Document_Type\":\"RFQ\",\"id\":\"9b11141e-8fda-4f09-a437-985a71267345\"}",
+      "awards": [
+        {
+          "supplier_name_raw": "Met-Scan Canada Ltd.",
+          "supplier_id": 57680,
+          "award_amount": "358288.00",
+          "award_amount_numeric": 358288.0,
+          "award_date": "2016-12-07",
+          "source": "odata",
+          "first_seen": "2026-07-16 02:08:22",
+          "last_seen": "2026-11-05 10:42:18",
+          "award_amount_labelled": null,
+          "award_amount_verdict": null,
+          "procurement_id": 1354
+        },
+        {
+          "supplier_name_raw": "Met-Scan Canada Ltd.",
+          "supplier_id": 57680,
+          "award_amount": "1800000.00",
+          "award_amount_numeric": 1800000.0,
+          "award_date": "2016-12-07",
+          "source": "ckan_awarded",
+          "first_seen": "2026-07-16 02:08:35",
+          "last_seen": "2026-11-05 10:42:36",
+          "award_amount_labelled": null,
+          "award_amount_verdict": null,
+          "procurement_id": 1354
+        },
+        {
+          "supplier_name_raw": "Met-Scan Canada Ltd.",
+          "supplier_id": 57680,
+          "award_amount": "1800000.00",
+          "award_amount_numeric": 1800000.0,
+          "award_date": "2016-12-07",
+          "source": "odata",
+          "first_seen": "2026-07-16 17:08:59",
+          "last_seen": "2026-11-05 10:42:18",
+          "award_amount_labelled": null,
+          "award_amount_verdict": null,
+          "procurement_id": 1354
+        },
+        {
+          "supplier_name_raw": "Met-Scan Canada Ltd.",
+          "supplier_id": 57680,
+          "award_amount": "358288.00",
+          "award_amount_numeric": 358288.0,
+          "award_date": "2016-12-07",
+          "source": "ckan_awarded",
+          "first_seen": "2026-07-16 17:09:43",
+          "last_seen": "2026-11-05 10:42:36",
+          "award_amount_labelled": null,
+          "award_amount_verdict": null,
+          "procurement_id": 1354
+        }
+      ],
+      "ariba_postings": [],
+      "documents": [
+        {
+          "source": "staff_report",
+          "name": "backgroundfile-98278.pdf",
+          "path": "backgroundfile-98278.pdf",
+          "type": "pdf",
+          "size_bytes": null,
+          "url": "https://www.toronto.ca/legdocs/mmis/2016/bd/bgrd/backgroundfile-98278.pdf"
+        }
+      ],
+      "bids": [
+        {
+          "reference": "2016.BD110.1",
+          "bidder_name_raw": "Johnson Controls Canada LP",
+          "supplier_id": 57696,
+          "bid_price": null,
+          "bid_price_numeric": null,
+          "hst_basis": null,
+          "price_header": null,
+          "source": "bd_report",
+          "first_seen": "2026-11-05 22:23:25",
+          "last_seen": "2026-11-05 22:23:41",
+          "status": null,
+          "procurement_id": 1354
+        },
+        {
+          "reference": "2016.BD110.1",
+          "bidder_name_raw": "Met-Scan Canada Ltd.",
+          "supplier_id": 57680,
+          "bid_price": null,
+          "bid_price_numeric": null,
+          "hst_basis": null,
+          "price_header": null,
+          "source": "bd_report",
+          "first_seen": "2026-11-05 22:23:25",
+          "last_seen": "2026-11-05 22:23:41",
+          "status": null,
+          "procurement_id": 1354
+        },
+        {
+          "reference": "2016.BD110.1",
+          "bidder_name_raw": "Tyco Integrated Fire & Security",
+          "supplier_id": 57697,
+          "bid_price": null,
+          "bid_price_numeric": null,
+          "hst_basis": null,
+          "price_header": null,
+          "source": "bd_report",
+          "first_seen": "2026-11-05 22:23:25",
+          "last_seen": "2026-11-05 22:23:41",
+          "status": null,
+          "procurement_id": 1354
+        }
+      ],
+      "bid_scopes": [
+        {
+          "id": 4,
+          "reference": "2016.BD110.1",
+          "document_number": "2104163095",
+          "source": "bd_report",
+          "scope_key": "part a",
+          "scope_kind": "part",
+          "scope_label": "Part A",
+          "scope_status": null,
+          "proof_sha256": "fdb88ba470b62d6550c3911b8969e53196ed9a7c3155ecdb29d80dea472e3e72",
+          "procurement_id": 1354,
+          "first_seen": "2026-11-05 22:11:29",
+          "last_seen": "2026-11-05 22:11:44",
+          "responses": [
+            {
+              "id": 21,
+              "scope_id": 4,
+              "response_key": "cell-001",
+              "bid_id": 384605,
+              "bidder_name_raw": "Met-Scan Canada Ltd.",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "10%*",
+              "first_seen": "2026-11-05 22:11:29",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Met-Scan Canada Ltd.",
+              "prices": [
+                {
+                  "id": 21,
+                  "response_id": 21,
+                  "price_key": "value-1",
+                  "value_raw": "10%*",
+                  "value_kind": "discount_percentage",
+                  "unit": "percent_off_MSRP",
+                  "value_numeric": null,
+                  "price_header": "Percentage Off MSRP:",
+                  "price_basis": null,
+                  "hst_basis": null,
+                  "quotation": "10%*",
+                  "first_seen": "2026-11-05 22:11:29",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 22,
+              "scope_id": 4,
+              "response_key": "cell-002",
+              "bid_id": 384606,
+              "bidder_name_raw": "Johnson Controls Canada LP",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "10%",
+              "first_seen": "2026-11-05 22:11:29",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Johnson Controls Canada LP",
+              "prices": [
+                {
+                  "id": 22,
+                  "response_id": 22,
+                  "price_key": "value-1",
+                  "value_raw": "10%",
+                  "value_kind": "discount_percentage",
+                  "unit": "percent_off_MSRP",
+                  "value_numeric": null,
+                  "price_header": "Percentage Off MSRP:",
+                  "price_basis": null,
+                  "hst_basis": null,
+                  "quotation": "10%",
+                  "first_seen": "2026-11-05 22:11:29",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 23,
+              "scope_id": 4,
+              "response_key": "cell-003",
+              "bid_id": 384607,
+              "bidder_name_raw": "Tyco Integrated Fire & Security",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": "Non-Compliant",
+              "row_quotation": "Non-Compliant",
+              "first_seen": "2026-11-05 22:11:29",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Tyco Integrated Fire & Security",
+              "prices": []
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "reference": "2016.BD110.1",
+          "document_number": "2104163095",
+          "source": "bd_report",
+          "scope_key": "part b",
+          "scope_kind": "part",
+          "scope_label": "Part B",
+          "scope_status": null,
+          "proof_sha256": "fdb88ba470b62d6550c3911b8969e53196ed9a7c3155ecdb29d80dea472e3e72",
+          "procurement_id": 1354,
+          "first_seen": "2026-11-05 22:11:29",
+          "last_seen": "2026-11-05 22:11:44",
+          "responses": [
+            {
+              "id": 24,
+              "scope_id": 5,
+              "response_key": "cell-004",
+              "bid_id": 384605,
+              "bidder_name_raw": "Met-Scan Canada Ltd.",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$179,144",
+              "first_seen": "2026-11-05 22:11:29",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Met-Scan Canada Ltd.",
+              "prices": [
+                {
+                  "id": 23,
+                  "response_id": 24,
+                  "price_key": "value-1",
+                  "value_raw": "$179,144",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 179144.0,
+                  "price_header": "Bid Price (incl. HST) for 1 year:",
+                  "price_basis": "Bid Price (incl. HST) for 1 year:",
+                  "hst_basis": "including",
+                  "quotation": "$179,144",
+                  "first_seen": "2026-11-05 22:11:29",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 25,
+              "scope_id": 5,
+              "response_key": "cell-005",
+              "bid_id": 384607,
+              "bidder_name_raw": "Tyco Integrated Fire & Security",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$254,092",
+              "first_seen": "2026-11-05 22:11:29",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Tyco Integrated Fire & Security",
+              "prices": [
+                {
+                  "id": 24,
+                  "response_id": 25,
+                  "price_key": "value-1",
+                  "value_raw": "$254,092",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 254092.0,
+                  "price_header": "Bid Price (incl. HST) for 1 year:",
+                  "price_basis": "Bid Price (incl. HST) for 1 year:",
+                  "hst_basis": "including",
+                  "quotation": "$254,092",
+                  "first_seen": "2026-11-05 22:11:29",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 26,
+              "scope_id": 5,
+              "response_key": "cell-006",
+              "bid_id": 384606,
+              "bidder_name_raw": "Johnson Controls Canada LP",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$338,180",
+              "first_seen": "2026-11-05 22:11:29",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Johnson Controls Canada LP",
+              "prices": [
+                {
+                  "id": 25,
+                  "response_id": 26,
+                  "price_key": "value-1",
+                  "value_raw": "$338,180",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 338180.0,
+                  "price_header": "Bid Price (incl. HST) for 1 year:",
+                  "price_basis": "Bid Price (incl. HST) for 1 year:",
+                  "hst_basis": "including",
+                  "quotation": "$338,180",
+                  "first_seen": "2026-11-05 22:11:29",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "bid_scope_summary": {
+        "participating_firms": 3,
+        "response_observations": 6,
+        "submitted_response_cells": 6,
+        "resolved_scoped_submissions": 6,
+        "explicit_no_bid_cells": 0,
+        "unscoped_outcomes": 0,
+        "unresolved_party_cells": 0,
+        "price_variants": 5
+      }
+    },
+    {
+      "document_number": "3405163142",
+      "status": "Awarded",
+      "rfx_type": "RFQ",
+      "noip_type": null,
+      "form_type": "Awarded Contracts",
+      "title": "Award of Request for Quotation No. 3405-16-3142 to Onx Enterprise Solutions Ltd. for Veritas Licenses and Maintenance Support Services",
+      "description": null,
+      "issue_date": "2016-09-23",
+      "submission_deadline": "2016-10-12",
+      "category": "Goods and Services",
+      "division": "Information & Technology",
+      "buyer_name": "Theodoros Maicantis",
+      "buyer_email": "Theodoros.Maicantis@toronto.ca",
+      "buyer_phone": "4163927468",
+      "wards": null,
+      "ariba_posting_link": null,
+      "source": "odata",
+      "first_seen": "2026-07-16 02:08:22",
+      "last_seen": "2026-11-05 10:42:36",
+      "title_source": "council_pre_ariba",
+      "procurement_id": 1358,
+      "publisher_identity_json": "{\"Awarded_Suppliers\":[{\"Award_Amount\":\"1566388.00\",\"Successful_Bidder\":\"ONX Enterprise Solutions\"},{\"Award_Amount\":\"2943772.73\",\"Successful_Bidder\":\"Onx Enterprise Solutions\"}],\"Closing_Date\":\"2016-10-12\",\"Issue_Date\":\"2016-09-23\",\"Solicitation_Award_Details\":\"\",\"Solicitation_Document_Number\":\"3405163142\",\"Solicitation_Document_Type\":\"RFQ\",\"id\":\"62c84e90-0af1-49da-b056-33866e72c0d0\"}",
+      "awards": [
+        {
+          "supplier_name_raw": "ONX Enterprise Solutions",
+          "supplier_id": 57681,
+          "award_amount": "1566388.00",
+          "award_amount_numeric": 1566388.0,
+          "award_date": "2019-06-24",
+          "source": "odata",
+          "first_seen": "2026-07-16 02:08:22",
+          "last_seen": "2026-11-05 10:42:18",
+          "award_amount_labelled": null,
+          "award_amount_verdict": null,
+          "procurement_id": 1358
+        },
+        {
+          "supplier_name_raw": "Onx Enterprise Solutions",
+          "supplier_id": 57681,
+          "award_amount": "2943772.73",
+          "award_amount_numeric": 2943772.73,
+          "award_date": "2019-06-24",
+          "source": "odata",
+          "first_seen": "2026-07-16 02:08:22",
+          "last_seen": "2026-11-05 10:42:18",
+          "award_amount_labelled": null,
+          "award_amount_verdict": null,
+          "procurement_id": 1358
+        },
+        {
+          "supplier_name_raw": "ONX Enterprise Solutions",
+          "supplier_id": 57681,
+          "award_amount": "1566388.00",
+          "award_amount_numeric": 1566388.0,
+          "award_date": "2019-06-24",
+          "source": "ckan_awarded",
+          "first_seen": "2026-07-16 02:08:35",
+          "last_seen": "2026-11-05 10:42:36",
+          "award_amount_labelled": null,
+          "award_amount_verdict": null,
+          "procurement_id": 1358
+        },
+        {
+          "supplier_name_raw": "Onx Enterprise Solutions",
+          "supplier_id": 57681,
+          "award_amount": "2943772.73",
+          "award_amount_numeric": 2943772.73,
+          "award_date": "2019-06-24",
+          "source": "ckan_awarded",
+          "first_seen": "2026-07-16 02:08:35",
+          "last_seen": "2026-11-05 10:42:36",
+          "award_amount_labelled": null,
+          "award_amount_verdict": null,
+          "procurement_id": 1358
+        }
+      ],
+      "ariba_postings": [],
+      "documents": [
+        {
+          "source": "staff_report",
+          "name": "backgroundfile-98282.pdf",
+          "path": "backgroundfile-98282.pdf",
+          "type": "pdf",
+          "size_bytes": null,
+          "url": "https://www.toronto.ca/legdocs/mmis/2016/bd/bgrd/backgroundfile-98282.pdf"
+        }
+      ],
+      "bids": [
+        {
+          "reference": "2016.BD110.5",
+          "bidder_name_raw": "KTI Kanatek Technologies Inc.",
+          "supplier_id": 57698,
+          "bid_price": null,
+          "bid_price_numeric": null,
+          "hst_basis": null,
+          "price_header": null,
+          "source": "bd_report",
+          "first_seen": "2026-11-05 22:23:25",
+          "last_seen": "2026-11-05 22:23:41",
+          "status": null,
+          "procurement_id": 1358
+        },
+        {
+          "reference": "2016.BD110.5",
+          "bidder_name_raw": "Onx Enterprise Solutions Ltd.",
+          "supplier_id": 57699,
+          "bid_price": null,
+          "bid_price_numeric": null,
+          "hst_basis": null,
+          "price_header": null,
+          "source": "bd_report",
+          "first_seen": "2026-11-05 22:23:25",
+          "last_seen": "2026-11-05 22:23:41",
+          "status": null,
+          "procurement_id": 1358
+        }
+      ],
+      "bid_scopes": [
+        {
+          "id": 6,
+          "reference": "2016.BD110.5",
+          "document_number": "3405163142",
+          "source": "bd_report",
+          "scope_key": "part a",
+          "scope_kind": "part",
+          "scope_label": "Part A",
+          "scope_status": null,
+          "proof_sha256": "fb13fafcc2d10756ca0e2f994e4f216ea67d1f267ce5c7ed382ada0decff1347",
+          "procurement_id": 1358,
+          "first_seen": "2026-11-05 22:11:29",
+          "last_seen": "2026-11-05 22:11:44",
+          "responses": [
+            {
+              "id": 27,
+              "scope_id": 6,
+              "response_key": "cell-001",
+              "bid_id": 384608,
+              "bidder_name_raw": "Onx Enterprise Solutions Ltd.",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$1,566,387.86",
+              "first_seen": "2026-11-05 22:11:29",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Onx Enterprise Solutions Ltd.",
+              "prices": [
+                {
+                  "id": 26,
+                  "response_id": 27,
+                  "price_key": "value-1",
+                  "value_raw": "$1,566,387.86",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 1566387.86,
+                  "price_header": "Total Bid Price (Excluding HST)",
+                  "price_basis": null,
+                  "hst_basis": "excluding",
+                  "quotation": "$1,566,387.86",
+                  "first_seen": "2026-11-05 22:11:29",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": 7,
+          "reference": "2016.BD110.5",
+          "document_number": "3405163142",
+          "source": "bd_report",
+          "scope_key": "part b",
+          "scope_kind": "part",
+          "scope_label": "Part B",
+          "scope_status": null,
+          "proof_sha256": "fb13fafcc2d10756ca0e2f994e4f216ea67d1f267ce5c7ed382ada0decff1347",
+          "procurement_id": 1358,
+          "first_seen": "2026-11-05 22:11:29",
+          "last_seen": "2026-11-05 22:11:44",
+          "responses": [
+            {
+              "id": 28,
+              "scope_id": 7,
+              "response_key": "cell-002",
+              "bid_id": 384608,
+              "bidder_name_raw": "Onx Enterprise Solutions Ltd.",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$2,943,772.73",
+              "first_seen": "2026-11-05 22:11:29",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Onx Enterprise Solutions Ltd.",
+              "prices": [
+                {
+                  "id": 27,
+                  "response_id": 28,
+                  "price_key": "value-1",
+                  "value_raw": "$2,943,772.73",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 2943772.73,
+                  "price_header": "Total Bid Price (Excluding HST)",
+                  "price_basis": null,
+                  "hst_basis": "excluding",
+                  "quotation": "$2,943,772.73",
+                  "first_seen": "2026-11-05 22:11:29",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": 8,
+          "reference": "2016.BD110.5",
+          "document_number": "3405163142",
+          "source": "bd_report",
+          "scope_key": "unspecified",
+          "scope_kind": "unspecified",
+          "scope_label": null,
+          "scope_status": null,
+          "proof_sha256": "fb13fafcc2d10756ca0e2f994e4f216ea67d1f267ce5c7ed382ada0decff1347",
+          "procurement_id": 1358,
+          "first_seen": "2026-11-05 22:11:29",
+          "last_seen": "2026-11-05 22:11:44",
+          "responses": [
+            {
+              "id": 29,
+              "scope_id": 8,
+              "response_key": "cell-003",
+              "bid_id": 384609,
+              "bidder_name_raw": "KTI Kanatek Technologies Inc.",
+              "identity_status": "resolved",
+              "response_kind": "unscoped_outcome",
+              "alternative_label": null,
+              "status": "Non-compliant",
+              "row_quotation": "Non-compliant",
+              "first_seen": "2026-11-05 22:11:29",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "KTI Kanatek Technologies Inc.",
+              "prices": []
+            }
+          ]
+        }
+      ],
+      "bid_scope_summary": {
+        "participating_firms": 2,
+        "response_observations": 3,
+        "submitted_response_cells": 2,
+        "resolved_scoped_submissions": 2,
+        "explicit_no_bid_cells": 0,
+        "unscoped_outcomes": 1,
+        "unresolved_party_cells": 0,
+        "price_variants": 2
+      }
+    },
+    {
+      "document_number": "3707163238",
+      "status": "Awarded",
+      "rfx_type": "RFQ",
+      "noip_type": null,
+      "form_type": "Awarded Contracts",
+      "title": "Award of Request for Quotation No. 3707-16-3238 to Hank Deenen Landscaping Limited for the Non-Exclusive Supply of all Labour, Materials and Equipment necessary to provide Grounds Maintenance Services",
+      "description": null,
+      "issue_date": "2016-11-10",
+      "submission_deadline": "2016-12-14",
+      "category": "Goods and Services",
+      "division": "Long-Term Care Homes & Services",
+      "buyer_name": "Justin Diptee",
+      "buyer_email": "supplychain@toronto.ca",
+      "buyer_phone": "4163974141",
+      "wards": null,
+      "ariba_posting_link": null,
+      "source": "odata",
+      "first_seen": "2026-07-16 02:08:22",
+      "last_seen": "2026-11-05 10:42:36",
+      "title_source": "council_pre_ariba",
+      "procurement_id": 1769,
+      "publisher_identity_json": "{\"Awarded_Suppliers\":[{\"Award_Amount\":\"130488.00\",\"Successful_Bidder\":\"Hank Deenen Landscaping Ltd\"},{\"Award_Amount\":\"61732.44\",\"Successful_Bidder\":\"Limas Gardens & Construction Inc\"}],\"Closing_Date\":\"2016-12-14\",\"Issue_Date\":\"2016-11-10\",\"Solicitation_Award_Details\":\"\",\"Solicitation_Document_Number\":\"3707163238\",\"Solicitation_Document_Type\":\"RFQ\",\"id\":\"6a582962-1538-408d-972d-11909d9f6ed5\"}",
+      "awards": [
+        {
+          "supplier_name_raw": "Hank Deenen Landscaping Ltd",
+          "supplier_id": 57682,
+          "award_amount": "130488.00",
+          "award_amount_numeric": 130488.0,
+          "award_date": "2017-03-31",
+          "source": "odata",
+          "first_seen": "2026-07-16 02:08:22",
+          "last_seen": "2026-11-05 10:42:18",
+          "award_amount_labelled": null,
+          "award_amount_verdict": null,
+          "procurement_id": 1769
+        },
+        {
+          "supplier_name_raw": "Limas Gardens & Construction Inc",
+          "supplier_id": 57683,
+          "award_amount": "61732.44",
+          "award_amount_numeric": 61732.44,
+          "award_date": "2017-03-31",
+          "source": "odata",
+          "first_seen": "2026-07-16 02:08:22",
+          "last_seen": "2026-11-05 10:42:18",
+          "award_amount_labelled": null,
+          "award_amount_verdict": null,
+          "procurement_id": 1769
+        },
+        {
+          "supplier_name_raw": "Hank Deenen Landscaping Ltd",
+          "supplier_id": 57682,
+          "award_amount": "130488.00",
+          "award_amount_numeric": 130488.0,
+          "award_date": "2017-03-31",
+          "source": "ckan_awarded",
+          "first_seen": "2026-07-16 02:08:35",
+          "last_seen": "2026-11-05 10:42:36",
+          "award_amount_labelled": null,
+          "award_amount_verdict": null,
+          "procurement_id": 1769
+        },
+        {
+          "supplier_name_raw": "Limas Gardens & Construction Inc",
+          "supplier_id": 57683,
+          "award_amount": "61732.44",
+          "award_amount_numeric": 61732.44,
+          "award_date": "2017-03-31",
+          "source": "ckan_awarded",
+          "first_seen": "2026-07-16 02:08:35",
+          "last_seen": "2026-11-05 10:42:36",
+          "award_amount_labelled": null,
+          "award_amount_verdict": null,
+          "procurement_id": 1769
+        }
+      ],
+      "ariba_postings": [],
+      "documents": [
+        {
+          "source": "staff_report",
+          "name": "backgroundfile-102278.pdf",
+          "path": "backgroundfile-102278.pdf",
+          "type": "pdf",
+          "size_bytes": null,
+          "url": "https://www.toronto.ca/legdocs/mmis/2017/ba/bgrd/backgroundfile-102278.pdf"
+        }
+      ],
+      "bids": [
+        {
+          "reference": "2017.BA15.5",
+          "bidder_name_raw": "Hank Deenen Landscaping Ltd.",
+          "supplier_id": 57682,
+          "bid_price": null,
+          "bid_price_numeric": null,
+          "hst_basis": null,
+          "price_header": null,
+          "source": "ba_report",
+          "first_seen": "2026-11-05 22:23:25",
+          "last_seen": "2026-11-05 22:23:41",
+          "status": null,
+          "procurement_id": 1769
+        },
+        {
+          "reference": "2017.BA15.5",
+          "bidder_name_raw": "Lima's Gardens & Construction Inc.",
+          "supplier_id": 57700,
+          "bid_price": null,
+          "bid_price_numeric": null,
+          "hst_basis": null,
+          "price_header": null,
+          "source": "ba_report",
+          "first_seen": "2026-11-05 22:23:25",
+          "last_seen": "2026-11-05 22:23:41",
+          "status": null,
+          "procurement_id": 1769
+        }
+      ],
+      "bid_scopes": [
+        {
+          "id": 9,
+          "reference": "2017.BA15.5",
+          "document_number": "3707163238",
+          "source": "ba_report",
+          "scope_key": "part a",
+          "scope_kind": "part",
+          "scope_label": "Part A",
+          "scope_status": null,
+          "proof_sha256": "cf37aaa95446c44e5b28c314c0cb2c939a51d1708f1fc5641f91ddad80dfd244",
+          "procurement_id": 1769,
+          "first_seen": "2026-11-05 22:11:29",
+          "last_seen": "2026-11-05 22:11:44",
+          "responses": [
+            {
+              "id": 30,
+              "scope_id": 9,
+              "response_key": "cell-001",
+              "bid_id": 384614,
+              "bidder_name_raw": "Hank Deenen Landscaping Ltd.",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$122,515.80",
+              "first_seen": "2026-11-05 22:11:29",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Hank Deenen Landscaping Ltd.",
+              "prices": [
+                {
+                  "id": 28,
+                  "response_id": 30,
+                  "price_key": "value-1",
+                  "value_raw": "$122,515.80",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 122515.8,
+                  "price_header": "Evaluated Bid Price (including H.S.T.)",
+                  "price_basis": "Evaluated Bid Price (including H.S.T.); (incl. 5% prompt payment, net 15 days)",
+                  "hst_basis": "including",
+                  "quotation": "$122,515.80",
+                  "first_seen": "2026-11-05 22:11:29",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 34,
+              "scope_id": 9,
+              "response_key": "cell-005",
+              "bid_id": 384615,
+              "bidder_name_raw": "Lima's Gardens & Construction Inc.",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": "Non-Compliant",
+              "row_quotation": "Non-Compliant",
+              "first_seen": "2026-11-05 22:11:29",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Lima's Gardens & Construction Inc.",
+              "prices": []
+            }
+          ]
+        },
+        {
+          "id": 10,
+          "reference": "2017.BA15.5",
+          "document_number": "3707163238",
+          "source": "ba_report",
+          "scope_key": "part b",
+          "scope_kind": "part",
+          "scope_label": "Part B",
+          "scope_status": null,
+          "proof_sha256": "cf37aaa95446c44e5b28c314c0cb2c939a51d1708f1fc5641f91ddad80dfd244",
+          "procurement_id": 1769,
+          "first_seen": "2026-11-05 22:11:29",
+          "last_seen": "2026-11-05 22:11:44",
+          "responses": [
+            {
+              "id": 31,
+              "scope_id": 10,
+              "response_key": "cell-002",
+              "bid_id": 384614,
+              "bidder_name_raw": "Hank Deenen Landscaping Ltd.",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$75,573.45",
+              "first_seen": "2026-11-05 22:11:29",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Hank Deenen Landscaping Ltd.",
+              "prices": [
+                {
+                  "id": 29,
+                  "response_id": 31,
+                  "price_key": "value-1",
+                  "value_raw": "$75,573.45",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 75573.45,
+                  "price_header": "Evaluated Bid Price (including H.S.T.)",
+                  "price_basis": "Evaluated Bid Price (including H.S.T.); (incl. 5% prompt payment, net 15 days)",
+                  "hst_basis": "including",
+                  "quotation": "$75,573.45",
+                  "first_seen": "2026-11-05 22:11:29",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 35,
+              "scope_id": 10,
+              "response_key": "cell-006",
+              "bid_id": 384615,
+              "bidder_name_raw": "Lima's Gardens & Construction Inc.",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$53,680.38",
+              "first_seen": "2026-11-05 22:11:29",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Lima's Gardens & Construction Inc.",
+              "prices": [
+                {
+                  "id": 32,
+                  "response_id": 35,
+                  "price_key": "value-1",
+                  "value_raw": "$53,680.38",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 53680.38,
+                  "price_header": "Evaluated Bid Price (including H.S.T.)",
+                  "price_basis": null,
+                  "hst_basis": "including",
+                  "quotation": "$53,680.38",
+                  "first_seen": "2026-11-05 22:11:29",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": 11,
+          "reference": "2017.BA15.5",
+          "document_number": "3707163238",
+          "source": "ba_report",
+          "scope_key": "part c",
+          "scope_kind": "part",
+          "scope_label": "Part C",
+          "scope_status": "not awarded",
+          "proof_sha256": "cf37aaa95446c44e5b28c314c0cb2c939a51d1708f1fc5641f91ddad80dfd244",
+          "procurement_id": 1769,
+          "first_seen": "2026-11-05 22:11:29",
+          "last_seen": "2026-11-05 22:11:44",
+          "responses": [
+            {
+              "id": 32,
+              "scope_id": 11,
+              "response_key": "cell-003",
+              "bid_id": 384614,
+              "bidder_name_raw": "Hank Deenen Landscaping Ltd.",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$67,129.09",
+              "first_seen": "2026-11-05 22:11:29",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Hank Deenen Landscaping Ltd.",
+              "prices": [
+                {
+                  "id": 30,
+                  "response_id": 32,
+                  "price_key": "value-1",
+                  "value_raw": "$67,129.09",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 67129.09,
+                  "price_header": "Evaluated Bid Price (including H.S.T.)",
+                  "price_basis": "Evaluated Bid Price (including H.S.T.); (incl. 5% prompt payment, net 15 days) **",
+                  "hst_basis": "including",
+                  "quotation": "$67,129.09",
+                  "first_seen": "2026-11-05 22:11:29",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 36,
+              "scope_id": 11,
+              "response_key": "cell-007",
+              "bid_id": 384615,
+              "bidder_name_raw": "Lima's Gardens & Construction Inc.",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$83,111.00 **",
+              "first_seen": "2026-11-05 22:11:29",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Lima's Gardens & Construction Inc.",
+              "prices": [
+                {
+                  "id": 33,
+                  "response_id": 36,
+                  "price_key": "value-1",
+                  "value_raw": "$83,111.00 **",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 83111.0,
+                  "price_header": "Evaluated Bid Price (including H.S.T.)",
+                  "price_basis": null,
+                  "hst_basis": "including",
+                  "quotation": "$83,111.00 **",
+                  "first_seen": "2026-11-05 22:11:29",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": 12,
+          "reference": "2017.BA15.5",
+          "document_number": "3707163238",
+          "source": "ba_report",
+          "scope_key": "part d",
+          "scope_kind": "part",
+          "scope_label": "Part D",
+          "scope_status": null,
+          "proof_sha256": "cf37aaa95446c44e5b28c314c0cb2c939a51d1708f1fc5641f91ddad80dfd244",
+          "procurement_id": 1769,
+          "first_seen": "2026-11-05 22:11:29",
+          "last_seen": "2026-11-05 22:11:44",
+          "responses": [
+            {
+              "id": 33,
+              "scope_id": 12,
+              "response_key": "cell-004",
+              "bid_id": 384614,
+              "bidder_name_raw": "Hank Deenen Landscaping Ltd.",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$1447.80",
+              "first_seen": "2026-11-05 22:11:29",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Hank Deenen Landscaping Ltd.",
+              "prices": [
+                {
+                  "id": 31,
+                  "response_id": 33,
+                  "price_key": "value-1",
+                  "value_raw": "$1447.80",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 1447.8,
+                  "price_header": "Evaluated Bid Price (including H.S.T.)",
+                  "price_basis": "Evaluated Bid Price (including H.S.T.); (incl. 5% prompt payment, net 15 days)",
+                  "hst_basis": "including",
+                  "quotation": "$1447.80",
+                  "first_seen": "2026-11-05 22:11:29",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 37,
+              "scope_id": 12,
+              "response_key": "cell-008",
+              "bid_id": 384615,
+              "bidder_name_raw": "Lima's Gardens & Construction Inc.",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$2,182.50",
+              "first_seen": "2026-11-05 22:11:29",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Lima's Gardens & Construction Inc.",
+              "prices": [
+                {
+                  "id": 34,
+                  "response_id": 37,
+                  "price_key": "value-1",
+                  "value_raw": "$2,182.50",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 2182.5,
+                  "price_header": "Evaluated Bid Price (including H.S.T.)",
+                  "price_basis": null,
+                  "hst_basis": "including",
+                  "quotation": "$2,182.50",
+                  "first_seen": "2026-11-05 22:11:29",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "bid_scope_summary": {
+        "participating_firms": 2,
+        "response_observations": 8,
+        "submitted_response_cells": 8,
+        "resolved_scoped_submissions": 8,
+        "explicit_no_bid_cells": 0,
+        "unscoped_outcomes": 0,
+        "unresolved_party_cells": 0,
+        "price_variants": 7
+      }
+    },
+    {
+      "document_number": "4355949486",
+      "status": "Awarded",
+      "rfx_type": "RFQ",
+      "noip_type": null,
+      "form_type": "Awarded Contracts",
+      "title": "RFQ - Minor Building Repairs and Alterations for Child Care Centres",
+      "description": "The scope of this RFQ includes furnishing all labour, materials, equipment and supervision for minor building repairs and alterations at various Child Care Centres and District Office locations throughout the City of Toronto for Children's Services.",
+      "issue_date": "2024-03-11",
+      "submission_deadline": "2024-04-10",
+      "category": "Construction Services",
+      "division": "Children's Services",
+      "buyer_name": "Lynda Forbes",
+      "buyer_email": "lynda.forbes@toronto.ca",
+      "buyer_phone": "4163385577",
+      "wards": null,
+      "ariba_posting_link": "https://discovery.ariba.com/rfx/19033624",
+      "source": "odata",
+      "first_seen": "2026-07-16 02:08:29",
+      "last_seen": "2026-11-05 10:42:36",
+      "title_source": null,
+      "procurement_id": 10402,
+      "publisher_identity_json": "{\"Awarded_Suppliers\":[{\"Award_Amount\":\"1020100.00\",\"Successful_Bidder\":\"TRIBRO GROUP LTD\"},{\"Award_Amount\":\"1128610.00\",\"Successful_Bidder\":\"BUTLER CONTRACTING GROUP INC\"}],\"Closing_Date\":\"2024-04-10\",\"Issue_Date\":\"2024-03-11\",\"Solicitation_Award_Details\":\" CSSCMO - Minor Building Repairs and Alterations for Child Care Centers CSSCMO - Minor Building Repairs and Alterations for Child Care Centers\",\"Solicitation_Document_Number\":\"4355949486\",\"Solicitation_Document_Type\":\"RFQ\",\"id\":\"c8edf196-818c-4ebd-a190-27db6f5de5fc\"}",
+      "awards": [
+        {
+          "supplier_name_raw": "BUTLER CONTRACTING GROUP INC",
+          "supplier_id": 57684,
+          "award_amount": "1128610.00",
+          "award_amount_numeric": 1128610.0,
+          "award_date": "2024-07-26",
+          "source": "odata",
+          "first_seen": "2026-07-16 02:08:29",
+          "last_seen": "2026-11-05 10:42:24",
+          "award_amount_labelled": null,
+          "award_amount_verdict": null,
+          "procurement_id": 10402
+        },
+        {
+          "supplier_name_raw": "TRIBRO GROUP LTD",
+          "supplier_id": 57685,
+          "award_amount": "1020100.00",
+          "award_amount_numeric": 1020100.0,
+          "award_date": "2024-07-26",
+          "source": "odata",
+          "first_seen": "2026-07-16 02:08:29",
+          "last_seen": "2026-11-05 10:42:24",
+          "award_amount_labelled": null,
+          "award_amount_verdict": null,
+          "procurement_id": 10402
+        },
+        {
+          "supplier_name_raw": "BUTLER CONTRACTING GROUP INC",
+          "supplier_id": 57684,
+          "award_amount": "1128610.00",
+          "award_amount_numeric": 1128610.0,
+          "award_date": "2024-07-26",
+          "source": "ckan_awarded",
+          "first_seen": "2026-07-16 02:08:35",
+          "last_seen": "2026-11-05 10:42:36",
+          "award_amount_labelled": null,
+          "award_amount_verdict": null,
+          "procurement_id": 10402
+        },
+        {
+          "supplier_name_raw": "TRIBRO GROUP LTD",
+          "supplier_id": 57685,
+          "award_amount": "1020100.00",
+          "award_amount_numeric": 1020100.0,
+          "award_date": "2024-07-26",
+          "source": "ckan_awarded",
+          "first_seen": "2026-07-16 02:08:35",
+          "last_seen": "2026-11-05 10:42:36",
+          "award_amount_labelled": null,
+          "award_amount_verdict": null,
+          "procurement_id": 10402
+        }
+      ],
+      "ariba_postings": [],
+      "documents": [
+        {
+          "source": "staff_report",
+          "name": "backgroundfile-246969.pdf",
+          "path": "backgroundfile-246969.pdf",
+          "type": "pdf",
+          "size_bytes": null,
+          "url": "https://www.toronto.ca/legdocs/mmis/2024/ba/bgrd/backgroundfile-246969.pdf"
+        }
+      ],
+      "bids": [
+        {
+          "reference": "2024.BA85.2",
+          "bidder_name_raw": "Butler Contracting Group Inc.",
+          "supplier_id": 57684,
+          "bid_price": null,
+          "bid_price_numeric": null,
+          "hst_basis": null,
+          "price_header": null,
+          "source": "ba_report",
+          "first_seen": "2026-11-05 22:23:25",
+          "last_seen": "2026-11-05 22:23:41",
+          "status": null,
+          "procurement_id": 10402
+        },
+        {
+          "reference": "2024.BA85.2",
+          "bidder_name_raw": "Canada Construction Ltd",
+          "supplier_id": 57701,
+          "bid_price": null,
+          "bid_price_numeric": null,
+          "hst_basis": null,
+          "price_header": null,
+          "source": "ba_report",
+          "first_seen": "2026-11-05 22:23:25",
+          "last_seen": "2026-11-05 22:23:41",
+          "status": null,
+          "procurement_id": 10402
+        },
+        {
+          "reference": "2024.BA85.2",
+          "bidder_name_raw": "Direct Construction Company Limited",
+          "supplier_id": 57702,
+          "bid_price": null,
+          "bid_price_numeric": null,
+          "hst_basis": null,
+          "price_header": null,
+          "source": "ba_report",
+          "first_seen": "2026-11-05 22:23:25",
+          "last_seen": "2026-11-05 22:23:41",
+          "status": null,
+          "procurement_id": 10402
+        },
+        {
+          "reference": "2024.BA85.2",
+          "bidder_name_raw": "Furcon Environmental Inc",
+          "supplier_id": 57703,
+          "bid_price": null,
+          "bid_price_numeric": null,
+          "hst_basis": null,
+          "price_header": null,
+          "source": "ba_report",
+          "first_seen": "2026-11-05 22:23:25",
+          "last_seen": "2026-11-05 22:23:41",
+          "status": null,
+          "procurement_id": 10402
+        },
+        {
+          "reference": "2024.BA85.2",
+          "bidder_name_raw": "P.S. Painting Limited",
+          "supplier_id": 57704,
+          "bid_price": null,
+          "bid_price_numeric": null,
+          "hst_basis": null,
+          "price_header": null,
+          "source": "ba_report",
+          "first_seen": "2026-11-05 22:23:25",
+          "last_seen": "2026-11-05 22:23:41",
+          "status": null,
+          "procurement_id": 10402
+        },
+        {
+          "reference": "2024.BA85.2",
+          "bidder_name_raw": "Tribro Group Ltd.",
+          "supplier_id": 57685,
+          "bid_price": null,
+          "bid_price_numeric": null,
+          "hst_basis": null,
+          "price_header": null,
+          "source": "ba_report",
+          "first_seen": "2026-11-05 22:23:25",
+          "last_seen": "2026-11-05 22:23:41",
+          "status": null,
+          "procurement_id": 10402
+        },
+        {
+          "reference": "2024.BA85.2",
+          "bidder_name_raw": "Universal Cleaning and Painting Ltd.",
+          "supplier_id": 57705,
+          "bid_price": null,
+          "bid_price_numeric": null,
+          "hst_basis": null,
+          "price_header": null,
+          "source": "ba_report",
+          "first_seen": "2026-11-05 22:23:25",
+          "last_seen": "2026-11-05 22:23:41",
+          "status": null,
+          "procurement_id": 10402
+        }
+      ],
+      "bid_scopes": [
+        {
+          "id": 29,
+          "reference": "2024.BA85.2",
+          "document_number": "4355949486",
+          "source": "ba_report",
+          "scope_key": "north east",
+          "scope_kind": "region",
+          "scope_label": "North East",
+          "scope_status": null,
+          "proof_sha256": "fbc60710cd54d485715759280045768ff07f7ddd79d72e33e0e2f0ccfc2bfdc2",
+          "procurement_id": 10402,
+          "first_seen": "2026-11-05 22:11:30",
+          "last_seen": "2026-11-05 22:11:44",
+          "responses": [
+            {
+              "id": 136,
+              "scope_id": 29,
+              "response_key": "cell-015",
+              "bid_id": 384652,
+              "bidder_name_raw": "Tribro Group Ltd.",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$510,050.00",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Tribro Group Ltd.",
+              "prices": [
+                {
+                  "id": 63,
+                  "response_id": 136,
+                  "price_key": "value-1",
+                  "value_raw": "$510,050.00",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 510050.0,
+                  "price_header": "Table 2: Summary of Bids Received for Ariba Doc4355949486, including bid price",
+                  "price_basis": null,
+                  "hst_basis": null,
+                  "quotation": "$510,050.00",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 137,
+              "scope_id": 29,
+              "response_key": "cell-016",
+              "bid_id": 384653,
+              "bidder_name_raw": "Butler Contracting Group Inc.",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$564,305.00",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Butler Contracting Group Inc.",
+              "prices": [
+                {
+                  "id": 64,
+                  "response_id": 137,
+                  "price_key": "value-1",
+                  "value_raw": "$564,305.00",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 564305.0,
+                  "price_header": "Table 2: Summary of Bids Received for Ariba Doc4355949486, including bid price",
+                  "price_basis": null,
+                  "hst_basis": null,
+                  "quotation": "$564,305.00",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 138,
+              "scope_id": 29,
+              "response_key": "cell-017",
+              "bid_id": 384654,
+              "bidder_name_raw": "Universal Cleaning and Painting Ltd.",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$622,107.70",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Universal Cleaning and Painting Ltd.",
+              "prices": [
+                {
+                  "id": 65,
+                  "response_id": 138,
+                  "price_key": "value-1",
+                  "value_raw": "$622,107.70",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 622107.7,
+                  "price_header": "Table 2: Summary of Bids Received for Ariba Doc4355949486, including bid price",
+                  "price_basis": null,
+                  "hst_basis": null,
+                  "quotation": "$622,107.70",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 139,
+              "scope_id": 29,
+              "response_key": "cell-018",
+              "bid_id": 384655,
+              "bidder_name_raw": "P.S. Painting Limited",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$664,509.80",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "P.S. Painting Limited",
+              "prices": [
+                {
+                  "id": 66,
+                  "response_id": 139,
+                  "price_key": "value-1",
+                  "value_raw": "$664,509.80",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 664509.8,
+                  "price_header": "Table 2: Summary of Bids Received for Ariba Doc4355949486, including bid price",
+                  "price_basis": null,
+                  "hst_basis": null,
+                  "quotation": "$664,509.80",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 140,
+              "scope_id": 29,
+              "response_key": "cell-019",
+              "bid_id": 384656,
+              "bidder_name_raw": "Direct Construction Company Limited",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$735,572.50",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Direct Construction Company Limited",
+              "prices": [
+                {
+                  "id": 67,
+                  "response_id": 140,
+                  "price_key": "value-1",
+                  "value_raw": "$735,572.50",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 735572.5,
+                  "price_header": "Table 2: Summary of Bids Received for Ariba Doc4355949486, including bid price",
+                  "price_basis": null,
+                  "hst_basis": null,
+                  "quotation": "$735,572.50",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 141,
+              "scope_id": 29,
+              "response_key": "cell-020",
+              "bid_id": 384657,
+              "bidder_name_raw": "Furcon Environmental Inc",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$894,900.00",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Furcon Environmental Inc",
+              "prices": [
+                {
+                  "id": 68,
+                  "response_id": 141,
+                  "price_key": "value-1",
+                  "value_raw": "$894,900.00",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 894900.0,
+                  "price_header": "Table 2: Summary of Bids Received for Ariba Doc4355949486, including bid price",
+                  "price_basis": null,
+                  "hst_basis": null,
+                  "quotation": "$894,900.00",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 142,
+              "scope_id": 29,
+              "response_key": "cell-021",
+              "bid_id": 384658,
+              "bidder_name_raw": "Canada Construction Ltd",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$842,100.00",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Canada Construction Ltd",
+              "prices": [
+                {
+                  "id": 69,
+                  "response_id": 142,
+                  "price_key": "value-1",
+                  "value_raw": "$842,100.00",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 842100.0,
+                  "price_header": "Table 2: Summary of Bids Received for Ariba Doc4355949486, including bid price",
+                  "price_basis": null,
+                  "hst_basis": null,
+                  "quotation": "$842,100.00",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": 27,
+          "reference": "2024.BA85.2",
+          "document_number": "4355949486",
+          "source": "ba_report",
+          "scope_key": "north west",
+          "scope_kind": "region",
+          "scope_label": "North West",
+          "scope_status": null,
+          "proof_sha256": "fbc60710cd54d485715759280045768ff07f7ddd79d72e33e0e2f0ccfc2bfdc2",
+          "procurement_id": 10402,
+          "first_seen": "2026-11-05 22:11:30",
+          "last_seen": "2026-11-05 22:11:44",
+          "responses": [
+            {
+              "id": 122,
+              "scope_id": 27,
+              "response_key": "cell-001",
+              "bid_id": 384652,
+              "bidder_name_raw": "Tribro Group Ltd.",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$510,050.00",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Tribro Group Ltd.",
+              "prices": [
+                {
+                  "id": 49,
+                  "response_id": 122,
+                  "price_key": "value-1",
+                  "value_raw": "$510,050.00",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 510050.0,
+                  "price_header": "Table 2: Summary of Bids Received for Ariba Doc4355949486, including bid price",
+                  "price_basis": null,
+                  "hst_basis": null,
+                  "quotation": "$510,050.00",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 123,
+              "scope_id": 27,
+              "response_key": "cell-002",
+              "bid_id": 384653,
+              "bidder_name_raw": "Butler Contracting Group Inc.",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$564,305.00",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Butler Contracting Group Inc.",
+              "prices": [
+                {
+                  "id": 50,
+                  "response_id": 123,
+                  "price_key": "value-1",
+                  "value_raw": "$564,305.00",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 564305.0,
+                  "price_header": "Table 2: Summary of Bids Received for Ariba Doc4355949486, including bid price",
+                  "price_basis": null,
+                  "hst_basis": null,
+                  "quotation": "$564,305.00",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 124,
+              "scope_id": 27,
+              "response_key": "cell-003",
+              "bid_id": 384654,
+              "bidder_name_raw": "Universal Cleaning and Painting Ltd.",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$622,107.70",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Universal Cleaning and Painting Ltd.",
+              "prices": [
+                {
+                  "id": 51,
+                  "response_id": 124,
+                  "price_key": "value-1",
+                  "value_raw": "$622,107.70",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 622107.7,
+                  "price_header": "Table 2: Summary of Bids Received for Ariba Doc4355949486, including bid price",
+                  "price_basis": null,
+                  "hst_basis": null,
+                  "quotation": "$622,107.70",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 125,
+              "scope_id": 27,
+              "response_key": "cell-004",
+              "bid_id": 384655,
+              "bidder_name_raw": "P.S. Painting Limited",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$664,328.80",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "P.S. Painting Limited",
+              "prices": [
+                {
+                  "id": 52,
+                  "response_id": 125,
+                  "price_key": "value-1",
+                  "value_raw": "$664,328.80",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 664328.8,
+                  "price_header": "Table 2: Summary of Bids Received for Ariba Doc4355949486, including bid price",
+                  "price_basis": null,
+                  "hst_basis": null,
+                  "quotation": "$664,328.80",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 126,
+              "scope_id": 27,
+              "response_key": "cell-005",
+              "bid_id": 384656,
+              "bidder_name_raw": "Direct Construction Company Limited",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$734,172.50",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Direct Construction Company Limited",
+              "prices": [
+                {
+                  "id": 53,
+                  "response_id": 126,
+                  "price_key": "value-1",
+                  "value_raw": "$734,172.50",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 734172.5,
+                  "price_header": "Table 2: Summary of Bids Received for Ariba Doc4355949486, including bid price",
+                  "price_basis": null,
+                  "hst_basis": null,
+                  "quotation": "$734,172.50",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 127,
+              "scope_id": 27,
+              "response_key": "cell-006",
+              "bid_id": 384657,
+              "bidder_name_raw": "Furcon Environmental Inc",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$740,750.00",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Furcon Environmental Inc",
+              "prices": [
+                {
+                  "id": 54,
+                  "response_id": 127,
+                  "price_key": "value-1",
+                  "value_raw": "$740,750.00",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 740750.0,
+                  "price_header": "Table 2: Summary of Bids Received for Ariba Doc4355949486, including bid price",
+                  "price_basis": null,
+                  "hst_basis": null,
+                  "quotation": "$740,750.00",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 128,
+              "scope_id": 27,
+              "response_key": "cell-007",
+              "bid_id": 384658,
+              "bidder_name_raw": "Canada Construction Ltd",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$842,100.00",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Canada Construction Ltd",
+              "prices": [
+                {
+                  "id": 55,
+                  "response_id": 128,
+                  "price_key": "value-1",
+                  "value_raw": "$842,100.00",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 842100.0,
+                  "price_header": "Table 2: Summary of Bids Received for Ariba Doc4355949486, including bid price",
+                  "price_basis": null,
+                  "hst_basis": null,
+                  "quotation": "$842,100.00",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": 30,
+          "reference": "2024.BA85.2",
+          "document_number": "4355949486",
+          "source": "ba_report",
+          "scope_key": "south east",
+          "scope_kind": "region",
+          "scope_label": "South East",
+          "scope_status": null,
+          "proof_sha256": "fbc60710cd54d485715759280045768ff07f7ddd79d72e33e0e2f0ccfc2bfdc2",
+          "procurement_id": 10402,
+          "first_seen": "2026-11-05 22:11:30",
+          "last_seen": "2026-11-05 22:11:44",
+          "responses": [
+            {
+              "id": 143,
+              "scope_id": 30,
+              "response_key": "cell-022",
+              "bid_id": 384652,
+              "bidder_name_raw": "Tribro Group Ltd.",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$510,050.00",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Tribro Group Ltd.",
+              "prices": [
+                {
+                  "id": 70,
+                  "response_id": 143,
+                  "price_key": "value-1",
+                  "value_raw": "$510,050.00",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 510050.0,
+                  "price_header": "Table 2: Summary of Bids Received for Ariba Doc4355949486, including bid price",
+                  "price_basis": null,
+                  "hst_basis": null,
+                  "quotation": "$510,050.00",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 144,
+              "scope_id": 30,
+              "response_key": "cell-023",
+              "bid_id": 384653,
+              "bidder_name_raw": "Butler Contracting Group Inc.",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$570,740.00",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Butler Contracting Group Inc.",
+              "prices": [
+                {
+                  "id": 71,
+                  "response_id": 144,
+                  "price_key": "value-1",
+                  "value_raw": "$570,740.00",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 570740.0,
+                  "price_header": "Table 2: Summary of Bids Received for Ariba Doc4355949486, including bid price",
+                  "price_basis": null,
+                  "hst_basis": null,
+                  "quotation": "$570,740.00",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 145,
+              "scope_id": 30,
+              "response_key": "cell-024",
+              "bid_id": 384654,
+              "bidder_name_raw": "Universal Cleaning and Painting Ltd.",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$622,107.70",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Universal Cleaning and Painting Ltd.",
+              "prices": [
+                {
+                  "id": 72,
+                  "response_id": 145,
+                  "price_key": "value-1",
+                  "value_raw": "$622,107.70",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 622107.7,
+                  "price_header": "Table 2: Summary of Bids Received for Ariba Doc4355949486, including bid price",
+                  "price_basis": null,
+                  "hst_basis": null,
+                  "quotation": "$622,107.70",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 146,
+              "scope_id": 30,
+              "response_key": "cell-025",
+              "bid_id": 384655,
+              "bidder_name_raw": "P.S. Painting Limited",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$664,509.80",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "P.S. Painting Limited",
+              "prices": [
+                {
+                  "id": 73,
+                  "response_id": 146,
+                  "price_key": "value-1",
+                  "value_raw": "$664,509.80",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 664509.8,
+                  "price_header": "Table 2: Summary of Bids Received for Ariba Doc4355949486, including bid price",
+                  "price_basis": null,
+                  "hst_basis": null,
+                  "quotation": "$664,509.80",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 147,
+              "scope_id": 30,
+              "response_key": "cell-026",
+              "bid_id": 384656,
+              "bidder_name_raw": "Direct Construction Company Limited",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$735,572.50",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Direct Construction Company Limited",
+              "prices": [
+                {
+                  "id": 74,
+                  "response_id": 147,
+                  "price_key": "value-1",
+                  "value_raw": "$735,572.50",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 735572.5,
+                  "price_header": "Table 2: Summary of Bids Received for Ariba Doc4355949486, including bid price",
+                  "price_basis": null,
+                  "hst_basis": null,
+                  "quotation": "$735,572.50",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 148,
+              "scope_id": 30,
+              "response_key": "cell-027",
+              "bid_id": 384657,
+              "bidder_name_raw": "Furcon Environmental Inc",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$898,150.00",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Furcon Environmental Inc",
+              "prices": [
+                {
+                  "id": 75,
+                  "response_id": 148,
+                  "price_key": "value-1",
+                  "value_raw": "$898,150.00",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 898150.0,
+                  "price_header": "Table 2: Summary of Bids Received for Ariba Doc4355949486, including bid price",
+                  "price_basis": null,
+                  "hst_basis": null,
+                  "quotation": "$898,150.00",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 149,
+              "scope_id": 30,
+              "response_key": "cell-028",
+              "bid_id": 384658,
+              "bidder_name_raw": "Canada Construction Ltd",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$842,100.00",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Canada Construction Ltd",
+              "prices": [
+                {
+                  "id": 76,
+                  "response_id": 149,
+                  "price_key": "value-1",
+                  "value_raw": "$842,100.00",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 842100.0,
+                  "price_header": "Table 2: Summary of Bids Received for Ariba Doc4355949486, including bid price",
+                  "price_basis": null,
+                  "hst_basis": null,
+                  "quotation": "$842,100.00",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": 28,
+          "reference": "2024.BA85.2",
+          "document_number": "4355949486",
+          "source": "ba_report",
+          "scope_key": "south west",
+          "scope_kind": "region",
+          "scope_label": "South West",
+          "scope_status": null,
+          "proof_sha256": "fbc60710cd54d485715759280045768ff07f7ddd79d72e33e0e2f0ccfc2bfdc2",
+          "procurement_id": 10402,
+          "first_seen": "2026-11-05 22:11:30",
+          "last_seen": "2026-11-05 22:11:44",
+          "responses": [
+            {
+              "id": 129,
+              "scope_id": 28,
+              "response_key": "cell-008",
+              "bid_id": 384652,
+              "bidder_name_raw": "Tribro Group Ltd.",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$510,050.00",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Tribro Group Ltd.",
+              "prices": [
+                {
+                  "id": 56,
+                  "response_id": 129,
+                  "price_key": "value-1",
+                  "value_raw": "$510,050.00",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 510050.0,
+                  "price_header": "Table 2: Summary of Bids Received for Ariba Doc4355949486, including bid price",
+                  "price_basis": null,
+                  "hst_basis": null,
+                  "quotation": "$510,050.00",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 130,
+              "scope_id": 28,
+              "response_key": "cell-009",
+              "bid_id": 384653,
+              "bidder_name_raw": "Butler Contracting Group Inc.",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$570,740.00",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Butler Contracting Group Inc.",
+              "prices": [
+                {
+                  "id": 57,
+                  "response_id": 130,
+                  "price_key": "value-1",
+                  "value_raw": "$570,740.00",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 570740.0,
+                  "price_header": "Table 2: Summary of Bids Received for Ariba Doc4355949486, including bid price",
+                  "price_basis": null,
+                  "hst_basis": null,
+                  "quotation": "$570,740.00",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 131,
+              "scope_id": 28,
+              "response_key": "cell-010",
+              "bid_id": 384654,
+              "bidder_name_raw": "Universal Cleaning and Painting Ltd.",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$622,107.70",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Universal Cleaning and Painting Ltd.",
+              "prices": [
+                {
+                  "id": 58,
+                  "response_id": 131,
+                  "price_key": "value-1",
+                  "value_raw": "$622,107.70",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 622107.7,
+                  "price_header": "Table 2: Summary of Bids Received for Ariba Doc4355949486, including bid price",
+                  "price_basis": null,
+                  "hst_basis": null,
+                  "quotation": "$622,107.70",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 132,
+              "scope_id": 28,
+              "response_key": "cell-011",
+              "bid_id": 384655,
+              "bidder_name_raw": "P.S. Painting Limited",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$664,262.80",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "P.S. Painting Limited",
+              "prices": [
+                {
+                  "id": 59,
+                  "response_id": 132,
+                  "price_key": "value-1",
+                  "value_raw": "$664,262.80",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 664262.8,
+                  "price_header": "Table 2: Summary of Bids Received for Ariba Doc4355949486, including bid price",
+                  "price_basis": null,
+                  "hst_basis": null,
+                  "quotation": "$664,262.80",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 133,
+              "scope_id": 28,
+              "response_key": "cell-012",
+              "bid_id": 384656,
+              "bidder_name_raw": "Direct Construction Company Limited",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$734,172.50",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Direct Construction Company Limited",
+              "prices": [
+                {
+                  "id": 60,
+                  "response_id": 133,
+                  "price_key": "value-1",
+                  "value_raw": "$734,172.50",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 734172.5,
+                  "price_header": "Table 2: Summary of Bids Received for Ariba Doc4355949486, including bid price",
+                  "price_basis": null,
+                  "hst_basis": null,
+                  "quotation": "$734,172.50",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 134,
+              "scope_id": 28,
+              "response_key": "cell-013",
+              "bid_id": 384657,
+              "bidder_name_raw": "Furcon Environmental Inc",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$704,400.00",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Furcon Environmental Inc",
+              "prices": [
+                {
+                  "id": 61,
+                  "response_id": 134,
+                  "price_key": "value-1",
+                  "value_raw": "$704,400.00",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 704400.0,
+                  "price_header": "Table 2: Summary of Bids Received for Ariba Doc4355949486, including bid price",
+                  "price_basis": null,
+                  "hst_basis": null,
+                  "quotation": "$704,400.00",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            },
+            {
+              "id": 135,
+              "scope_id": 28,
+              "response_key": "cell-014",
+              "bid_id": 384658,
+              "bidder_name_raw": "Canada Construction Ltd",
+              "identity_status": "resolved",
+              "response_kind": "submitted",
+              "alternative_label": null,
+              "status": null,
+              "row_quotation": "$842,100.00",
+              "first_seen": "2026-11-05 22:11:30",
+              "last_seen": "2026-11-05 22:11:44",
+              "participating_firm": "Canada Construction Ltd",
+              "prices": [
+                {
+                  "id": 62,
+                  "response_id": 135,
+                  "price_key": "value-1",
+                  "value_raw": "$842,100.00",
+                  "value_kind": "money",
+                  "unit": null,
+                  "value_numeric": 842100.0,
+                  "price_header": "Table 2: Summary of Bids Received for Ariba Doc4355949486, including bid price",
+                  "price_basis": null,
+                  "hst_basis": null,
+                  "quotation": "$842,100.00",
+                  "first_seen": "2026-11-05 22:11:30",
+                  "last_seen": "2026-11-05 22:11:44"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "bid_scope_summary": {
+        "participating_firms": 7,
+        "response_observations": 28,
+        "submitted_response_cells": 28,
+        "resolved_scoped_submissions": 28,
+        "explicit_no_bid_cells": 0,
+        "unscoped_outcomes": 0,
+        "unresolved_party_cells": 0,
+        "price_variants": 28
+      }
     }
   ],
   "noncompetitive": [
@@ -1017,6 +5377,352 @@
       ],
       "first_seen": "2026-07-16 02:20:49",
       "last_seen": "2026-07-17 01:41:06"
+    },
+    {
+      "supplier_id": 57676,
+      "supplier_key": "nunu educational products inc",
+      "display_name": "NUNU EDUCATIONAL PRODUCTS INC.",
+      "variants": [
+        "NUNU EDUCATIONAL PRODUCTS INC.",
+        "Nunu Educational Products Inc."
+      ],
+      "first_seen": "2026-07-16 02:20:49",
+      "last_seen": "2026-11-05 21:20:53"
+    },
+    {
+      "supplier_id": 57677,
+      "supplier_key": "specialty furniture",
+      "display_name": "Specialty Furniture",
+      "variants": [
+        "Specialty Furniture"
+      ],
+      "first_seen": "2026-07-16 02:20:49",
+      "last_seen": "2026-11-05 21:20:53"
+    },
+    {
+      "supplier_id": 57678,
+      "supplier_key": "amovo workplace environment",
+      "display_name": "Amovo Workplace Environment",
+      "variants": [
+        "Amovo Workplace Environment"
+      ],
+      "first_seen": "2026-07-16 02:20:49",
+      "last_seen": "2026-11-05 21:20:53"
+    },
+    {
+      "supplier_id": 57679,
+      "supplier_key": "s c i interiors ltd",
+      "display_name": "S C I INteriors Ltd",
+      "variants": [
+        "S C I INteriors Ltd",
+        "S C I Interiors Ltd"
+      ],
+      "first_seen": "2026-07-16 02:20:49",
+      "last_seen": "2026-11-05 21:20:53"
+    },
+    {
+      "supplier_id": 57680,
+      "supplier_key": "met scan canada ltd",
+      "display_name": "MET-SCAN CANADA LTD",
+      "variants": [
+        "MET-SCAN CANADA LTD",
+        "Met-Scan Canada LTD.",
+        "Met-Scan Canada Ltd",
+        "Met-Scan Canada Ltd.",
+        "Met-scan Canada Ltd"
+      ],
+      "first_seen": "2026-07-16 02:20:49",
+      "last_seen": "2026-11-05 21:20:53"
+    },
+    {
+      "supplier_id": 57681,
+      "supplier_key": "onx enterprise solutions",
+      "display_name": "ONX Enterprise Solutions",
+      "variants": [
+        "ONX Enterprise Solutions",
+        "OnX Enterprise Solutions",
+        "Onx Enterprise Solutions"
+      ],
+      "first_seen": "2026-07-16 02:20:49",
+      "last_seen": "2026-11-05 21:20:53"
+    },
+    {
+      "supplier_id": 57682,
+      "supplier_key": "hank deenen landscaping ltd",
+      "display_name": "HANK DEENEN LANDSCAPING LTD",
+      "variants": [
+        "HANK DEENEN LANDSCAPING LTD",
+        "HANK DEENEN LANDSCAPING LTD.",
+        "Hank Deenen Landscaping Ltd",
+        "Hank Deenen Landscaping Ltd."
+      ],
+      "first_seen": "2026-07-16 02:20:49",
+      "last_seen": "2026-11-05 21:20:53"
+    },
+    {
+      "supplier_id": 57683,
+      "supplier_key": "limas gardens construction inc",
+      "display_name": "LIMAS GARDENS & CONSTRUCTION INC",
+      "variants": [
+        "LIMAS GARDENS & CONSTRUCTION INC",
+        "Limas Gardens & Construction Inc",
+        "Limas Gardens & Construction Inc."
+      ],
+      "first_seen": "2026-07-16 02:20:49",
+      "last_seen": "2026-11-05 21:20:53"
+    },
+    {
+      "supplier_id": 57684,
+      "supplier_key": "butler contracting group inc",
+      "display_name": "BUTLER CONTRACTING GROUP INC",
+      "variants": [
+        "BUTLER CONTRACTING GROUP INC",
+        "BUTLER CONTRACTING GROUP INC.",
+        "Butler Contracting Group Inc."
+      ],
+      "first_seen": "2026-07-16 02:20:49",
+      "last_seen": "2026-11-05 21:20:53"
+    },
+    {
+      "supplier_id": 57685,
+      "supplier_key": "tribro group ltd",
+      "display_name": "TRIBRO GROUP LTD",
+      "variants": [
+        "TRIBRO GROUP LTD",
+        "TRIBRO GROUP LTD.",
+        "TRIBRO Group Ltd.",
+        "Tribro Group Ltd",
+        "Tribro Group Ltd."
+      ],
+      "first_seen": "2026-07-16 02:20:49",
+      "last_seen": "2026-11-05 21:20:53"
+    },
+    {
+      "supplier_id": 57686,
+      "supplier_key": "avron",
+      "display_name": "Avron",
+      "variants": [
+        "Avron"
+      ],
+      "first_seen": "2026-11-05 22:23:40",
+      "last_seen": "2026-11-05 22:23:40"
+    },
+    {
+      "supplier_id": 57687,
+      "supplier_key": "five star enterprise of canada",
+      "display_name": "Five Star Enterprise of Canada",
+      "variants": [
+        "Five Star Enterprise of Canada"
+      ],
+      "first_seen": "2026-11-05 22:23:40",
+      "last_seen": "2026-11-05 22:23:40"
+    },
+    {
+      "supplier_id": 57688,
+      "supplier_key": "scholars choice",
+      "display_name": "Scholars Choice",
+      "variants": [
+        "Scholars Choice",
+        "Scholars Choice Appendix \"C\" Appendix \"C1\" Appendix \"C2\""
+      ],
+      "first_seen": "2026-07-16 02:20:49",
+      "last_seen": "2026-11-05 22:23:40"
+    },
+    {
+      "supplier_id": 57689,
+      "supplier_key": "sonsuh educational supplies inc",
+      "display_name": "Sonsuh Educational Supplies Inc.",
+      "variants": [
+        "Sonsuh Educational Supplies Inc.",
+        "Sonsuh Educational Supplies Inc. Appendix \"C\" Appendix \"C1\" Appendix \"C2\""
+      ],
+      "first_seen": "2026-07-17 00:07:51",
+      "last_seen": "2026-11-05 22:23:40"
+    },
+    {
+      "supplier_id": 57690,
+      "supplier_key": "spectrum educational supplies",
+      "display_name": "Spectrum Educational Supplies",
+      "variants": [
+        "Spectrum Educational Supplies"
+      ],
+      "first_seen": "2026-11-05 22:23:40",
+      "last_seen": "2026-11-05 22:23:40"
+    },
+    {
+      "supplier_id": 57691,
+      "supplier_key": "tfh canada",
+      "display_name": "TFH Canada",
+      "variants": [
+        "TFH Canada"
+      ],
+      "first_seen": "2026-11-05 22:23:40",
+      "last_seen": "2026-11-05 22:23:40"
+    },
+    {
+      "supplier_id": 57692,
+      "supplier_key": "amovo workplace environments",
+      "display_name": "Amovo Workplace Environments",
+      "variants": [
+        "Amovo Workplace Environments"
+      ],
+      "first_seen": "2026-07-16 02:20:49",
+      "last_seen": "2026-11-05 22:23:40"
+    },
+    {
+      "supplier_id": 57693,
+      "supplier_key": "dor val manufacturing ltd",
+      "display_name": "Dor-Val Manufacturing Ltd.",
+      "variants": [
+        "Dor-Val Manufacturing Ltd."
+      ],
+      "first_seen": "2026-11-05 22:23:40",
+      "last_seen": "2026-11-05 22:23:40"
+    },
+    {
+      "supplier_id": 57694,
+      "supplier_key": "sci interiors ltd",
+      "display_name": "SCI Interiors Ltd",
+      "variants": [
+        "SCI Interiors Ltd",
+        "SCI Interiors Ltd."
+      ],
+      "first_seen": "2026-07-16 02:20:49",
+      "last_seen": "2026-11-05 22:23:40"
+    },
+    {
+      "supplier_id": 57695,
+      "supplier_key": "specialty furniture inc",
+      "display_name": "Specialty Furniture Inc.",
+      "variants": [
+        "Specialty Furniture Inc."
+      ],
+      "first_seen": "2026-07-16 02:20:49",
+      "last_seen": "2026-11-05 22:23:40"
+    },
+    {
+      "supplier_id": 57696,
+      "supplier_key": "johnson controls canada lp",
+      "display_name": "Johnson Controls Canada LP",
+      "variants": [
+        "Johnson Controls Canada LP"
+      ],
+      "first_seen": "2026-07-17 00:07:51",
+      "last_seen": "2026-11-05 22:23:40"
+    },
+    {
+      "supplier_id": 57697,
+      "supplier_key": "tyco integrated fire security",
+      "display_name": "TYCO INTEGRATED FIRE & SECURITY",
+      "variants": [
+        "TYCO INTEGRATED FIRE & SECURITY",
+        "TYCO INTEGRATED FIRE & SECURITY.",
+        "TYCO Integrated Fire & Security",
+        "Tyco Integrated Fire & Security",
+        "Tyco Integrated Fire & Security (o/a Johnson Controls)"
+      ],
+      "first_seen": "2026-07-16 02:20:49",
+      "last_seen": "2026-11-05 22:23:40"
+    },
+    {
+      "supplier_id": 57698,
+      "supplier_key": "kti kanatek technologies inc",
+      "display_name": "KTI Kanatek Technologies Inc.",
+      "variants": [
+        "KTI Kanatek Technologies Inc."
+      ],
+      "first_seen": "2026-11-05 22:23:40",
+      "last_seen": "2026-11-05 22:23:40"
+    },
+    {
+      "supplier_id": 57699,
+      "supplier_key": "onx enterprise solutions ltd",
+      "display_name": "ONX ENTERPRISE SOLUTIONS LTD",
+      "variants": [
+        "ONX ENTERPRISE SOLUTIONS LTD",
+        "ONX ENTERPRISE SOLUTIONS LTD.",
+        "ONX Enterprise Solutions Ltd",
+        "ONX Enterprise Solutions Ltd.",
+        "OnX Enterprise Solutions Ltd",
+        "OnX Enterprise Solutions Ltd.",
+        "OnX Enterprise Solutions Ltd. operating as OnX Canada",
+        "Onx Enterprise Solutions Ltd",
+        "Onx Enterprise Solutions Ltd."
+      ],
+      "first_seen": "2026-07-16 02:20:49",
+      "last_seen": "2026-11-05 22:23:40"
+    },
+    {
+      "supplier_id": 57700,
+      "supplier_key": "lima s gardens construction inc",
+      "display_name": "LIMA'S GARDENS & CONSTRUCTION INC",
+      "variants": [
+        "LIMA'S GARDENS & CONSTRUCTION INC",
+        "Lima's Gardens & Construction   Inc.",
+        "Lima's Gardens & Construction Inc.",
+        "Lima’s Gardens & Construction Inc."
+      ],
+      "first_seen": "2026-07-16 02:20:49",
+      "last_seen": "2026-11-05 22:23:40"
+    },
+    {
+      "supplier_id": 57701,
+      "supplier_key": "canada construction ltd",
+      "display_name": "CANADA CONSTRUCTION LTD.",
+      "variants": [
+        "CANADA CONSTRUCTION LTD.",
+        "Canada Construction Ltd",
+        "Canada Construction Ltd."
+      ],
+      "first_seen": "2026-07-16 02:20:49",
+      "last_seen": "2026-11-05 22:23:40"
+    },
+    {
+      "supplier_id": 57702,
+      "supplier_key": "direct construction company limited",
+      "display_name": "DIRECT CONSTRUCTION COMPANY LIMITED",
+      "variants": [
+        "DIRECT CONSTRUCTION COMPANY LIMITED",
+        "Direct Construction Company Limited",
+        "Direct Construction Company limited"
+      ],
+      "first_seen": "2026-07-16 02:20:49",
+      "last_seen": "2026-11-05 22:23:40"
+    },
+    {
+      "supplier_id": 57703,
+      "supplier_key": "furcon environmental inc",
+      "display_name": "Furcon Environmental Inc",
+      "variants": [
+        "Furcon Environmental Inc",
+        "Furcon Environmental Inc."
+      ],
+      "first_seen": "2026-07-16 02:20:49",
+      "last_seen": "2026-11-05 22:23:40"
+    },
+    {
+      "supplier_id": 57704,
+      "supplier_key": "p s painting limited",
+      "display_name": "P.S Painting Limited o/a Cosar GC PM",
+      "variants": [
+        "P.S Painting Limited o/a Cosar GC PM",
+        "P.S. Painting Limited",
+        "P.S. Painting Limited o/a Cosar GC.PM",
+        "P.S. Painting Limited o/a Cosar Gc Pm"
+      ],
+      "first_seen": "2026-07-16 02:20:49",
+      "last_seen": "2026-11-05 22:23:40"
+    },
+    {
+      "supplier_id": 57705,
+      "supplier_key": "universal cleaning and painting ltd",
+      "display_name": "UNIVERSAL CLEANING AND PAINTING LTD",
+      "variants": [
+        "UNIVERSAL CLEANING AND PAINTING LTD",
+        "Universal Cleaning and Painting Ltd."
+      ],
+      "first_seen": "2026-07-17 00:07:51",
+      "last_seen": "2026-11-05 22:23:40"
     }
   ],
   "capital_projects": [
