@@ -6,7 +6,7 @@ const { scopes, summary, participantSlugs } = Astro.props;
 const slug = (r: ScopedResponse) => r.participating_firm ? participantSlugs?.get(r.participating_firm) : undefined;
 const kind = (r: ScopedResponse) => ({ submitted: 'Submitted response', no_bid: 'No Bid', unscoped_outcome: 'Outcome; scope not stated', unresolved: 'Unresolved source entry' }[r.response_kind]);
 const taxLabels: Record<string, string> = { including: 'Including HST', excluding: 'Excluding HST', net_of_HST: 'Net of HST', net_of_all_applicable_taxes: 'Net of all applicable taxes' };
-const tax = (p: ScopedPrice) => taxLabels[p.hst_basis ?? ''] ?? 'Tax basis not stated';
+const tax = (p: ScopedPrice) => taxLabels[p.hst_basis ?? ''] ?? 'HST basis not stated';
 ---
 <div class="scoped-bids">
   <p class="scope-counts">

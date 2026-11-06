@@ -61,3 +61,12 @@ it('links supplier participation to scoped responses without a global win/loss c
   }
   expect(checked).toBeGreaterThan(0);
 });
+
+
+it('distinguishes unstated HST treatment from the published price header and qualifications', () => {
+  const sol = scoped.find((s) => s.bid_scopes!.some((scope) => scope.responses.some((r) => r.prices.some((p) => p.hst_basis === null))))!;
+  expect(sol).toBeDefined();
+  const $ = loadPage(`solicitations/${sol.document_number}`);
+  expect($('.scoped-price').text()).toContain('HST basis not stated');
+  expect($('.scoped-price').text()).not.toContain('Tax basis not stated');
+});
